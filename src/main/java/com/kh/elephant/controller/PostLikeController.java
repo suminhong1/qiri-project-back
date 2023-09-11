@@ -1,7 +1,7 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.Post;
-import com.kh.elephant.service.PostService;
+import com.kh.elephant.domain.PostLike;
+import com.kh.elephant.service.PostLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,48 +11,49 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/*")
-public class PostController {
+public class PostLikeController {
 
     @Autowired
-    private PostService service;
+    private PostLikeService service;
 
-    @GetMapping("/post")
-    public ResponseEntity<List<Post>> shwoAll(){
+    @GetMapping("/postLike")
+    public ResponseEntity<List<PostLike>> showAll(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
+    @GetMapping("/postLike/{postLikeSeq}")
+    public ResponseEntity<PostLike> show(@PathVariable int postLikeSeq){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(service.show(postLikeSeq));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @GetMapping("/post/{postSEQ}")
-    public ResponseEntity<Post> show(@PathVariable int postSEQ){
+
+    @PostMapping("/postLike")
+    public ResponseEntity<PostLike> insert(@RequestBody PostLike postLike){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(postSEQ));
+            return  ResponseEntity.status(HttpStatus.OK).body(service.create(postLike));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @PostMapping("/post")
-    public ResponseEntity<Post> insert(@RequestBody Post post){
+    @PutMapping("/postLike/")
+    public ResponseEntity<PostLike> update(@RequestBody PostLike postLike){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(post));
+            return ResponseEntity.status(HttpStatus.OK).body(service.update(postLike));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @PutMapping("/post/")
-    public ResponseEntity<Post> update(@RequestBody Post post){
+    @DeleteMapping("/postLike{postLikeSeq}")
+    public ResponseEntity<PostLike> delete(@PathVariable int postLikeSeq){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(post));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-    @DeleteMapping("/post/{postSEQ}")
-    public ResponseEntity<Post> delete(@PathVariable int postSEQ){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(postSEQ));
+            return ResponseEntity.status(HttpStatus.OK).body(service.delete(postLikeSeq));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
