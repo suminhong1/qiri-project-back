@@ -16,8 +16,8 @@ public class PostLikeService {
     public List<PostLike> showAll(){
         return dao.findAll();
     }
-    public PostLike show(int postLikeSeq){
-        return dao.findById(postLikeSeq).orElse(null);
+    public PostLike show(int id){
+        return dao.findById(id).orElse(null);
     }
     public PostLike create(PostLike postLike){
         return dao.save(postLike);
@@ -29,8 +29,8 @@ public class PostLikeService {
         }
         return null;
     }
-    public PostLike delete(int postLikeSeq){
-        PostLike postLike = dao.findById(postLikeSeq).orElse(null);
+    public PostLike delete(int id){
+        PostLike postLike = dao.findById(id).orElse(null);
         dao.delete(postLike);
         return postLike;
     }
