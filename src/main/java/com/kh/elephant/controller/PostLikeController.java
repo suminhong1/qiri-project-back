@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//으악
 @RestController
 @RequestMapping("/api/*")
 public class PostLikeController {
@@ -46,7 +46,7 @@ public class PostLikeController {
         }
     }
 
-    // 게시물 좋아요 수정???????? http://localhost:8080/api/postlike
+    // 게시물 좋아요 수정???????? http://localhost:8080/api/postlike 
     @PutMapping("/postLike")
     public ResponseEntity<PostLike> update(@RequestBody PostLike vo){
         try{
