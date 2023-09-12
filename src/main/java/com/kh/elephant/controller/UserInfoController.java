@@ -16,6 +16,7 @@ public class UserInfoController {
     @Autowired
     private UserInfoService userService;
 
+    // 유저 전체 조회 http://localhost:8080/api/userInfo
     @GetMapping("/userInfo")
     public ResponseEntity<List<UserInfo>> showAllUser(){
         try{
@@ -24,6 +25,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 유저 검색 http://localhost:8080/api/userInfo/1 <--id
     @GetMapping("/userInfo/{id}")
     public ResponseEntity<UserInfo> showUser(@PathVariable String id){
         try {
@@ -32,6 +34,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 유저 추가 http://localhost:8080/api/userInfo
     @PostMapping("/userInfo")
     public ResponseEntity<UserInfo> createUser(@RequestBody UserInfo user){
         try{
@@ -40,6 +43,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 유저 업데이트 http://localhost:8080/api/userInfo/1 <--id
     @PutMapping("/userInfo")
     public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user){
         try{
@@ -48,6 +52,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 유저 삭제 http://localhost:8080/api/userInfo/1 <--id
     @DeleteMapping("/userInfo/{id}")
     public ResponseEntity<UserInfo> deleteUser(@PathVariable String id){
         try{
