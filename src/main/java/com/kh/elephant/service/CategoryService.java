@@ -26,7 +26,11 @@ public class CategoryService {
     }
 
     public Category update(Category category) {
-        return dao.save(category);
+        Category target = dao.findById(category.getCategorySeq()).orElse(null);
+        if(target!=null) {
+            return dao.save(category);
+        }
+        return null;
     }
 
     public Category delete(int code) {

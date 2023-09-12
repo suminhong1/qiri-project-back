@@ -1,7 +1,8 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.BanInfo;
-import com.kh.elephant.service.BanInfoService;
+import com.kh.elephant.domain.BlockUsers;
+import com.kh.elephant.domain.Category;
+import com.kh.elephant.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class BanInfoController {
+public class CategoryController {
 
     @Autowired
-    private BanInfoService service;
+    private CategoryService service;
 
-    @GetMapping("/banInfo")
-    public ResponseEntity<List<BanInfo>> showAll() {
+    @GetMapping("/category")
+    public ResponseEntity<List<Category>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
         } catch (Exception e) {
@@ -24,8 +25,8 @@ public class BanInfoController {
         }
     }
 
-    @GetMapping("/banInfo/{id}")
-    public ResponseEntity<BanInfo> show(@PathVariable int id) {
+    @GetMapping("/category/{id}")
+    public ResponseEntity<Category> show(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
         } catch (Exception e) {
@@ -33,26 +34,26 @@ public class BanInfoController {
         }
     }
 
-    @PostMapping("/banInfo")
-    public ResponseEntity<BanInfo> create(@RequestBody BanInfo banInfo) {
+    @PostMapping("/category")
+    public ResponseEntity<Category> create(@RequestBody Category vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(banInfo));
+            return ResponseEntity.status(HttpStatus.OK).body(service.create(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @PutMapping("/banInfo")
-    public ResponseEntity<BanInfo> update(@RequestBody BanInfo banInfo) {
+    @PutMapping("/category")
+    public ResponseEntity<Category> update(@RequestBody Category vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(banInfo));
+            return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @DeleteMapping("/banInfo/{id}")
-    public ResponseEntity<BanInfo> delete(@PathVariable int id) {
+    @DeleteMapping("/category/{id}")
+    public ResponseEntity<Category> delete(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
         } catch (Exception e) {

@@ -26,7 +26,11 @@ public class BanInfoService {
     }
 
     public BanInfo update(BanInfo banInfo) {
-        return dao.save(banInfo);
+        BanInfo target = dao.findById(banInfo.getBanInfoSeq()).orElse(null);
+        if(target!=null) {
+            return dao.save(banInfo);
+        }
+        return null;
     }
 
     public BanInfo delete(int code) {

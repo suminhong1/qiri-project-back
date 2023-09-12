@@ -26,7 +26,11 @@ public class BlockUsersService {
     }
 
     public BlockUsers update(BlockUsers blockUsers) {
-        return dao.save(blockUsers);
+        BlockUsers target = dao.findById(blockUsers.getBlcokUserSeq()).orElse(null);
+        if(target!=null) {
+            return dao.save(blockUsers);
+        }
+        return null;
     }
 
     public BlockUsers delete(int code) {

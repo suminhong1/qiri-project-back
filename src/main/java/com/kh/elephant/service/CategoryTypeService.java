@@ -26,7 +26,11 @@ public class CategoryTypeService {
     }
 
     public CategoryType update(CategoryType categoryType) {
-        return dao.save(categoryType);
+        CategoryType target = dao.findById(categoryType.getCtSeq()).orElse(null);
+        if(target!=null) {
+            return dao.save(categoryType);
+        }
+        return null;
     }
 
     public CategoryType delete(int code) {
