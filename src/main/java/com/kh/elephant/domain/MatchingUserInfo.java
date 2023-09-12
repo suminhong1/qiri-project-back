@@ -7,14 +7,17 @@ import jakarta.persistence.*;
 public class MatchingUserInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MATCHING_USER_INFO_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "matchingUserInfoSequence")
+    @SequenceGenerator(name = "matchingUserInfoSequence", sequenceName = "SEQ_MATCHING_USER_INFO", allocationSize = 1)
     private String matchingUserInfoSeq;
 
-    @Column(name = "MATCHING_SEQ")
+    @ManyToOne
+    @JoinColumn(name = "MATCHING_SEQ")
     private String matchingSeq;
 
-    @Column(name = "USER_ID")
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private String userId;
 
     @Column(name = "SCORE")

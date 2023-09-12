@@ -8,14 +8,18 @@ import java.util.Date;
 @Table(name = "MATCHING")
 public class Matching {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MATCHING_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "matchingSequence")
+    @SequenceGenerator(name = "matchingSequence", sequenceName = "SEQ_MATCHING", allocationSize = 1)
+
     private String matchingSeq;
 
-    @Column(name = "POST_SEQ")
+    @ManyToOne
+    @JoinColumn(name = "POST_SEQ")
     private String postSeq;
 
-    @Column(name = "CHATROOM_SEQ")
+    @ManyToOne
+    @JoinColumn(name = "CHATROOM_SEQ")
     private int chatroomSeq;
 
     @Column(name = "MATCHING_APPOINTMENT")

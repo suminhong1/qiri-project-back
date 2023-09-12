@@ -2,35 +2,58 @@ package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.MatchingUserInfo;
 import com.kh.elephant.service.MatchingUserInfoService;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+import java.util.List;
+
 @RestController
 @RequestMapping("/matching-user-info")
 public class MatchingUserInfoController {
 
-    private MatchingUserInfoService matchingUserInfoService;
+    @Autowired
+    private MatchingUserInfoService service;
 
-    // 매칭 참여 유저 정보 조회
-    @GetMapping("/{matchingUserInfoSeq}")
-    public ResponseEntity<MatchingUserInfo> getMatchingUserInfo(@PathVariable String matchingUserInfoSeq) {
-        MatchingUserInfo matchingUserInfo = matchingUserInfoService.getMatchingUserInfo(Long.valueOf(matchingUserInfoSeq));
-        if (matchingUserInfo != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(matchingUserInfo);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @GetMapping("/matchingUserInfo")
+    public ResponseEntity<List<MatchingUserInfo>> showAll() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    // 매칭 참여 유저 정보 생성
-    @PostMapping
-    public ResponseEntity<MatchingUserInfo> createMatchingUserInfo(@RequestBody MatchingUserInfo matchingUserInfo) {
-        MatchingUserInfo createdMatchingUserInfo = matchingUserInfoService.createMatchingUserInfo(matchingUserInfo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdMatchingUserInfo);
+    @GetMapping("/matchingUserInfo/{id}")
+    public ResponseEntity<MatchingUserInfo> show(@PathVariable int id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
+    @PostMapping("/MatchingUserInfo")
+    public ResponseEntity<MatchingUserInfo> create(@RequestBody MatchingUserInfo matchingUserInfo) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.create(matchingUserInfo));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
+    @PutMapping("/MatchingUserInfo")
+    public ResponseEntity<MatchingUserInfo> update(@RequestBody MatchingUserInfo matchingUserInfo){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.update(matchingUserInfo));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/MatchingUserInfo/{id}")
+    public ResponseEntity<MatchingUserInfo> delete(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.delete(Integer.parseInt(id)));
+    }
 }
