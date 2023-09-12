@@ -11,25 +11,29 @@ import java.util.List;
 public class UserLikeService {
 
     @Autowired
-    private UserLikeDAO dao;
+    private UserLikeDAO userLikeDAO;
 
     public List<UserLike> showAll() {
-        return dao.findAll();
+        return userLikeDAO.findAll();
     }
     public UserLike show(int code) {
-        return dao.findById(code).orElse(null);
+        return userLikeDAO.findById(code).orElse(null);
     }
 
     public UserLike create(UserLike userLike){
-        return dao.save(userLike);
+        return userLikeDAO.save(userLike);
     }
-    public UserLike update(UserLike userLike){
-        return dao.save(userLike);
+    public UserLike update(UserLike userLike) {
+        UserLike target = userLikeDAO.findById(userLike.getLikeUpSeq()).orElse(null);
+        if(target!=null){
+            return userLikeDAO.save(userLike);
+        }
+        return null;
     }
 
-    public UserLike delete(int code) {
-        UserLike data = dao.findById(code).orElse(null);
-        dao.delete(data);
-        return data;
+    public UserLike delete(int id) {
+        UserLike target = userLikeDAO.findById(id).orElse(null);
+        userLikeDAO.delete(target);
+        return target;
     }
 }

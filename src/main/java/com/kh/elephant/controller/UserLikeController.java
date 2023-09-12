@@ -16,12 +16,12 @@ import java.util.List;
 public class UserLikeController {
 
     @Autowired
-    private UserLikeService service;
+    private UserLikeService userLike;
 
     @GetMapping("/userLike")
     public ResponseEntity<List<UserLike>> showAll() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(userLike.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -30,24 +30,24 @@ public class UserLikeController {
     @GetMapping("/userLike/{id}")
     public ResponseEntity<UserLike> show(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(userLike.show(id));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     @PostMapping("/userLike")
-    public ResponseEntity<UserLike> create(@RequestBody UserLike userLike) {
+    public ResponseEntity<UserLike> create(@RequestBody UserLike vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(userLike));
+            return ResponseEntity.status(HttpStatus.OK).body(userLike.create(vo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PutMapping("/userLike")
-    public ResponseEntity<UserLike> update(@RequestBody UserLike userLike){
+    public ResponseEntity<UserLike> update(@RequestBody UserLike vo){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(userLike));
+            return ResponseEntity.status(HttpStatus.OK).body(userLike.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -56,7 +56,7 @@ public class UserLikeController {
     @DeleteMapping("/userLike/{id}")
     public ResponseEntity<UserLike> delete(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(userLike.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

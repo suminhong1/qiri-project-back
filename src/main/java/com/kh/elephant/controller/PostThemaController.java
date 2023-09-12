@@ -14,12 +14,12 @@ import java.util.List;
 public class PostThemaController {
 
     @Autowired
-    private PostThemaService service;
+    private PostThemaService postThema;
 
     @GetMapping("/postThema")
     public ResponseEntity<List<PostThema>> showAll() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(postThema.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -28,24 +28,24 @@ public class PostThemaController {
     @GetMapping("/postThema/{id}")
     public ResponseEntity<PostThema> show(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(postThema.show(id));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     @PostMapping("/postThema")
-    public ResponseEntity<PostThema> create(@RequestBody PostThema postThema) {
+    public ResponseEntity<PostThema> create(@RequestBody PostThema vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(postThema));
+            return ResponseEntity.status(HttpStatus.OK).body(postThema.create(vo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PutMapping("/postThema")
-    public ResponseEntity<PostThema> update(@RequestBody PostThema postThema){
+    public ResponseEntity<PostThema> update(@RequestBody PostThema vo){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(postThema));
+            return ResponseEntity.status(HttpStatus.OK).body(postThema.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -54,7 +54,7 @@ public class PostThemaController {
     @DeleteMapping("/postThema/{id}")
     public ResponseEntity<PostThema> delete(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(postThema.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

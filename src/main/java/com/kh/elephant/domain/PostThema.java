@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class PostThema {
 
     @Id
-    @Column(name = "postThemaSeq")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "postThemaSeq")
-    @SequenceGenerator(name="postThemaSeq", sequenceName = "POST_THEMA_SEQ", allocationSize = 1)
+    @Column(name = "post_thema_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "postThemaSequence")
+    @SequenceGenerator(name="postThemaSequence", sequenceName = "POST_THEMA_SEQ", allocationSize = 1)
     private int postThemaSeq;
 
-    @Column(name="ptName")
+    @Column(name="pt_name")
     private String ptName;
 
 }

@@ -9,25 +9,29 @@ import java.util.List;
 public class BoardService {
 
     @Autowired
-    private BoardDAO dao;
+    private BoardDAO boardDAO;
 
     public List<Board> showAll() {
-        return dao.findAll();
+        return boardDAO.findAll();
     }
-    public Board show(int code) {
-        return dao.findById(code).orElse(null);
+    public Board show(int id) {
+        return boardDAO.findById(id).orElse(null);
     }
 
     public Board create(Board board){
-        return dao.save(board);
+        return boardDAO.save(board);
     }
-    public Board update(Board board){
-        return dao.save(board);
+    public Board update(Board channel) {
+        Board target = boardDAO.findById(channel.getBoardSeq()).orElse(null);
+        if(target!=null){
+            return boardDAO.save(channel);
+        }
+        return null;
     }
 
-    public Board delete(int code) {
-        Board data = dao.findById(code).orElse(null);
-        dao.delete(data);
-        return data;
+    public Board delete(int id) {
+        Board target = boardDAO.findById(id).orElse(null);
+        boardDAO.delete(target);
+        return target;
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.Date;
 
@@ -11,12 +12,13 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 public class UserLike {
 
     @Id
     @Column(name = "like_up_seq")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "likeUpSeq")
-    @SequenceGenerator(name = "likeUpSeq", sequenceName = "LIKE_UP_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "likeUpSequence")
+    @SequenceGenerator(name = "likeUpSequence", sequenceName = "LIKE_UP_SEQ", allocationSize = 1)
     private int likeUpSeq;
 
     @Column(name = "like_up_date")
@@ -24,9 +26,9 @@ public class UserLike {
 
     @ManyToOne
     @JoinColumn(name = "like_up_user", referencedColumnName = "userId")
-    private UserInfo likeUpUser;  // UserInfo 엔터티와의 관계
+    private UserInfo likeUpUser;
 
     @ManyToOne
     @JoinColumn(name = "like_up_target", referencedColumnName = "userId")
-    private UserInfo likeUpTarget;  // UserInfo 엔터티와의 관계
+    private UserInfo likeUpTarget;
 }
