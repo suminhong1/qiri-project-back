@@ -15,12 +15,12 @@ public class CommentsComtroller {
 
 
     @Autowired
-    private CommentsService service;
+    private CommentsService comments;
 
-    @GetMapping("/Comments")
+    @GetMapping("/comments")
     public ResponseEntity<List<Comments>> showAll() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(comments.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -29,23 +29,23 @@ public class CommentsComtroller {
     @GetMapping("/comments/{id}")
     public ResponseEntity<Comments> show(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(comments.show(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     @PostMapping("/comments")
-    public ResponseEntity<Comments> create(@RequestBody Comments comments) {
+    public ResponseEntity<Comments> create(@RequestBody Comments vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(comments));
+            return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     @PutMapping("/comments")
-    public ResponseEntity<Comments> update(@RequestBody Comments comments){
+    public ResponseEntity<Comments> update(@RequestBody Comments vo){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(comments));
+            return ResponseEntity.status(HttpStatus.OK).body(comments.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -53,7 +53,7 @@ public class CommentsComtroller {
     @DeleteMapping("/comments/{id}")
     public ResponseEntity<Comments> delete(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(comments.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

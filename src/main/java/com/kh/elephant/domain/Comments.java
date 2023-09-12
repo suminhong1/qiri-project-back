@@ -23,24 +23,25 @@ public class Comments {
     private int commentsSeq;
 
     @JoinColumn(name = "POST_SEQ")
-    @ManyToMany
+    @ManyToOne
     private int postSeq;
 
     @Column(name = "COMMENTS_PARENT_SEQ")
     private int commentsParentSeq;
 
-    @Column(name = "USER_ID", length = 200)
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private String userId;
 
-    @Column(name = "COMMENTS_DESC", length = 1000, nullable = false)
+    @Column(name = "COMMENTS_DESC")
     private String commentDescription;
 
-    @Column(name = "COMMENTS_DATE", nullable = false)
+    @Column(name = "COMMENTS_DATE")
     private Date commentDate;
 
-    @Column(name = "SECRET_COMMENTS", length = 1, columnDefinition = "VARCHAR2(1) DEFAULT 'N'", nullable = false)
+    @Column(name = "SECRET_COMMENTS")
     private String secretComment;
 
-    @Column(name = "COMMENTS_DELETE", length = 1, columnDefinition = "VARCHAR2(1) DEFAULT 'N'", nullable = false)
+    @Column(name = "COMMENTS_DELETE")
     private String commentDelete;
 }
