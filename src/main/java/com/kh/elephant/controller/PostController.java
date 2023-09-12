@@ -25,10 +25,10 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @GetMapping("/post/{postSEQ}")
-    public ResponseEntity<Post> show(@PathVariable int postSEQ){
+    @GetMapping("/post/{id}")
+    public ResponseEntity<Post> show(@PathVariable int id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(postSEQ));
+            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -41,7 +41,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @PutMapping("/post/")
+    @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.update(post));
@@ -49,10 +49,10 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @DeleteMapping("/post/{postSEQ}")
-    public ResponseEntity<Post> delete(@PathVariable int postSEQ){
+    @DeleteMapping("/post/{id}")
+    public ResponseEntity<Post> delete(@PathVariable int id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(postSEQ));
+            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

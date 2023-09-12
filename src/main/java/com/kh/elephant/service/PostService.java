@@ -18,6 +18,7 @@ public class PostService {
     }
 
     public Post show(int id){
+
         return dao.findById(id).orElse(null);
     }
 

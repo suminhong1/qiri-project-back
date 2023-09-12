@@ -25,35 +25,35 @@ public class PostLikeController {
         }
     }
 
-    @GetMapping("/postLike/{postLikeSeq}")
-    public ResponseEntity<PostLike> show(@PathVariable int postLikeSeq){
+    @GetMapping("/postLike/{id}")
+    public ResponseEntity<PostLike> show(@PathVariable int id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(postLikeSeq));
+            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PostMapping("/postLike")
-    public ResponseEntity<PostLike> insert(@RequestBody PostLike postLike){
+    public ResponseEntity<PostLike> insert(@RequestBody PostLike vo){
         try{
-            return  ResponseEntity.status(HttpStatus.OK).body(service.create(postLike));
+            return  ResponseEntity.status(HttpStatus.OK).body(service.create(vo));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @PutMapping("/postLike/")
-    public ResponseEntity<PostLike> update(@RequestBody PostLike postLike){
+    @PutMapping("/postLike")
+    public ResponseEntity<PostLike> update(@RequestBody PostLike vo){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(postLike));
+            return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @DeleteMapping("/postLike{postLikeSeq}")
-    public ResponseEntity<PostLike> delete(@PathVariable int postLikeSeq){
+    @DeleteMapping("/postLike{id}")
+    public ResponseEntity<PostLike> delete(@PathVariable int id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(postLikeSeq));
+            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
