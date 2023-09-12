@@ -16,9 +16,9 @@ public class PostController {
     @Autowired
     private PostService service;
 
-    // 게시글 전체 보기 http://localhost:8080/api/post
+    // 게시글 전체 조회 http://localhost:8080/api/post
     @GetMapping("/post")
-    public ResponseEntity<List<Post>> shwoAll(){
+    public ResponseEntity<List<Post>> showAll(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
 

@@ -36,7 +36,7 @@ public class PostLikeController {
         }
     }
 
-    // 게시물 좋아요 추가??? http://localhost:8080/api/postlike
+    // 게시물 좋아요 추가? 누르기?? http://localhost:8080/api/postlike
     @PostMapping("/postLike")
     public ResponseEntity<PostLike> create(@RequestBody PostLike vo){
         try{
@@ -55,7 +55,7 @@ public class PostLikeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시물 좋아요 삭제?????????? http://localhost:8080/api/postlike/1 <--id
+    // 게시물 좋아요 취소 http://localhost:8080/api/postlike/1 <--id
     @DeleteMapping("/postLike{id}")
     public ResponseEntity<PostLike> delete(@PathVariable int id){
         try{

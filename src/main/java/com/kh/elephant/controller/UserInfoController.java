@@ -25,7 +25,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 유저 검색 http://localhost:8080/api/userInfo/1 <--id
+    // 유저 상세 조회 http://localhost:8080/api/userInfo/1 <--id
     @GetMapping("/userInfo/{id}")
     public ResponseEntity<UserInfo> showUser(@PathVariable String id){
         try {
@@ -43,7 +43,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 유저 업데이트 http://localhost:8080/api/userInfo/1 <--id
+    // 유저 수정 http://localhost:8080/api/userInfo/1 <--id
     @PutMapping("/userInfo")
     public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user){
         try{
