@@ -14,12 +14,12 @@ import java.util.List;
 public class BoardController {
 
     @Autowired
-    private BoardService service;
+    private BoardService board;
 
     @GetMapping("/board")
     public ResponseEntity<List<Board>> showAll() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(board.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -28,24 +28,24 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public ResponseEntity<Board> show(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(board.show(id));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     @PostMapping("/board")
-    public ResponseEntity<Board> create(@RequestBody Board board) {
+    public ResponseEntity<Board> create(@RequestBody Board vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(board));
+            return ResponseEntity.status(HttpStatus.OK).body(board.create(vo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PutMapping("/board")
-    public ResponseEntity<Board> update(@RequestBody Board board){
+    public ResponseEntity<Board> update(@RequestBody Board vo){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(board));
+            return ResponseEntity.status(HttpStatus.OK).body(board.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -54,7 +54,7 @@ public class BoardController {
     @DeleteMapping("/board/{id}")
     public ResponseEntity<Board> delete(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(board.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

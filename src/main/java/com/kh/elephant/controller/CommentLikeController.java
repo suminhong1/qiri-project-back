@@ -17,12 +17,12 @@ public class CommentLikeController {
 
 
     @Autowired
-    private CommentLikeService service;
+    private CommentLikeService commentLike;
 
     @GetMapping("/commentLike")
     public ResponseEntity<List<CommentLike>> showAll() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(commentLike.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -31,24 +31,24 @@ public class CommentLikeController {
     @GetMapping("/commentLike/{id}")
     public ResponseEntity<CommentLike> show(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(commentLike.show(id));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     @PostMapping("/commentLike")
-    public ResponseEntity<CommentLike> create(@RequestBody CommentLike commentLike) {
+    public ResponseEntity<CommentLike> create(@RequestBody CommentLike vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(commentLike));
+            return ResponseEntity.status(HttpStatus.OK).body(commentLike.create(vo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PutMapping("/commentLike")
-    public ResponseEntity<CommentLike> update(@RequestBody CommentLike commentLike){
+    public ResponseEntity<CommentLike> update(@RequestBody CommentLike vo){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(commentLike));
+            return ResponseEntity.status(HttpStatus.OK).body(commentLike.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -57,7 +57,7 @@ public class CommentLikeController {
     @DeleteMapping("/commentLike/{id}")
     public ResponseEntity<CommentLike> delete(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(commentLike.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

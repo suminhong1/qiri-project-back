@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class Board {
     @Id
     @Column(name="board_seq")
-    @GeneratedValue(strategy= GenerationType.IDENTITY, generator = "boardSeq")//generator name이랑 맞추기
-    @SequenceGenerator(name = "boardSeq", sequenceName = "BOARD_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy= GenerationType.IDENTITY, generator = "boardSequence")//generator name이랑 맞추기
+    @SequenceGenerator(name = "boardSequence", sequenceName = "BOARD_SEQ", allocationSize = 1)
     private int boardSeq;
 
     @Column(name = "board_name")
