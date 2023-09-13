@@ -57,5 +57,6 @@ public class ChatRoomController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 보류
 }
 

@@ -59,6 +59,7 @@ public class BlockUsersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 차단 해제
 }
 
 

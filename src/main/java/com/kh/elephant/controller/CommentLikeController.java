@@ -62,4 +62,5 @@ public class CommentLikeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 같은 댓글에 좋아요 중복 안되게
 }

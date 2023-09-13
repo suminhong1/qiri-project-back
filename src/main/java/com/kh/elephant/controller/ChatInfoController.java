@@ -58,4 +58,5 @@ public class ChatInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 보류
 }
