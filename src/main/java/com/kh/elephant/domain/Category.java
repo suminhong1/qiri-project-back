@@ -21,9 +21,6 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
     @ManyToOne
-    @Column(name = "user_id")
-    private UserInfo userInfo;
-    @ManyToOne
     @Column(name = "ct_seq")
     private CategoryType categoryType;
 

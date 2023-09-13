@@ -20,7 +20,4 @@ public class Place {
     @JoinColumn(name = "PLACE_TYPE_SEQ")
     private String placeTypeSeq;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private String userId;
 }

@@ -19,7 +19,7 @@ public class BlockUsers {
     @Column(name="block_user_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "blockUserSequence")
     @SequenceGenerator(name = "blockUserSequence", sequenceName = "SEQ_BLOCK_USERS", allocationSize = 1)
-    private int blcokUserSeq;
+    private int blockUserSeq;
 
     @ManyToOne
     @JoinColumn(name="user_id")
