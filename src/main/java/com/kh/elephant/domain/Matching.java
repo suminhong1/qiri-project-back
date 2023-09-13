@@ -31,7 +31,4 @@ public class Matching {
     @Column(name = "MATCHING_DATE")
     private Date matchingDate;
 
-    @Column(name = "UNMATCHING_DATE")
-    private Date unmatchingDate;
-
 }
