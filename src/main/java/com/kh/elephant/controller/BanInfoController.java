@@ -59,4 +59,5 @@ public class BanInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 이용 정지 사유 보기, 이용 정지 기간 보기
 }

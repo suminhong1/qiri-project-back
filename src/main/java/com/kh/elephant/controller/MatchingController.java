@@ -40,13 +40,13 @@ public class MatchingController {
     public ResponseEntity<Matching> create(@RequestBody Matching matching) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.create(matching));
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Matching> update(@RequestBody Matching matching){
+    public ResponseEntity<Matching> update(@RequestBody Matching matching) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.update(matching));
         } catch (Exception e) {
@@ -62,10 +62,7 @@ public class MatchingController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
+// 매칭 취소
+    // 매칭 취소 사유
+    // 매칭 자주 취소하는 유저 밴
 }
-
-
-
-
-

@@ -58,4 +58,5 @@ public class CommentsComtroller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 댓글 좋아요 추가
 }
