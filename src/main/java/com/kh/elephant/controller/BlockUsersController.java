@@ -15,6 +15,7 @@ public class BlockUsersController {
     @Autowired
     private BlockUsersService service;
 
+    // 유저간 밴 전체 보기
     @GetMapping("/blockUsers")
     public ResponseEntity<List<BlockUsers>> showAll() {
         try {
@@ -23,6 +24,7 @@ public class BlockUsersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
 
     @GetMapping("/blockUsers/{id}")
     public ResponseEntity<BlockUsers> show(@PathVariable int id) {
@@ -33,6 +35,7 @@ public class BlockUsersController {
         }
     }
 
+    // 유저간 블록 유저 추가
     @PostMapping("/blockUsers")
     public ResponseEntity<BlockUsers> create(@RequestBody BlockUsers vo) {
         try {
@@ -42,6 +45,7 @@ public class BlockUsersController {
         }
     }
 
+    // 유저간 블록 정보 수정
     @PutMapping("/blockUsers")
     public ResponseEntity<BlockUsers> update(@RequestBody BlockUsers vo) {
         try {
@@ -60,6 +64,12 @@ public class BlockUsersController {
         }
     }
     // 차단 해제
+
+    // 유저 본인이 차단 유저 전체 조회
+
+    // 유저 본인이 차단한 유저 한명 조회
+
+
 }
 
 

@@ -14,7 +14,8 @@ public class BanInfoController {
 
     @Autowired
     private BanInfoService service;
-
+    
+    // 이용 정지 당한 전체 유저 보기
     @GetMapping("/banInfo")
     public ResponseEntity<List<BanInfo>> showAll() {
         try {
@@ -24,6 +25,7 @@ public class BanInfoController {
         }
     }
 
+    // 이용 정지 당한 특정 유저 보기
     @GetMapping("/banInfo/{id}")
     public ResponseEntity<BanInfo> show(@PathVariable int id) {
         try {
@@ -32,7 +34,7 @@ public class BanInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
+    // 이용 정지 유저 추가
     @PostMapping("/banInfo")
     public ResponseEntity<BanInfo> create(@RequestBody BanInfo banInfo) {
         try {
@@ -41,7 +43,7 @@ public class BanInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
+    // 이용 정지 유저 수정
     @PutMapping("/banInfo")
     public ResponseEntity<BanInfo> update(@RequestBody BanInfo banInfo) {
         try {
@@ -50,7 +52,7 @@ public class BanInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
+    // 이용 정지 유저 삭제(사용 안함) 이용 정지 기간을 정해두면 알아서 정지 후 풀릴수 있게
     @DeleteMapping("/banInfo/{id}")
     public ResponseEntity<BanInfo> delete(@PathVariable int id) {
         try {

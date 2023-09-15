@@ -60,4 +60,6 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    
+    // 카테고리 찾기
 }

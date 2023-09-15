@@ -17,6 +17,7 @@ public class ChatInfoController {
     @Autowired
     private ChatInfoService chatInfo;
 
+    
     @GetMapping("/chatInfo")
     public ResponseEntity<List<ChatInfo>> showAll() {
         try {
@@ -26,6 +27,7 @@ public class ChatInfoController {
         }
     }
 
+    
     @GetMapping("/chatInfo/{id}")
     public ResponseEntity<ChatInfo> show(@PathVariable int id) {
         try {
@@ -34,6 +36,8 @@ public class ChatInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    
+    // 채팅 치기
     @PostMapping("/chatInfo")
     public ResponseEntity<ChatInfo> create(@RequestBody ChatInfo vo) {
         try {
@@ -58,5 +62,13 @@ public class ChatInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 보류
+    // 채팅 관련 컨트롤러는 이쪽에서 한번에 처리
+
+    // 특정 채팅방 전체 채팅 보기
+
+    // 내 채팅방 목록 보기
+    
+    // 채팅 미리 보기
+
+
 }

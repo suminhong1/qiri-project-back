@@ -56,4 +56,5 @@ public class MatchingUserInfoController {
     public ResponseEntity<MatchingUserInfo> delete(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.delete(Integer.parseInt(id)));
     }
+
 }

@@ -59,4 +59,10 @@ public class CommentsComtroller {
         }
     }
     // 댓글 좋아요 추가
+    
+    // 댓글 좋아요 취소
+    
+    // 좋아요한 유저 보기
+
+    //
 }
