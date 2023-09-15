@@ -31,7 +31,7 @@ public class PostLikeController {
     public ResponseEntity<PostLike> show(@PathVariable int id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
