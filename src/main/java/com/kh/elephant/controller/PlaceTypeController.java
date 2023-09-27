@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/placeType")
 public class PlaceTypeController {
 
     @Autowired
     private PlaceTypeService service;
 
-    @GetMapping("/showAll")
+    @GetMapping("/placeType")
     public ResponseEntity<List<PlaceType>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
@@ -28,7 +27,7 @@ public class PlaceTypeController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/placeType/{id}")
     public ResponseEntity<PlaceType> show(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
@@ -37,7 +36,7 @@ public class PlaceTypeController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/placeType")
     public ResponseEntity<PlaceType> create(@RequestBody PlaceType placeType) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.create(placeType));

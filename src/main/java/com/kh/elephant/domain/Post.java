@@ -48,9 +48,9 @@ public class Post {
     @Column(name="post_delete")
     private String postDelete;
 
-    @Column(name="post_user_id")
-    private String postUserId;
-
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private UserInfo userInfo;
 
     @ManyToOne
     @JoinColumn(name="category_seq")
@@ -62,7 +62,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name="post_thema_seq")
-    private PostLike postThema;
+    private PostThema postThema;
 
     @ManyToOne
     @JoinColumn(name="board_seq")

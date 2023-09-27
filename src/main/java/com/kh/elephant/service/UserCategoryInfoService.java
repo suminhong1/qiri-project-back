@@ -4,9 +4,11 @@ import com.kh.elephant.domain.Place;
 import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.repo.UserCategoryInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserCategoryInfoService {
 
     @Autowired

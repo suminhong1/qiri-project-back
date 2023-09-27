@@ -22,7 +22,7 @@ public class BanInfo {
     private int banInfoSeq;
 
     @ManyToOne
-    @JoinColumn(name = "ban_id")
+    @JoinColumn(name = "ban_id", referencedColumnName = "user_id")
     private UserInfo userInfo;
 
     @Column(name = "ban_start")

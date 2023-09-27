@@ -15,10 +15,12 @@ public class UserPlaceInfo{
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "userPlaceSequence")
     @SequenceGenerator(name = "userPlaceSequence", sequenceName = "SEQ_USER_PLACE_INFO", allocationSize = 1)
     private int userPlaceSeq;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private String userId;
+    @JoinColumn(name="user_id")
+    private UserInfo userInfo;
+
     @ManyToOne
     @JoinColumn(name = "place_seq")
-    private int placeSeq;
+    private Place place;
 }

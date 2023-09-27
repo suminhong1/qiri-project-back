@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
+@Entity
 public class PostLike {
 
     @Id
@@ -21,9 +22,7 @@ public class PostLike {
 
     @Column(name="pl_date")
     private Date plDate;
-
-
-
+    
     @ManyToOne
     @JoinColumn(name="post_seq")
     private Post post;
