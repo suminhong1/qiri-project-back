@@ -5,4 +5,6 @@
 	<section name="solutionSelectionDialog">
 		<item key="applyScope" value="1"/>
 	</section>
+	<section name="com.tomato.exerd.core.wizard.NewEXerdWizard">
+	</section>
 </section>

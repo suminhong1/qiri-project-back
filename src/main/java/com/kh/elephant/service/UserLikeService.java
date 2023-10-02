@@ -5,9 +5,11 @@ import com.kh.elephant.domain.UserLike;
 import com.kh.elephant.repo.PostThemaDAO;
 import com.kh.elephant.repo.UserLikeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserLikeService {
 
     @Autowired

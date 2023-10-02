@@ -18,10 +18,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "categorySequence")
     @SequenceGenerator(name = "categorySequence", sequenceName = "SEQ_CATEGORY", allocationSize = 1)
     private int categorySeq;
+
     @Column(name = "category_name")
     private String categoryName;
+
     @ManyToOne
-    @Column(name = "ct_seq")
+    @JoinColumn(name = "ct_seq")
     private CategoryType categoryType;
 
 }

@@ -25,10 +25,10 @@ public class UserLike {
     private Date likeUpDate;
 
     @ManyToOne
-    @JoinColumn(name = "like_up_user", referencedColumnName = "userId")
+    @JoinColumn(name = "like_up_user", referencedColumnName = "user_Id")
     private UserInfo likeUpUser;
 
     @ManyToOne
-    @JoinColumn(name = "like_up_target", referencedColumnName = "userId")
+    @JoinColumn(name = "like_up_target", referencedColumnName = "user_Id")
     private UserInfo likeUpTarget;
 }

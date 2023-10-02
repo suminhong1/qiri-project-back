@@ -26,8 +26,8 @@ public class BlockUsers {
     private UserInfo userInfo;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private String blockId;
+    @JoinColumn(name = "block_id", referencedColumnName = "user_id")
+    private UserInfo blockInfo;
 
     @Column(name = "block_date")
     private Date blockDate;

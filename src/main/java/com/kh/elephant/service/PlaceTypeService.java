@@ -5,9 +5,11 @@ import com.kh.elephant.domain.PlaceType;
 import com.kh.elephant.repo.PlaceDAO;
 import com.kh.elephant.repo.PlaceTypeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PlaceTypeService {
 
     @Autowired

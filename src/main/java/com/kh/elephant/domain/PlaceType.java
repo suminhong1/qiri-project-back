@@ -1,8 +1,12 @@
 package com.kh.elephant.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "PLACE_TYPE")
 public class PlaceType {
 
@@ -10,7 +14,6 @@ public class PlaceType {
     @Column(name = "PLACE_TYPE_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "placeTypeSequence")
     @SequenceGenerator(name = "placeTypeSequence", sequenceName = "SEQ_PLACE_TYPE", allocationSize = 1)
-
     private String placeTypeSeq;
 
     @Column(name = "PLACE_TYPE_NAME")

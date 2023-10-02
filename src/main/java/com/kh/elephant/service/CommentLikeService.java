@@ -5,9 +5,11 @@ import com.kh.elephant.domain.CommentLike;
 import com.kh.elephant.repo.BoardDAO;
 import com.kh.elephant.repo.CommentLikeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CommentLikeService {
 
     @Autowired

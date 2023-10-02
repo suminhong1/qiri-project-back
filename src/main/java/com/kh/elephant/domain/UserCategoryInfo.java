@@ -15,10 +15,12 @@ public class UserCategoryInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "userCategorySequence")
     @SequenceGenerator(name = "userCategorySequence", sequenceName = "SEQ_USER_CATEGORY_INFO", allocationSize = 1)
     private int userCategorySeq;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private String userId;
+    @JoinColumn(name="user_id")
+    private UserInfo userInfo;
+
     @ManyToOne
     @JoinColumn(name = "category_seq")
-    private int categorySeq;
+    private Category category;
 }

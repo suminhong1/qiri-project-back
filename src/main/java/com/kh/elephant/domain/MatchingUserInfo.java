@@ -1,8 +1,12 @@
 package com.kh.elephant.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "MATCHING_USER_INFO")
 public class MatchingUserInfo {
 
@@ -14,11 +18,11 @@ public class MatchingUserInfo {
 
     @ManyToOne
     @JoinColumn(name = "MATCHING_SEQ")
-    private String matchingSeq;
+    private Matching matching;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private String userId;
+    @JoinColumn(name="user_id")
+    private UserInfo userInfo;
 
     @Column(name = "SCORE")
     private Integer score;

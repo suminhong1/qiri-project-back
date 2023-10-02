@@ -13,6 +13,7 @@ public class BlockUsersService {
     @Autowired
     private BlockUsersDAO dao;
 
+    //전체 차단 정보
     public List<BlockUsers> showAll() {
         return dao.findAll();
     }
@@ -25,8 +26,9 @@ public class BlockUsersService {
         return dao.save(blockUsers);
     }
 
+
     public BlockUsers update(BlockUsers blockUsers) {
-        BlockUsers target = dao.findById(blockUsers.getBlcokUserSeq()).orElse(null);
+        BlockUsers target = dao.findById(blockUsers.getBlockUserSeq()).orElse(null);
         if(target!=null) {
             return dao.save(blockUsers);
         }
