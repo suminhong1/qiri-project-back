@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/place")
 public class PlaceController {
 
     @Autowired
@@ -25,7 +24,7 @@ public class PlaceController {
         }
     }
 
-    @GetMapping("/place")
+    @GetMapping("/place/{id}")
     public ResponseEntity<Place> show(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
@@ -34,7 +33,7 @@ public class PlaceController {
         }
     }
 
-    @PostMapping("/place/{placeSeq}")
+    @PostMapping("/place")
     public ResponseEntity<Place> create(@RequestBody Place place) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.create(place));
@@ -52,7 +51,7 @@ public class PlaceController {
         }
     }
 
-    @DeleteMapping("/place/{placeSeq}")
+    @DeleteMapping("/place/{id}")
     public ResponseEntity<Place> delete(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));

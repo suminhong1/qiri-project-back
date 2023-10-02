@@ -17,8 +17,6 @@ public class UserInfo {
 
     @Id
     @Column(name="user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "")
-    @SequenceGenerator(name="", sequenceName = "", allocationSize = 1)
     private String userId;
 
     @Column(name="user_pwd")

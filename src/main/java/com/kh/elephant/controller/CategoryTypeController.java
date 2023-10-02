@@ -1,8 +1,7 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.Category;
 import com.kh.elephant.domain.CategoryType;
-import com.kh.elephant.service.CategoryService;
+
 import com.kh.elephant.service.CategoryTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/qoqiri/*")
 public class CategoryTypeController {
 
     @Autowired
@@ -61,4 +61,7 @@ public class CategoryTypeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
+
 }
