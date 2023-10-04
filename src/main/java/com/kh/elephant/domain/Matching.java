@@ -23,13 +23,8 @@ public class Matching {
     @JoinColumn(name = "POST_SEQ")
     private Post post;
 
-    @Column(name = "MATCHING_APPOINTMENT")
-    private Date matchingAppointment;
-
     @Column(name = "MATCHING_RESULT")
     private String matchingResult;
 
-    @Column(name = "MATCHING_DATE")
-    private Date matchingDate;
 
 }

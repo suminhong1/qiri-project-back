@@ -33,31 +33,15 @@ public class Post {
     @Column(name="post_view")
     private int postView;
 
-    @Column(name="post_attachment")
-    private String postAttachment;
-
     @Column(name="post_url")
     private String postUrl;
-
-    @Column(name="post_notice")
-    private String postNotice;
-
-    @Column(name="matching_accept")
-    private String matchingAccept;
-
-    @Column(name="post_delete")
-    private String postDelete;
 
     @ManyToOne
     @JoinColumn(name="user_id")
     private UserInfo userInfo;
 
     @ManyToOne
-    @JoinColumn(name="category_seq")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name="place_seq")
+    @JoinColumn(name = "place_seq")
     private Place place;
 
     @ManyToOne
@@ -71,5 +55,11 @@ public class Post {
     @ManyToOne
     @JoinColumn(name="matching_seq")
     private Matching matching;
+
+    @Column(name="post_notice")
+    private String postNotice;
+
+    @Column(name = "post_delete")
+    private String postDelete;
 
 }

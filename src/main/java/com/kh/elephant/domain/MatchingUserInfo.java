@@ -27,9 +27,9 @@ public class MatchingUserInfo {
     private UserInfo userInfo;
 
     @Column(name = "SCORE")
-    private Integer score;
+    private int score;
 
-    @Column(name = "MATCHING_SUCCESS")
-    private String matchingSuccess;
+    @Column(name = "MATCHING_ACCEPT")
+    private String matchingAccept;
 
 }
