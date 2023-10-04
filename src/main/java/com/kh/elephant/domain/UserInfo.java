@@ -35,7 +35,7 @@ public class UserInfo {
     private String gender;
 
     @Column(name = "place")
-    private String place;
+    private Place place;
 
     @Column(name = "phone")
     private String phone;
@@ -49,8 +49,8 @@ public class UserInfo {
     @Column(name = "status_message")
     private String statusMessage;
 
-    @Column(name = "lover")
-    private String lover;
+    @Column(name = "HAS_PARTNER")
+    private String hasPartner;
 
     @Column(name = "blood_type")
     private String bloodType;
@@ -61,18 +61,18 @@ public class UserInfo {
     @Column(name = "birthday")
     private Date birthday;
 
-    @Column(name = "user_subscription")
-    private Date userSubscription;
+    @Column(name = "JOIN_DATE")
+    private Date joinDate;
 
-    @Column(name = "user_likes")
-    private int userLikes;
+    @Column(name = "POPULARITY")
+    private int popularity;
 
-    @Column(name = "user_rating")
-    private int userRating;
+    @Column(name = "rating")
+    private int rating;
 
-    @Column(name = "user_admin")
-    private String userAdmin;
+    @Column(name = "IS_ADMIN")
+    private String isAdmin;
 
-    @Column(name = "withdrawal")
-    private String withdrawal;
+    @Column(name = "IS_DELETED")
+    private String isDeleted;
 }
