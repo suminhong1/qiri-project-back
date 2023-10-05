@@ -45,7 +45,7 @@ CREATE TABLE USER_INFO(
     USER_NAME VARCHAR2(30) NOT NULL,        -- 유저 이름
     USER_NICKNAME VARCHAR2(50) UNIQUE NOT NULL,     -- 유저 닉네임
     AGE NUMBER,     -- 나이
-    GENDER VARCHAR2(1) NOT NULL CHECK(GENDER IN ('남', '여')),       -- 성별
+    GENDER VARCHAR2(10) NOT NULL CHECK(GENDER IN ('남', '여')),       -- 성별
     PLACE_SEQ NUMBER,       -- 활동지역
     PHONE VARCHAR2(20) NOT NULL UNIQUE,        -- 전화번호
     EMAIL VARCHAR2(50) NOT NULL UNIQUE, -- 이메일
@@ -99,7 +99,7 @@ CREATE TABLE POST (
     POST_CONTENT VARCHAR2(4000) NOT NULL,  -- 글 내용
     POST_DATE DATE DEFAULT SYSDATE NOT NULL, -- 글 작성 시각
     POST_VIEW NUMBER DEFAULT 0 NOT NULL,   -- 조회수
-    POST_URL VARCHAR2(4000) NOT NULL UNIQUE, -- 글 주소
+    POST_URL VARCHAR2(4000) UNIQUE, -- 글 주소
     USER_ID VARCHAR2(50) NOT NULL,    -- 글 작성자 아이디(FK)
     PLACE_SEQ NUMBER,                      -- 지역 SEQ(FK)
     POST_THEMA_SEQ NUMBER,                 -- 게시글 말머리 SEQ(FK)
