@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/qiri/*")
 public class CategoryTypeController {
 
     @Autowired
     private CategoryTypeService service;
 
-    @GetMapping("/")
+    @GetMapping("/categoryType")
     public ResponseEntity<List<CategoryType>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
