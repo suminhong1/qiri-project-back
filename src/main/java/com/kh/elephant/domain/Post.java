@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicInsert
+@Table(name = "post")
 public class Post {
 
     @Id

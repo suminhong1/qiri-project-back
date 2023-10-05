@@ -1,6 +1,5 @@
 package com.kh.elephant.controller;
 import com.kh.elephant.domain.Matching;
-import com.kh.elephant.domain.Place;
 import com.kh.elephant.service.MatchingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

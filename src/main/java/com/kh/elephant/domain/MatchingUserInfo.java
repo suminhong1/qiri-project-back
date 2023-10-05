@@ -16,7 +16,7 @@ public class MatchingUserInfo {
     @Column(name = "MATCHING_USER_INFO_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "matchingUserInfoSequence")
     @SequenceGenerator(name = "matchingUserInfoSequence", sequenceName = "SEQ_MATCHING_USER_INFO", allocationSize = 1)
-    private String matchingUserInfoSeq;
+    private int matchingUserInfoSeq;
 
     @ManyToOne
     @JoinColumn(name = "MATCHING_SEQ")

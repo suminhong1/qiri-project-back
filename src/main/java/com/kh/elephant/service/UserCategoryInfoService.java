@@ -1,6 +1,5 @@
 package com.kh.elephant.service;
 
-import com.kh.elephant.domain.Place;
 import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.repo.UserCategoryInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;

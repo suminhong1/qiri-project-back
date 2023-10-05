@@ -1,9 +1,7 @@
 package com.kh.elephant.controller;
 
 
-import com.kh.elephant.domain.Place;
 import com.kh.elephant.domain.PlaceType;
-import com.kh.elephant.service.PlaceService;
 import com.kh.elephant.service.PlaceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
