@@ -15,7 +15,7 @@ public class PlaceController {
     @Autowired
     private PlaceService service;
 
-    @GetMapping("/place")
+    @GetMapping("/Place")
     public ResponseEntity<List<Place>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
@@ -24,7 +24,7 @@ public class PlaceController {
         }
     }
 
-    @GetMapping("/place/{id}")
+    @GetMapping("/Place/{id}")
     public ResponseEntity<Place> show(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
@@ -33,25 +33,25 @@ public class PlaceController {
         }
     }
 
-    @PostMapping("/place")
-    public ResponseEntity<Place> create(@RequestBody Place place) {
+    @PostMapping("/Place")
+    public ResponseEntity<Place> create(@RequestBody Place vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(place));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-
-    @PutMapping("/place")
-    public ResponseEntity<Place> update(@RequestBody Place place){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(place));
+            return ResponseEntity.status(HttpStatus.OK).body(service.create(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @DeleteMapping("/place/{id}")
+    @PutMapping("/Place")
+    public ResponseEntity<Place> update(@RequestBody Place vo) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/Place/{id}")
     public ResponseEntity<Place> delete(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
@@ -59,4 +59,5 @@ public class PlaceController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
 }

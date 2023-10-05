@@ -12,6 +12,7 @@ import org.hibernate.annotations.DynamicInsert;
 @AllArgsConstructor
 @EqualsAndHashCode
 @DynamicInsert
+@Entity
 public class PostAttachments {
 
     @Id

@@ -16,7 +16,7 @@ public class PlaceType {
     @Column(name = "PLACE_TYPE_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "placeTypeSequence")
     @SequenceGenerator(name = "placeTypeSequence", sequenceName = "SEQ_PLACE_TYPE", allocationSize = 1)
-    private String placeTypeSeq;
+    private int placeTypeSeq;
 
     @Column(name = "PLACE_TYPE_NAME")
     private String placeTypeName;
