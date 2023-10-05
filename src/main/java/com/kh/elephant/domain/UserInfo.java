@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicInsert
+@Table(name = "user_info")
 public class UserInfo {
 
     @Id
@@ -34,7 +35,8 @@ public class UserInfo {
     @Column(name="gender")
     private String gender;
 
-    @Column(name = "place")
+    @ManyToOne
+    @JoinColumn(name = "place_seq")
     private Place place;
 
     @Column(name = "phone")

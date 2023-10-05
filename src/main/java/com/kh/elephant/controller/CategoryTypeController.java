@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/qoqiri/*")
 public class CategoryTypeController {
 
     @Autowired
     private CategoryTypeService service;
 
-    @GetMapping("/categoryType")
+    @GetMapping("/")
     public ResponseEntity<List<CategoryType>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
@@ -26,6 +25,7 @@ public class CategoryTypeController {
         }
     }
 
+    /*
     @GetMapping("/categoryType/{id}")
     public ResponseEntity<CategoryType> show(@PathVariable int id) {
         try {
@@ -61,6 +61,7 @@ public class CategoryTypeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    */
 
 
 

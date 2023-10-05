@@ -1,8 +1,6 @@
 package com.kh.elephant.service;
 import com.kh.elephant.domain.Matching;
-import com.kh.elephant.domain.Place;
 import com.kh.elephant.repo.MatchingDAO;
-import com.kh.elephant.repo.PlaceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
