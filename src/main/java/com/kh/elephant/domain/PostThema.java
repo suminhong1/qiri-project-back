@@ -14,7 +14,7 @@ public class PostThema {
     @Id
     @Column(name = "post_thema_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "postThemaSequence")
-    @SequenceGenerator(name="postThemaSequence", sequenceName = "POST_THEMA_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="postThemaSequence", sequenceName = "SEQ_POST_THEMA", allocationSize = 1)
     private int postThemaSeq;
 
     @Column(name="pt_name")
