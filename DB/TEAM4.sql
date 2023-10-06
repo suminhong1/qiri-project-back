@@ -46,7 +46,7 @@ CREATE TABLE USER_INFO(
     USER_NICKNAME VARCHAR2(50) UNIQUE NOT NULL,     -- 유저 닉네임
     AGE NUMBER,     -- 나이
     GENDER VARCHAR2(10) NOT NULL CHECK(GENDER IN ('남', '여')),       -- 성별
-    PLACE_SEQ NUMBER,       -- 활동지역
+    PLACE_SEQ NUMBER DEFAULT 0,       -- 활동지역
     PHONE VARCHAR2(20) NOT NULL UNIQUE,        -- 전화번호
     EMAIL VARCHAR2(50) NOT NULL UNIQUE, -- 이메일
     PROFILE_IMG VARCHAR2(500),      -- 프로필 이미지
@@ -57,7 +57,7 @@ CREATE TABLE USER_INFO(
     BIRTHDAY DATE,       -- 생일
     JOIN_DATE DATE DEFAULT SYSDATE NOT NULL,        -- 가입날짜
     POPULARITY NUMBER DEFAULT 0, -- (좋아요받은 수)
-    RATING NUMBER DEFAULT NULL, -- 유저 평점(리뷰에서 받은 평점의 평균)
+    RATING NUMBER DEFAULT 0, -- 유저 평점(리뷰에서 받은 평점의 평균 0점 빼고 계산)
     IS_ADMIN VARCHAR2(1) DEFAULT 'N' NOT NULL CHECK(IS_ADMIN IN ('Y', 'N')),      -- 관리자 권한 유무    
     IS_DELETED VARCHAR2(1) DEFAULT 'N' NOT NULL CHECK(IS_DELETED IN ('Y', 'N'))      -- 탈퇴 유무    
 );
@@ -101,10 +101,10 @@ CREATE TABLE POST (
     POST_VIEW NUMBER DEFAULT 0 NOT NULL,   -- 조회수
     POST_URL VARCHAR2(4000) UNIQUE, -- 글 주소
     USER_ID VARCHAR2(50) NOT NULL,    -- 글 작성자 아이디(FK)
-    PLACE_SEQ NUMBER,                      -- 지역 SEQ(FK)        (매칭글만 필요 이외에는 0)
-    POST_THEMA_SEQ NUMBER,                 -- 게시글 말머리 SEQ(FK)       (일반글만 필요 이외에는 0)
-    BOARD_SEQ NUMBER,                      -- 게시판 SEQ(매칭글인지, 리뷰글인지, 커뮤니티글인지 구분) (FK)
-    MATCHING_SEQ NUMBER,                   -- 매칭 SEQ(리뷰글에 필요)(FK) (리뷰글만 필요 이외에는 0)
+    PLACE_SEQ NUMBER DEFAULT 0,                      -- 지역 SEQ(FK)        (매칭글만 필요 이외에는 0)
+    POST_THEMA_SEQ NUMBER DEFAULT 0,                 -- 게시글 말머리 SEQ(FK)       (일반글만 필요 이외에는 0)
+    BOARD_SEQ NUMBER DEFAULT 0,                      -- 게시판 SEQ(매칭글인지, 리뷰글인지, 커뮤니티글인지 구분) (FK)
+    MATCHING_SEQ NUMBER DEFAULT 0,                   -- 매칭 SEQ(리뷰글에 필요)(FK) (리뷰글만 필요 이외에는 0)
     POST_NOTICE VARCHAR2(1) DEFAULT 'N' CHECK(POST_NOTICE IN ('Y', 'N')), -- 공지사항 여부
     POST_DELETE VARCHAR2(1) DEFAULT 'N' NOT NULL CHECK(POST_DELETE IN ('Y', 'N')) -- 글 삭제 여부
 );
@@ -150,7 +150,7 @@ CREATE TABLE MATCHING_USER_INFO (
     MATCHING_USER_INFO_SEQ NUMBER PRIMARY KEY, -- 매칭 신청자 유저 정보 SEQ(PK)
     MATCHING_SEQ NUMBER,                    -- 매칭 SEQ(FK)
     USER_ID VARCHAR(50) NOT NULL,           -- 매칭 신청자 아이디(FK)
-    SCORE NUMBER DEFAULT NULL CHECK(SCORE IN (1, 2, 3)), -- 받은 평점
+    SCORE NUMBER DEFAULT 0 CHECK(SCORE IN (0, 1, 2, 3)), -- 받은 평점 (1~3점만 줄 수 있음 0점은 불가)
     MATCHING_ACCEPT VARCHAR2(1) DEFAULT NULL CHECK(MATCHING_ACCEPT IN ('Y')) -- 매칭 승락 여부
 );
 
