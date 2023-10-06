@@ -18,7 +18,7 @@ public class UserLike {
     @Id
     @Column(name = "like_up_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "likeUpSequence")
-    @SequenceGenerator(name = "likeUpSequence", sequenceName = "LIKE_UP_SEQ", allocationSize = 1)
+    @SequenceGenerator(name = "likeUpSequence", sequenceName = "SEQ_USER_LIKE", allocationSize = 1)
     private int likeUpSeq;
 
     @Column(name = "like_up_date")
