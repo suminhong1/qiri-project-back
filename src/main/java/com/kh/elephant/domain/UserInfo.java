@@ -30,7 +30,7 @@ public class UserInfo {
     private String userNickname;
 
     @Column(name = "age")
-    private int age;
+    private Integer age;
 
     @Column(name="gender")
     private String gender;

@@ -27,7 +27,7 @@ public class Comments {
     private Post post;
 
     @Column(name = "COMMENTS_PARENT_SEQ")
-    private int commentsParentSeq;
+    private Integer commentsParentSeq;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
