@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/qiri/*")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PlaceController {
 
     @Autowired
     private PlaceService service;
 
-    @GetMapping("/Place")
+    @GetMapping("/place")
     public ResponseEntity<List<Place>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
@@ -24,7 +26,7 @@ public class PlaceController {
         }
     }
 
-    @GetMapping("/Place/{id}")
+    @GetMapping("/place/{id}")
     public ResponseEntity<Place> show(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
@@ -33,7 +35,7 @@ public class PlaceController {
         }
     }
 
-    @PostMapping("/Place")
+    @PostMapping("/place")
     public ResponseEntity<Place> create(@RequestBody Place vo) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.create(vo));
@@ -42,7 +44,7 @@ public class PlaceController {
         }
     }
 
-    @PutMapping("/Place")
+    @PutMapping("/place")
     public ResponseEntity<Place> update(@RequestBody Place vo) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
@@ -51,7 +53,7 @@ public class PlaceController {
         }
     }
 
-    @DeleteMapping("/Place/{id}")
+    @DeleteMapping("/place/{id}")
     public ResponseEntity<Place> delete(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));

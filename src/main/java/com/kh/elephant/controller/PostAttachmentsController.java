@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/*")
+@RequestMapping("/qiri/*")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PostAttachmentsController {
 
     @Autowired
     private PostAttachmentsService service;
 
-    // 게시글 전체 조회 http://localhost:8080/api/post
+    // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/PostAttachments")
     public ResponseEntity<List<PostAttachments>> showAll(){
         try{
@@ -28,7 +29,7 @@ public class PostAttachmentsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 골라 보기 http://localhost:8080/api/post/1 <--id
+    // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/PostAttachments/{id}")
     public ResponseEntity<PostAttachments> show(@PathVariable int id){
         try{
@@ -37,7 +38,7 @@ public class PostAttachmentsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 추가 http://localhost:8080/api/post
+    // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/PostAttachments")
     public ResponseEntity<PostAttachments> insert(@RequestBody PostAttachments postAttachments){
         try{
@@ -46,7 +47,7 @@ public class PostAttachmentsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 수정 http://localhost:8080/api/post
+    // 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/PostAttachments")
     public ResponseEntity<PostAttachments> update(@RequestBody PostAttachments postAttachments){
         try{
@@ -55,7 +56,7 @@ public class PostAttachmentsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 삭제 http://localhost:8080/api/post/1 <--id
+    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/PostAttachments/{id}")
     public ResponseEntity<PostAttachments> delete(@PathVariable int id){
         try{

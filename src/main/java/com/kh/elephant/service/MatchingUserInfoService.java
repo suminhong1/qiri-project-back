@@ -1,7 +1,6 @@
 package com.kh.elephant.service;
 
 import com.kh.elephant.domain.MatchingUserInfo;
-import com.kh.elephant.repo.MatchingDAO;
 import com.kh.elephant.repo.MatchingUserInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

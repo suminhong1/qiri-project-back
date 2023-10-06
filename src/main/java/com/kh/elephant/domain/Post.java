@@ -53,10 +53,6 @@ public class Post {
     @JoinColumn(name="board_seq")
     private Board board;
 
-    @ManyToOne
-    @JoinColumn(name="matching_seq")
-    private Matching matching;
-
     @Column(name="post_notice")
     private String postNotice;
 
