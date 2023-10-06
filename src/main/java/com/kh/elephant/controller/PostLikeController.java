@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 //으악
 @RestController
-@RequestMapping("/api/*")
+@RequestMapping("/qiri/*")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
+
 public class PostLikeController {
 
     @Autowired
     private PostLikeService service;
 
-    // 게시물 좋아요 전체 보기 http://localhost:8080/api/postlike
+    // 게시물 좋아요 전체 보기 http://localhost:8080/qiri/postlike
     @GetMapping("/postLike")
     public ResponseEntity<List<PostLike>> showAll(){
         try{
@@ -26,7 +28,7 @@ public class PostLikeController {
         }
     }
 
-    // 게시물 좋아요 보기????? http://localhost:8080/api/postlike/1 <-- id
+    // 게시물 좋아요 보기????? http://localhost:8080/qiri/postlike/1 <-- id
     @GetMapping("/postLike/{id}")
     public ResponseEntity<PostLike> show(@PathVariable int id){
         try{
@@ -36,7 +38,7 @@ public class PostLikeController {
         }
     }
 
-    // 게시물 좋아요 추가? 누르기?? http://localhost:8080/api/postlike
+    // 게시물 좋아요 추가? 누르기?? http://localhost:8080/qiri/postlike
     @PostMapping("/postLike")
     public ResponseEntity<PostLike> create(@RequestBody PostLike vo){
         try{
@@ -46,7 +48,7 @@ public class PostLikeController {
         }
     }
 
-    // 게시물 좋아요 수정???????? http://localhost:8080/api/postlike 
+    // 게시물 좋아요 수정???????? http://localhost:8080/qiri/postlike
     @PutMapping("/postLike")
     public ResponseEntity<PostLike> update(@RequestBody PostLike vo){
         try{
@@ -55,7 +57,7 @@ public class PostLikeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시물 좋아요 취소 http://localhost:8080/api/postlike/1 <--id
+    // 게시물 좋아요 취소 http://localhost:8080/qiri/postlike/1 <--id
     @DeleteMapping("/postLike{id}")
     public ResponseEntity<PostLike> delete(@PathVariable int id){
         try{

@@ -11,6 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/qiri/*")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
+
 public class PostThemaController {
 
     @Autowired

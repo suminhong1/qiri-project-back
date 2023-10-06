@@ -19,10 +19,6 @@ public class MatchingUserInfo {
     private int matchingUserInfoSeq;
 
     @ManyToOne
-    @JoinColumn(name = "MATCHING_SEQ")
-    private Matching matching;
-
-    @ManyToOne
     @JoinColumn(name="user_id")
     private UserInfo userInfo;
 

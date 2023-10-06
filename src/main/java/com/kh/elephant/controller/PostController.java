@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/*")
+@RequestMapping("/qiri/*")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
+
 public class PostController {
 
     @Autowired
     private PostService service;
 
-    // 게시글 전체 조회 http://localhost:8080/api/post
+    // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/post")
     public ResponseEntity<List<Post>> showAll(){
         try{
@@ -26,7 +28,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 골라 보기 http://localhost:8080/api/post/1 <--id
+    // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/post/{id}")
     public ResponseEntity<Post> show(@PathVariable int id){
         try{
@@ -35,7 +37,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 추가 http://localhost:8080/api/post
+    // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/post")
     public ResponseEntity<Post> insert(@RequestBody Post post){
         try{
@@ -44,7 +46,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 수정 http://localhost:8080/api/post
+    // 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post){
         try{
@@ -53,7 +55,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 삭제 http://localhost:8080/api/post/1 <--id
+    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/post/{id}")
     public ResponseEntity<Post> delete(@PathVariable int id){
         try{

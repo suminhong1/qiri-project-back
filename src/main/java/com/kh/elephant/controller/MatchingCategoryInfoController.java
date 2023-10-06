@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/*")
+@RequestMapping("/qiri/*")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class MatchingCategoryInfoController {
 
     @Autowired
     private MatchingCategoryInfoService service;
 
-    // 게시글 전체 조회 http://localhost:8080/api/post
+    // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/MatchingCategoryInfo")
     public ResponseEntity<List<MatchingCategoryInfo>> showAll(){
         try{
@@ -30,7 +31,7 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 골라 보기 http://localhost:8080/api/post/1 <--id
+    // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/MatchingCategoryInfo/{id}")
     public ResponseEntity<MatchingCategoryInfo> show(@PathVariable int id){
         try{
@@ -39,7 +40,7 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 추가 http://localhost:8080/api/post
+    // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/MatchingCategoryInfo")
     public ResponseEntity<MatchingCategoryInfo> insert(@RequestBody MatchingCategoryInfo matchingCategoryInfo){
         try{
@@ -48,7 +49,7 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 수정 http://localhost:8080/api/post
+    // 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/MatchingCategoryInfo")
     public ResponseEntity<MatchingCategoryInfo> update(@RequestBody MatchingCategoryInfo matchingCategoryInfo){
         try{
@@ -57,7 +58,7 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 게시글 삭제 http://localhost:8080/api/post/1 <--id
+    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/MatchingCategoryInfo/{id}")
     public ResponseEntity<MatchingCategoryInfo> delete(@PathVariable int id){
         try{
