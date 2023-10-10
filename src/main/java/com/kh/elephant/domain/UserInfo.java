@@ -1,7 +1,9 @@
 package com.kh.elephant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicInsert
+@Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "user_info")
 public class UserInfo {
 
