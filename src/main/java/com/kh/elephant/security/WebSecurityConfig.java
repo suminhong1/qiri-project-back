@@ -30,8 +30,9 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(new AntPathRequestMatcher("qiri/userInfo/**")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("qiri/public/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/qiri/userInfo/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/qiri/public/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/qiri/categoryType")).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);

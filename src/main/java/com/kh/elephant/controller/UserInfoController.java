@@ -73,6 +73,34 @@ public class UserInfoController {
         }
     }
 
+    // 회원가입
+    @PostMapping("/userInfo/signup")
+    public ResponseEntity register(@RequestBody UserInfoDTO dto) {
+       UserInfo user = UserInfo.builder()
+               .userId(dto.getId())
+               .userPwd(passwordEncoder.encode(dto.getPwd()))
+               .userName(dto.getNickname())
+               .age(dto.getAge())
+               .gender(dto.getGender())
+               .phone(dto.getPhone())
+               .email(dto.getEmail())
+               .profileImg(dto.getProfileImg())
+               .statusMessage(dto.getStatusMessage())
+               .hasPartner(dto.getHasPartner())
+               .bloodType(dto.getBloodType())
+               .mbti(dto.getMbti())
+               .birthday(dto.getBirthday())
+               .build();
+
+       UserInfo registerUser = userService.create(user);
+       UserInfoDTO responseDTO = dto.builder()
+               .id(registerUser.getUserId())
+               .nickname(registerUser.getUserNickname())
+               .build();
+
+        return ResponseEntity.ok().body(responseDTO);
+    }
+
     // 로그인 -> token
     @PostMapping("/userInfo/signin")
     public ResponseEntity authenticate(@RequestBody UserInfoDTO dto) {
