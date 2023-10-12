@@ -25,7 +25,7 @@ public class PostLike {
     
     @ManyToOne
     @JoinColumn(name="post_seq")
-    private Post post;
+    private Post postSeq;
 
     @ManyToOne
     @JoinColumn(name="user_id")

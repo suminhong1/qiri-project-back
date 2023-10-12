@@ -43,11 +43,11 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "place_seq")
-    private Place place;
+    private Place placeSeq;
 
     @ManyToOne
     @JoinColumn(name="post_thema_seq")
-    private PostThema postThema;
+    private PostThema postThemaSeq;
 
     @ManyToOne
     @JoinColumn(name="board_seq")

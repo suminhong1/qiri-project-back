@@ -2,8 +2,12 @@ package com.kh.elephant.service;
 
 import com.kh.elephant.domain.Post;
 import com.kh.elephant.repo.PostDAO;
+import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -13,8 +17,9 @@ public class PostService {
     @Autowired
     private PostDAO dao;
 
-    public List<Post> showAll(){
-        return dao.findAll();
+    public Page<Post> showAll(Pageable pageable, BooleanBuilder builder){
+
+        return dao.findAll(builder, pageable);
     }
 
     public Post show(int id){
@@ -38,5 +43,8 @@ public class PostService {
         Post post = dao.findById(id).orElse(null);
         dao.delete(post);
         return post;
+    }
+    public List<Post> findByBoardCode(int code){
+        return dao.findByBoardCode(code);
     }
 }
