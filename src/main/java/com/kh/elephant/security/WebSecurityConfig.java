@@ -33,7 +33,8 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/qiri/userInfo/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/qiri/public/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/qiri/categoryType")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/qiri/post")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/qiri/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
