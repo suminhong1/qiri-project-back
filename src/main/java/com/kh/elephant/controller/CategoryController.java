@@ -18,7 +18,7 @@ public class CategoryController {
     @Autowired
     private CategoryService service;
 
-    @GetMapping("/category")
+    @GetMapping("/public/category")
     public ResponseEntity<List<Category>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
