@@ -19,7 +19,7 @@ public class BoardController {
     private BoardService board;
 
     // 게시판 종류 전체 보기
-    @GetMapping("/board")
+    @GetMapping("/public/board")
     public ResponseEntity<List<Board>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(board.showAll());
