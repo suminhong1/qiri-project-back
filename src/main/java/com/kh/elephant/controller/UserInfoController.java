@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/qiri/*")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
-
 public class UserInfoController {
 
     @Autowired
@@ -45,15 +44,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    // 유저 추가 http://localhost:8080/qiri/userInfo
-    @PostMapping("/userInfo")
-    public ResponseEntity<UserInfo> createUser(@RequestBody UserInfo user){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(userService.create(user));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+
     // 유저 수정 http://localhost:8080/qiri/userInfo/1 <--id
     @PutMapping("/userInfo")
     public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user){

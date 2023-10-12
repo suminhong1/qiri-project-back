@@ -17,7 +17,7 @@ public class PlaceController {
     @Autowired
     private PlaceService service;
 
-    @GetMapping("/place")
+    @GetMapping("/public/place")
     public ResponseEntity<List<Place>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());

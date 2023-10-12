@@ -20,4 +20,8 @@ public class PostThema {
     @Column(name="pt_name")
     private String ptName;
 
+    @ManyToOne
+    @JoinColumn(name = "board_seq")
+    private Board board;
+
 }

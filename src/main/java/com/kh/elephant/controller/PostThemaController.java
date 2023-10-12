@@ -18,7 +18,7 @@ public class PostThemaController {
     @Autowired
     private PostThemaService postThema;
 
-    @GetMapping("/postThema")
+    @GetMapping("/public/postThema")
     public ResponseEntity<List<PostThema>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(postThema.showAll());
