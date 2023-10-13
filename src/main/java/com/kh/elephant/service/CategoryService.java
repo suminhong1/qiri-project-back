@@ -26,7 +26,7 @@ public class CategoryService {
     }
 
     public Category update(Category category) {
-        Category target = dao.findById(category.getCategorySeq()).orElse(null);
+        Category target = dao.findById(category.getCategorySEQ()).orElse(null);
         if(target!=null) {
             return dao.save(category);
         }
