@@ -52,6 +52,7 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/qiri/**")).permitAll()
                 .anyRequest().authenticated();
 
+
         http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
 
         return http.build();
