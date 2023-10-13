@@ -24,7 +24,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public final QBoard board;
 
-    public final QPlace place;
+    public final QPlace placeSeq;
 
     public final StringPath postContent = createString("postContent");
 
@@ -36,7 +36,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public final NumberPath<Integer> postSEQ = createNumber("postSEQ", Integer.class);
 
-    public final QPostThema postThema;
+    public final QPostThema postThemaSeq;
 
     public final StringPath postTitle = createString("postTitle");
 
@@ -65,8 +65,8 @@ public class QPost extends EntityPathBase<Post> {
     public QPost(Class<? extends Post> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.board = inits.isInitialized("board") ? new QBoard(forProperty("board")) : null;
-        this.place = inits.isInitialized("place") ? new QPlace(forProperty("place"), inits.get("place")) : null;
-        this.postThema = inits.isInitialized("postThema") ? new QPostThema(forProperty("postThema")) : null;
+        this.placeSeq = inits.isInitialized("placeSeq") ? new QPlace(forProperty("placeSeq"), inits.get("placeSeq")) : null;
+        this.postThemaSeq = inits.isInitialized("postThemaSeq") ? new QPostThema(forProperty("postThemaSeq"), inits.get("postThemaSeq")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 
