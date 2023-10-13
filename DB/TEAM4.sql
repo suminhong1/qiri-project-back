@@ -208,13 +208,14 @@ CREATE TABLE MATCHING_CATEGORY_INFO(
 
 -- 기본값 생성
 INSERT INTO USER_INFO(USER_ID, USER_PWD, USER_NAME, USER_NICKNAME, GENDER, PHONE, EMAIL) VALUES('없음', '없음', '없음', '없', '남', '0', '0');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(1, '수민1', '홍수민의 하루1', '오늘은 어느 부위를 조져볼까2', 'user3');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(2, '수민2', '홍수민의 하루2', '오늘은 어느 부위를 조져볼까3', 'user4');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(3, '수민3', '홍수민의 하루3', '오늘은 어느 부위를 조져볼까4', 'user5');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(4, '수민4', '홍수민의 하루4', '오늘은 어느 부위를 조져볼까5', 'user6');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(5, '수민5', '홍수민의 하루5', '오늘은 어느 부위를 조져볼까6', 'user7');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(6, '수민6', '홍수민의 하루6', '오늘은 어느 부위를 조져볼까7', 'user8');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(7, '수민7', '홍수민의 하루7', '오늘은 어느 부위를 조져볼까8', 'user9');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(1, '오늘은 어느 부위를 조져볼까2', '홍수민의 하루1', '가슴', 'user3');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(2, '오늘은 어느 부위를 조져볼까3', '홍수민의 하루2', '등', 'user4');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(3, '오늘은 어느 부위를 조져볼까4', '홍수민의 하루3', '하체', 'user5');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(4, '오늘은 어느 부위를 조져볼까5', '홍수민의 하루4', '어깨', 'user6');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(5, '오늘은 어느 부위를 조져볼까6', '홍수민의 하루5', '이두', 'user7');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(6, '오늘은 어느 부위를 조져볼까7', '홍수민의 하루6', '삼두', 'user8');
+INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, POST_URL, USER_ID) VALUES(7, '오늘은 어느 부위를 조져볼까', '홍수민의 하루7', '다시 가슴', 'user9');
+
 
 
 INSERT INTO USER_INFO(USER_ID, USER_PWD, USER_NAME, USER_NICKNAME, GENDER, PHONE, EMAIL) VALUES('user3', '2', '민수홍', '홍', '남', '10', '1');
