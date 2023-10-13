@@ -15,6 +15,7 @@ public class UserInfoDTO {
     private String token;
     private String id;
     private String pwd;
+    private String name;
     private String nickname;
     private Place place;
     private Integer age;

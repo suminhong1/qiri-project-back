@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Date;
 
@@ -15,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicInsert
+@DynamicUpdate
 @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "user_info")
@@ -30,7 +33,7 @@ public class UserInfo {
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "user_nickname")
+    @Column(name = "USER_NICKNAME")
     private String userNickname;
 
     @Column(name = "age")
@@ -77,8 +80,10 @@ public class UserInfo {
     private int rating;
 
     @Column(name = "IS_ADMIN")
+    @ColumnDefault("N")
     private String isAdmin;
 
     @Column(name = "IS_DELETED")
+    @ColumnDefault("N")
     private String isDeleted;
 }

@@ -4,6 +4,7 @@ import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.domain.UserInfoDTO;
 import com.kh.elephant.security.TokenProvider;
 import com.kh.elephant.service.UserInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/qiri/*")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
@@ -67,10 +70,12 @@ public class UserInfoController {
     // 회원가입
     @PostMapping("/userInfo/signup")
     public ResponseEntity register(@RequestBody UserInfoDTO dto) {
+
        UserInfo user = UserInfo.builder()
                .userId(dto.getId())
                .userPwd(passwordEncoder.encode(dto.getPwd()))
-               .userName(dto.getNickname())
+               .userName(dto.getName())
+               .userNickname(dto.getNickname())
                .age(dto.getAge())
                .gender(dto.getGender())
                .phone(dto.getPhone())
@@ -81,15 +86,22 @@ public class UserInfoController {
                .bloodType(dto.getBloodType())
                .mbti(dto.getMbti())
                .birthday(dto.getBirthday())
+               .isAdmin("N")
+               .isDeleted("N")
+               .joinDate(new Date())
                .build();
 
+        log.info("user : " + user);
+
        UserInfo registerUser = userService.create(user);
+       log.info("register : " + registerUser);
        UserInfoDTO responseDTO = dto.builder()
                .id(registerUser.getUserId())
                .nickname(registerUser.getUserNickname())
                .build();
-
+//
         return ResponseEntity.ok().body(responseDTO);
+//        return ResponseEntity.ok().build();
     }
 
     // 로그인 -> token
