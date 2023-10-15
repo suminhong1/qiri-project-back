@@ -21,7 +21,7 @@ public class QPlaceType extends EntityPathBase<PlaceType> {
 
     public final StringPath placeTypeName = createString("placeTypeName");
 
-    public final NumberPath<Integer> placeTypeSeq = createNumber("placeTypeSeq", Integer.class);
+    public final NumberPath<Integer> placeTypeSEQ = createNumber("placeTypeSEQ", Integer.class);
 
     public QPlaceType(String variable) {
         super(PlaceType.class, forVariable(variable));
