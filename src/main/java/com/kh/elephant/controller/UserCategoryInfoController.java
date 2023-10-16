@@ -20,8 +20,8 @@ public class UserCategoryInfoController {
     private UserCategoryInfoService categoryInfoService;
 
 
-    @GetMapping("public/userCategoryInfo")
-    public ResponseEntity<List<UserCategoryInfo>> showAll() {}
+//    @GetMapping("public/userCategoryInfo")
+//    public ResponseEntity<List<UserCategoryInfo>> showAll() {}
 
     // 관심사 카테고리 전체 조회
     @GetMapping("/userCategoryInfo")
@@ -46,8 +46,8 @@ public class UserCategoryInfoController {
     }
 
 
-    @PostMapping("/public/userCategoryInfo")
-    public ResponseEntity<UserCategoryInfo> insert(@RequestBody UserCategoryInfo userCategoryInfo) {}
+//    @PostMapping("/public/userCategoryInfo")
+//    public ResponseEntity<UserCategoryInfo> insert(@RequestBody UserCategoryInfo userCategoryInfo) {}
 
     // 관심사 카테고리 정보 생성
     @PostMapping("/userCategoryInfo")
@@ -62,15 +62,15 @@ public class UserCategoryInfoController {
     }
 
     // 관심사 카테고리 정보 수정
-    @PutMapping("/userCategoryInfo/{id}")
-    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable int id, @RequestBody UserCategoryInfo category) {
-        try {
-            UserCategoryInfo updatedCategory = categoryInfoService.update(id, category);
-            return ResponseEntity.status(HttpStatus.OK).body(updatedCategory);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+//    @PutMapping("/userCategoryInfo/{id}")
+//    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable int id, @RequestBody UserCategoryInfo category) {
+//        try {
+//            UserCategoryInfo updatedCategory = categoryInfoService.update(id, category);
+//            return ResponseEntity.status(HttpStatus.OK).body(updatedCategory);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
     // 관심사 카테고리 정보 삭제
     @DeleteMapping("/userCategoryInfo/{id}")
