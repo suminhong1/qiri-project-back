@@ -18,7 +18,7 @@ public class UserCategoryInfoController {
     @Autowired
     private UserCategoryInfoService service;
 
-    @GetMapping("/userCategoryInfo")
+    @GetMapping("public/userCategoryInfo")
     public ResponseEntity<List<UserCategoryInfo>> showAll() {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
@@ -36,7 +36,7 @@ public class UserCategoryInfoController {
         }
     }
 
-    @PostMapping("/userCategoryInfo")
+    @PostMapping("/public/userCategoryInfo")
     public ResponseEntity<UserCategoryInfo> insert(@RequestBody UserCategoryInfo userCategoryInfo) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.create(userCategoryInfo));
