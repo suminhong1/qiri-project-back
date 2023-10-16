@@ -24,7 +24,7 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final StringPath categoryName = createString("categoryName");
 
-    public final NumberPath<Integer> categorySeq = createNumber("categorySeq", Integer.class);
+    public final NumberPath<Integer> categorySEQ = createNumber("categorySEQ", Integer.class);
 
     public final QCategoryType categoryType;
 
