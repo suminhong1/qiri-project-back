@@ -45,6 +45,16 @@ public class PostService {
         return post;
     }
     public List<Post> findByBoardCode(int code){
+
         return dao.findByBoardCode(code);
     }
+
+    public List<Post> search(String keyword, Pageable pageable){
+        System.out.println("서비스 키워드 : " + keyword);
+        return dao.findByTitle(keyword);
+    }
+
+
 }
+
+

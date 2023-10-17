@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,16 +49,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
-//    public ResponseEntity<List<Post>> showAll(){
-//
-//
-//        try{
-//            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
-//
-//        }catch (Exception e){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
+
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/public/post/{id}")
     public ResponseEntity<Post> show(@PathVariable int id){
@@ -94,4 +86,20 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    // 검색
+    @GetMapping("/public/post/search/{keyword}")
+    public ResponseEntity<List<Post>> search(@PathVariable String keyword,@PageableDefault(size = 20, sort = "postSEQ")Pageable pageable){
+        try{
+            log.info(keyword);
+            return ResponseEntity.status(HttpStatus.OK).body(postService.search(keyword,pageable));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+//        return null;
+    }
+
+
+
 }
