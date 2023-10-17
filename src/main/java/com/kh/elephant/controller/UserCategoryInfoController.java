@@ -19,16 +19,11 @@ public class UserCategoryInfoController {
     @Autowired
     private UserCategoryInfoService categoryInfoService;
 
-
-//    @GetMapping("public/userCategoryInfo")
-//    public ResponseEntity<List<UserCategoryInfo>> showAll() {}
-
     // 관심사 카테고리 전체 조회
     @GetMapping("/userCategoryInfo")
     public ResponseEntity<List<UserCategoryInfo>> showAllCategories() {
         try {
-            List<UserCategoryInfo> categories = categoryInfoService.showAll();
-            return ResponseEntity.status(HttpStatus.OK).body(categories);
+            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -38,39 +33,31 @@ public class UserCategoryInfoController {
     @GetMapping("/userCategoryInfo/{id}")
     public ResponseEntity<UserCategoryInfo> showCategory(@PathVariable int id) {
         try {
-            UserCategoryInfo category = categoryInfoService.show(id);
-            return ResponseEntity.status(HttpStatus.OK).body(category);
+            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.show(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-
-//    @PostMapping("/public/userCategoryInfo")
-//    public ResponseEntity<UserCategoryInfo> insert(@RequestBody UserCategoryInfo userCategoryInfo) {}
-
-    // 관심사 카테고리 정보 생성
+    // 유저 관심사 카테고리 정보 등록
     @PostMapping("/userCategoryInfo")
-    public ResponseEntity<UserCategoryInfo> createCategory(@RequestBody UserCategoryInfo category) {
-
+    public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody List<UserCategoryInfo> categories) {
         try {
-            UserCategoryInfo createdCategory = categoryInfoService.create(category);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
+            return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(categories));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     // 관심사 카테고리 정보 수정
-//    @PutMapping("/userCategoryInfo/{id}")
-//    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable int id, @RequestBody UserCategoryInfo category) {
-//        try {
-//            UserCategoryInfo updatedCategory = categoryInfoService.update(id, category);
-//            return ResponseEntity.status(HttpStatus.OK).body(updatedCategory);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
+    @PutMapping("/userCategoryInfo/{id}")
+    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable int id, @RequestBody UserCategoryInfo category) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.update(category));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
     // 관심사 카테고리 정보 삭제
     @DeleteMapping("/userCategoryInfo/{id}")

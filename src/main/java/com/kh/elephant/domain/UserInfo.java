@@ -43,8 +43,8 @@ public class UserInfo {
     private String gender;
 
     @ManyToOne
-    @JoinColumn(name = "place_seq")
-    private Place place;
+    @JoinColumn(name = "place_type_seq")
+    private PlaceType placeType;
 
     @Column(name = "phone")
     private String phone;
