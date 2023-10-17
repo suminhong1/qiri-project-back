@@ -1,6 +1,7 @@
 package com.kh.elephant.service;
 
 import com.kh.elephant.domain.Post;
+import com.kh.elephant.domain.SignUpDTO;
 import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.repo.UserInfoDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,9 @@ public class UserInfoService {
 
     @Autowired
     private UserInfoDAO dao;
+
+    @Autowired
+    private UserCategoryInfoService userCategoryInfoService;
 
     public List<UserInfo> showAll (){
         return dao.findAll();
@@ -50,5 +54,11 @@ public class UserInfoService {
             return userInfo;
         }
         return null;
+    }
+
+    public UserInfo createWithCategories(SignUpDTO signUpDTO) {
+        UserInfo userInfo = create(signUpDTO.getUserInfoDTO().toUserInfo()); // assuming 'create' saves the user
+        userCategoryInfoService.createAll(signUpDTO.getUserCategories());
+        return userInfo;
     }
 }

@@ -21,4 +21,9 @@ public class PlaceType {
     @Column(name = "PLACE_TYPE_NAME")
     private String placeTypeName;
 
+//    // 생성자
+//    public PlaceType(String placeTypeName) {
+//        this.placeTypeName = placeTypeName;
+//    }
+
 }
