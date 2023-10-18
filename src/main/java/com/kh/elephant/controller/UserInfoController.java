@@ -58,7 +58,7 @@ public class UserInfoController {
     }
 
     // 유저 수정 http://localhost:8080/qiri/userInfo/1 <--id
-    @PutMapping("/userInfo")
+    @PutMapping("/userInfo/editProfile")
     public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
@@ -142,6 +142,7 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 
 }
 

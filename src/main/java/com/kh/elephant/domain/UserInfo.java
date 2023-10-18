@@ -52,8 +52,8 @@ public class UserInfo {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "profile_img")
-    private String profileImg;
+ //   @Column(name = "profile_img")
+ //   private String profileImg;
 
     @Column(name = "status_message")
     private String statusMessage;
