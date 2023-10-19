@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +37,8 @@ public class UserInfoController {
     private UserInfoService userService;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private static final String UPLOAD_DIR = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
 
     // 유저 전체 조회 http://localhost:8080/qiri/userInfo
     @GetMapping("/userInfo")
@@ -80,6 +83,7 @@ public class UserInfoController {
     // 회원가입
     @PostMapping("/userInfo/signup")
     public ResponseEntity<UserInfoDTO> register(@RequestBody SignUpDTO dto) {
+
         UserInfo user = UserInfo.builder()
                 .userId(dto.getUserInfoDTO().getId())
                 .userPwd(passwordEncoder.encode(dto.getUserInfoDTO().getPwd()))
@@ -89,7 +93,6 @@ public class UserInfoController {
                 .gender(dto.getUserInfoDTO().getGender())
                 .phone(dto.getUserInfoDTO().getPhone())
                 .email(dto.getUserInfoDTO().getEmail())
-            //    .profileImg(profileImageUrl) // 이미지 URL 설정
                 .statusMessage(dto.getUserInfoDTO().getStatusMessage())
                 .hasPartner(dto.getUserInfoDTO().getHasPartner())
                 .bloodType(dto.getUserInfoDTO().getBloodType())
@@ -123,7 +126,9 @@ public class UserInfoController {
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(userInfo.getUserId())
                     .nickname(userInfo.getUserNickname())
+                    .pwd(userInfo.getUserPwd())
                     .placeType(userInfo.getPlaceType())
+                    .age(userInfo.getAge())
                     .token(token)
                     .build();
             return ResponseEntity.ok().body(responseDTO);
@@ -142,17 +147,4 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
