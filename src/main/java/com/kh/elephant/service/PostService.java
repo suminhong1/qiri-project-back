@@ -1,5 +1,6 @@
 package com.kh.elephant.service;
 
+
 import com.kh.elephant.domain.Post;
 import com.kh.elephant.repo.PostDAO;
 import com.querydsl.core.BooleanBuilder;
@@ -16,6 +17,8 @@ public class PostService {
 
     @Autowired
     private PostDAO dao;
+
+
 
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder){
 
