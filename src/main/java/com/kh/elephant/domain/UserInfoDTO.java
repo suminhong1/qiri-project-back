@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -22,7 +23,6 @@ public class UserInfoDTO {
     private String gender; // 성별
     private String phone; // 휴대전화번호
     private String email; // 이메일
-    //   private String profileImg; // 프로필사진
     private String statusMessage; // 상태메시지
     private String hasPartner; // 애인여부
     private String bloodType; // 혈액형
@@ -40,7 +40,6 @@ public class UserInfoDTO {
         userInfo.setGender(this.gender); // 성별
         userInfo.setPhone(this.phone); // 휴대전화번호
         userInfo.setEmail(this.email); // 이메일
-     //   userInfo.setProfileImg(this.profileImg); // 프로필사진
         userInfo.setStatusMessage(this.statusMessage); // 상태메시지
         userInfo.setHasPartner(this.hasPartner); // 애인여부
         userInfo.setBloodType(this.bloodType); // 혈액형
@@ -49,5 +48,7 @@ public class UserInfoDTO {
 
         return userInfo;
     }
+
+
 }
 

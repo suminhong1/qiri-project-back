@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -52,8 +53,8 @@ public class UserInfo {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "profile_img")
-    private String profileImg;
+//    @Column(name = "profile_img")
+//    private String profileImg;
 
     @Column(name = "status_message")
     private String statusMessage;
