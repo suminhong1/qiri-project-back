@@ -40,6 +40,10 @@ public class ChatMessageService {
         dao.delete(data);
         return data;
     }
+
+    public ChatMessage findByRoomCode(int code) {
+        return dao.findByRoomCode(code);
+    }
 }
 
 

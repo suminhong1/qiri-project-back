@@ -44,7 +44,7 @@ public class QUserInfo extends EntityPathBase<UserInfo> {
 
     public final StringPath phone = createString("phone");
 
-    public final QPlace place;
+    public final QPlaceType placeType;
 
     public final NumberPath<Integer> popularity = createNumber("popularity", Integer.class);
 
@@ -80,7 +80,7 @@ public class QUserInfo extends EntityPathBase<UserInfo> {
 
     public QUserInfo(Class<? extends UserInfo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.place = inits.isInitialized("place") ? new QPlace(forProperty("place"), inits.get("place")) : null;
+        this.placeType = inits.isInitialized("placeType") ? new QPlaceType(forProperty("placeType")) : null;
     }
 
 }
