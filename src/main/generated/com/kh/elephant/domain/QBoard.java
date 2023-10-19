@@ -23,7 +23,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final StringPath boardName = createString("boardName");
 
-    public final NumberPath<Integer> boardSeq = createNumber("boardSeq", Integer.class);
+    public final NumberPath<Integer> boardSEQ = createNumber("boardSEQ", Integer.class);
 
     public QBoard(String variable) {
         super(Board.class, forVariable(variable));
