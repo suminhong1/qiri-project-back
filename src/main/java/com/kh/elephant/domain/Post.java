@@ -3,12 +3,14 @@ package com.kh.elephant.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.util.Date;
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -31,7 +33,7 @@ public class Post {
     @Column(name="post_date")
     private Date postDate;
 
-    @Column(name="post_view")
+    @Column(name="post_view", columnDefinition = "integer default 0",nullable = false)
     private int postView;
 
     @Column(name="post_url")
