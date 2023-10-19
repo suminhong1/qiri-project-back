@@ -43,4 +43,6 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
 
 
+
+
 }

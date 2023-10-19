@@ -1,4 +1,5 @@
 package com.kh.elephant.service;
+
 import com.kh.elephant.domain.PostAttachments;
 import com.kh.elephant.domain.PostDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,10 @@ public class PostService {
     private PostDAO dao;
 
 
+
+
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder) {
+
 
         return dao.findAll(builder, pageable);
     }
