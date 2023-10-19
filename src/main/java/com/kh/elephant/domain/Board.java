@@ -14,7 +14,7 @@ public class Board {
     @Column(name="board_seq")
     @GeneratedValue(strategy= GenerationType.IDENTITY, generator = "boardSequence")//generator name이랑 맞추기
     @SequenceGenerator(name = "boardSequence", sequenceName = "SEQ_BOARD", allocationSize = 1)
-    private int boardSeq;
+    private int boardSEQ;
 
     @Column(name = "board_name")
     private String boardName;
