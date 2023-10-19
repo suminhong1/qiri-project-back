@@ -1,6 +1,7 @@
 package com.kh.elephant.repo;
 
 import com.kh.elephant.domain.Post;
+import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,8 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
     @Query(value = "SELECT * FROM post WHERE post_title LIKE %:keyword%", nativeQuery = true)
     List<Post>findByTitle(@Param("keyword") String keyword);
+
+
 
 
 }

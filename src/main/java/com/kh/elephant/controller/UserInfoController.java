@@ -48,14 +48,14 @@ public class UserInfoController {
     }
 
     // 유저 상세 조회 http://localhost:8080/qiri/userInfo/1 <--id
-    @GetMapping("/userInfo/{id}")
-    public ResponseEntity<UserInfo> showUser(@PathVariable String id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.show(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+//    @GetMapping("/userInfo/{id}")
+//    public ResponseEntity<UserInfo> showUser(@PathVariable String id) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(userService.show(id));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
     // 유저 수정 http://localhost:8080/qiri/userInfo/1 <--id
     @PutMapping("/userInfo")

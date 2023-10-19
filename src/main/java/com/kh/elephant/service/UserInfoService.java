@@ -1,6 +1,6 @@
 package com.kh.elephant.service;
 
-import com.kh.elephant.domain.Post;
+
 import com.kh.elephant.domain.SignUpDTO;
 import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.repo.UserInfoDAO;
@@ -61,4 +61,10 @@ public class UserInfoService {
         userCategoryInfoService.createAll(signUpDTO.getUserCategories());
         return userInfo;
     }
+
+
+
+
+
+
 }

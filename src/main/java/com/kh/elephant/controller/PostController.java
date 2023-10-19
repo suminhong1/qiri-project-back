@@ -2,7 +2,9 @@ package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.Post;
 import com.kh.elephant.domain.QPost;
+import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.service.PostService;
+import com.kh.elephant.service.UserInfoService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/qiri/*")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
-
 public class PostController {
 
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserInfoService userInfoService;
 
 
     // 게시글 전체 조회 http://localhost:8080/qiri/post
@@ -68,6 +71,38 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @PostMapping("/reviews")
+    public ResponseEntity<Post> saveReview(@RequestBody Post post) {
+        log.info("Received post data: " + post);
+        try {
+            // userId를 사용하여 UserInfo 엔터티 조회
+            if (post.getUserInfo() == null || post.getUserInfo().getUserId() == null) {
+                log.error("UserInfo or UserId is null in the request");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
+            UserInfo userInfo = userInfoService.show(post.getUserInfo().getUserId());
+            if (userInfo == null) {
+                log.error("No UserInfo found for the given UserId");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
+            // 조회한 UserInfo 엔터티를 post의 userInfo 필드에 설정
+            post.setUserInfo(userInfo);
+
+            // 리뷰 내용을 postContent 필드에 저장
+            Post savedPost = postService.create(post);
+            return ResponseEntity.status(HttpStatus.OK).body(savedPost);
+        } catch (Exception e) {
+            log.error("Error while saving review: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
+
+
     // 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post){
@@ -99,6 +134,8 @@ public class PostController {
 
 //        return null;
     }
+
+
 
 
 
