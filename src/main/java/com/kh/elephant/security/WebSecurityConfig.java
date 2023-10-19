@@ -26,6 +26,10 @@ public class WebSecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
