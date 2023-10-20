@@ -48,8 +48,6 @@ public class QUserInfo extends EntityPathBase<UserInfo> {
 
     public final NumberPath<Integer> popularity = createNumber("popularity", Integer.class);
 
-    public final StringPath profileImg = createString("profileImg");
-
     public final NumberPath<Integer> rating = createNumber("rating", Integer.class);
 
     public final StringPath statusMessage = createString("statusMessage");

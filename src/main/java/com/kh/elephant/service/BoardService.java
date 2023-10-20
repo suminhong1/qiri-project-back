@@ -24,7 +24,7 @@ public class BoardService {
         return boardDAO.save(board);
     }
     public Board update(Board channel) {
-        Board target = boardDAO.findById(channel.getBoardSeq()).orElse(null);
+        Board target = boardDAO.findById(channel.getBoardSEQ()).orElse(null);
         if(target!=null){
             return boardDAO.save(channel);
         }
