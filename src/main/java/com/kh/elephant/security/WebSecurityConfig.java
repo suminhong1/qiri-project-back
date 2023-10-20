@@ -19,10 +19,6 @@ import java.util.Arrays;
 @Configuration
 public class WebSecurityConfig {
 
-
-
-
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -41,6 +37,9 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/qiri/userInfo/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/qiri/public/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/qiri/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/ws/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/chat")).permitAll()
+
                 .anyRequest().authenticated();
 
 

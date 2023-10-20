@@ -1,33 +1,26 @@
 package com.kh.elephant.controller;
 
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.kh.elephant.domain.ChatRoom;
+import com.kh.elephant.service.ChatService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @RestController
-@Log4j2
-@CrossOrigin(origins = {"*"}, maxAge = 6000)
+@RequestMapping("/chat")
 public class ChatController {
 
-    @Autowired
-    private SimpMessagingTemplate webSocket;
+    private final ChatService chatService;
 
-    @MessageMapping("/sendTo")
-    @SendTo("/topics/sendTo")
-    public String SendToMessage() throws  Exception {
-
-    return "SendTo";
+    @PostMapping
+    public ChatRoom createRoom(@RequestParam String name) {
+        return chatService.createRoom(name);
     }
 
-    @RequestMapping(value = "/api")
-    public void SendAPI() {
-        webSocket.convertAndSend("/topics/api", "API");
+    @GetMapping
+    public List<ChatRoom> findAllRoom() {
+        return chatService.findAllRoom();
     }
 }
