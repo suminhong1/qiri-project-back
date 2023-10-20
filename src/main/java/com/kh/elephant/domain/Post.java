@@ -61,4 +61,6 @@ public class Post {
     @Column(name = "post_delete")
     private String postDelete;
 
+
+
 }

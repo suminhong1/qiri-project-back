@@ -24,6 +24,8 @@ public class PostService {
 
 
 
+
+
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder) {
 
 
@@ -83,6 +85,11 @@ public class PostService {
 
         return dao.findByBoardCode(code);
     }
+
+
+
+
+
 
 //    public Post increaseViewCount(int code){
 //        log.info("조회수가 증가하나여"+code);

@@ -2,6 +2,7 @@ package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.*;
 import com.kh.elephant.service.PostService;
+import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.service.UserInfoService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -120,8 +121,7 @@ public class PostController {
     }
 
 
-
-
+//    // 리뷰 추가
 //    @PostMapping("/reviews")
 //    public ResponseEntity<Post> saveReview(@RequestBody Post post) {
 //        log.info("Received post data: " + post);
@@ -149,6 +149,10 @@ public class PostController {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 //        }
 //    }
+
+
+
+
 
 
 

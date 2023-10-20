@@ -16,6 +16,9 @@ public class Board {
     @SequenceGenerator(name = "boardSequence", sequenceName = "SEQ_BOARD", allocationSize = 1)
     private int boardSEQ;
 
+
+
+
     @Column(name = "board_name")
     private String boardName;
 
