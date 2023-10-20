@@ -125,10 +125,19 @@ public class UserInfoController {
             String token = tokenProvider.create(userInfo);
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(userInfo.getUserId())
-                    .nickname(userInfo.getUserNickname())
                     .pwd(userInfo.getUserPwd())
-                    .placeType(userInfo.getPlaceType())
+                    .name(userInfo.getUserName())
+                    .nickname(userInfo.getUserNickname())
                     .age(userInfo.getAge())
+                    .gender(userInfo.getGender())
+                    .placeType(userInfo.getPlaceType())
+                    .phone(userInfo.getPhone())
+                    .email(userInfo.getEmail())
+                    .statusMessage(userInfo.getStatusMessage())
+                    .hasPartner(userInfo.getHasPartner())
+                    .bloodType(userInfo.getBloodType())
+                    .mbti(userInfo.getMbti())
+                    .birthday(userInfo.getBirthday())
                     .token(token)
                     .build();
             return ResponseEntity.ok().body(responseDTO);
