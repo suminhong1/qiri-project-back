@@ -21,9 +21,8 @@ public class PostService {
     @Autowired
     private PostDAO dao;
 
-
-
-
+    @Autowired
+    private PostAttachmentsService postAttachmentsService;
 
 
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder) {
@@ -56,16 +55,21 @@ public class PostService {
     }
 
 
-    public Post create(PostDTO postDTO, List<PostAttachments> postattachments) {
-        Post post =postDTO.ToPost();
-
-        Post savePost = dao.save(post);
-
-        for (PostAttachments attachments : postattachments){
-            attachments.setPost(savePost);
-        }
-        return savePost;
-    }
+//    public Post create(PostDTO postDTO, List<PostAttachments> postAttachments) {
+//        Post post = postDTO.ToPost();
+//
+//        Post savePost = dao.save(post);
+//
+//        for (PostAttachments attachments : postAttachments){
+//            attachments.setPost(savePost);
+//        }
+//
+//        List<PostAttachments> savedAttachments = postAttachmentsService.createAll(postAttachments);
+//        return savePost;
+//    }
+public Post create(Post post){
+    return dao.save(post);
+}
 
     public Post update(Post post) {
         Post target = dao.findById(post.getPostSEQ()).orElse(null);

@@ -18,7 +18,9 @@ public class PostAttachmentsService {
 
     public PostAttachments show(int code) { return dao.findById(code).orElse(null); }
 
-    public PostAttachments create(PostAttachments postAttachments) { return dao.save(postAttachments); }
+    public List<PostAttachments> createAll(List<PostAttachments> postAttachmentsList) {
+        return dao.saveAll(postAttachmentsList);
+    }
 
     public PostAttachments update(PostAttachments postAttachments) { return dao.save(postAttachments); }
 

@@ -1,13 +1,13 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.*;
-import com.kh.elephant.service.PostService;
+import com.kh.elephant.service.*;
 import com.kh.elephant.domain.UserInfo;
-import com.kh.elephant.service.UserInfoService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +15,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -25,17 +32,32 @@ import java.util.List;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PostController {
 
+    @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload")
+    private String uploadPath;
+
     @Autowired
     private PostService postService;
 
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private CommentsService commService;
+
+    @Autowired
+    private PlaceService plService;
+
+    @Autowired
+    private PostThemaService ptService;
+
+    @Autowired
+    private BoardService boardService;
+
 
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/public/post")
     public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
-       log.info("post List 호출 컨트롤러 진입;");
+        log.info("post List 호출 컨트롤러 진입;");
 
 
         Sort sort = Sort.by("postSEQ").descending();
@@ -69,57 +91,63 @@ public class PostController {
         }
     }
 
-//   @PutMapping("/public/post/view/{id}")
-////    // 도메인 주소에 나올 주소 정한거
-//
-//    public ResponseEntity<Post> ViewCount(@PathVariable int id){
-//
-//        Post viewPost = postService.show(id);
-//        if(viewPost == null){
-//            return ResponseEntity.notFound().build();
-//        }
-//return ResponseEntity.ok(viewPost);
-//
-//    }
 
     // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/post")
-    public ResponseEntity <String> upload(@RequestBody PostUploadDTO UploadDTO) {
+    public ResponseEntity<Post> createPost(@AuthenticationPrincipal String id, @RequestParam(name = "video", required = false) MultipartFile video, @RequestParam(name = "image", required = false) MultipartFile image, String title, @RequestParam(name = "content") String content, String userId, String placeSeq, String postThemaSeq, String boardSeq) {
 
-        List<PostAttachments>postAttachments = UploadDTO.getPostAttachments();
+        Post vo = new Post();
 
-        PostDTO postDTO = UploadDTO.getPostDTO();
+        try {
+            String uuid = UUID.randomUUID().toString();
 
-        Post upload = postService.create(postDTO, postAttachments);
+            if (video != null) {
+                String originalVideo = video.getOriginalFilename();
+                String realVideo = uuid + "_" + originalVideo;
+                Path pathVideo = Paths.get(uploadPath, realVideo);
+                video.transferTo(pathVideo);
+            }
 
-        if(upload != null){
-            return new ResponseEntity<>("게시물이 등록되었습니다", HttpStatus.CREATED);
+            if (image != null) {
+                String originalImage = image.getOriginalFilename();
+                String realImage = uuid + "_" + originalImage;
+                Path pathImage = Paths.get(uploadPath, realImage);
+                image.transferTo(pathImage);
+            }
 
-        }else {
-            return new ResponseEntity<>("게시물 등록에 실패했습니다",HttpStatus.BAD_REQUEST);
+            // 아래 되면 날짜 조회수 추가
+            vo.setPostTitle(title);
+            vo.setPostContent(content);
+
+            vo.setPostUrl(uuid);
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserId(userId);
+            vo.setUserInfo(userInfo);
+
+            Place place = new Place();
+            place.setPlaceSeq(Integer.parseInt(placeSeq));
+            vo.setPlaceSeq(place);
+
+            PostThema postThema = new PostThema();
+            postThema.setPostThemaSeq(Integer.parseInt(postThemaSeq));
+            vo.setPostThemaSeq(postThema);
+
+            Board board = new Board();
+            board.setBoardSEQ(Integer.parseInt(boardSeq));
+            vo.setBoard(board);
+
+            Post savedPost = postService.create(vo);
+
+            if (savedPost != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(savedPost);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-//        Post post = Post.builder()
-//                .postSEQ(dto.getPostDTO().getSeq())
-//                .postTitle(dto.getPostDTO().getTitle())
-//                .postContent(dto.getPostDTO().getContent())
-//                .postDate(dto.getPostDTO().getDate())
-//                .postView(dto.getPostDTO().getView())
-//                .postUrl(dto.getPostDTO().getUrl())
-//                .userInfo(dto.getPostDTO().getUserInfo())
-//                .placeSeq(dto.getPostDTO().getPlaceSeq())
-//                .postThemaSeq(dto.getPostDTO().getPostThemaSeq())
-//                .board(dto.getPostDTO().getBoard())
-//                .postNotice(dto.getPostDTO().getPostNotice())
-//                .postDelete(dto.getPostDTO().getDelete())
-//                .build();
-
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(postService.create(post));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
     }
-
 
 //    // 리뷰 추가
 //    @PostMapping("/reviews")
@@ -150,14 +178,7 @@ public class PostController {
 //        }
 //    }
 
-
-
-
-
-
-
-
-    // 게시글 수정 http://localhost:8080/qiri/post
+    //    게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post) {
         try {
@@ -167,7 +188,7 @@ public class PostController {
         }
     }
 
-    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    //     게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/post/{id}")
     public ResponseEntity<Post> delete(@PathVariable int id) {
         try {
@@ -176,34 +197,32 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+}
 
-    // 검색
-    @GetMapping("/public/post/search/{keyword}")
 
-    public ResponseEntity<Page<Post>> search(@PathVariable String keyword,@PageableDefault(size = 20, sort = "postSEQ")Pageable pageable){
-        Page<Post> searchResult = postService.searchPost(keyword, pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(searchResult);
+   //  검색
+//    @GetMapping("/public/post/search/{keyword}")
 
-//    public ResponseEntity<Page<Post>> search(@PathVariable String keyword, Pageable pageable){
+//    public ResponseEntity<Page<Post>> search(@PathVariable String keyword,@PageableDefault(size = 20, sort = "postSEQ")Pageable pageable){
+//        Page<Post> searchResult=postService.searchPost(keyword,pageable);
+//        return ResponseEntity.status(HttpStatus.OK).body(searchResult);
 //
-//        Page<Post> list = null;
+//    public ResponseEntity<Page<Post>>search(@PathVariable String keyword,Pageable pageable){
 //
-//        if(keyword == null){
-//            pageable = PageRequest.of(0,20,Sort.by("postSEQ"));
-//            list = postService.showAll(pageable); // 기존 리스트들 보여줌 얘왜 서비스에 showAll 안에 pageable 못불러오냐
-//        }else {
-//            list = postService.searchPost(keyword,pageable); // 검색리스트 반환
+//        Page<Post> list=null;
+//
+//        if(keyword==null){
+//        pageable=PageRequest.of(0,20,Sort.by("postSEQ"));
+//        list=postService.showAll(pageable); // 기존 리스트들 보여줌 얘왜 서비스에 showAll 안에 pageable 못불러오냐
+//        }else{
+//        list=postService.searchPost(keyword,pageable); // 검색리스트 반환
 //        }
-//    return ResponseEntity.status(HttpStatus.OK).body(list);
-
+//        return ResponseEntity.status(HttpStatus.OK).body(list);
+//        }
+//        }
         /*Page<Post>result = postService.search(keyword,pageable);
         return ResponseEntity.status(HttpStatus.OK).body(result);*/
 
-        }
+
 
 //        return null;
-    }
-
-
-
-

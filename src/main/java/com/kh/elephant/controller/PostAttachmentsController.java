@@ -40,9 +40,9 @@ public class PostAttachmentsController {
     }
     // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/PostAttachments")
-    public ResponseEntity<PostAttachments> insert(@RequestBody PostAttachments postAttachments){
+    public ResponseEntity<PostAttachments> insert(@RequestBody List<PostAttachments> postAttachments){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(postAttachments));
+            return ResponseEntity.status(HttpStatus.OK).body((PostAttachments) service.createAll(postAttachments));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
