@@ -1,6 +1,7 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.*;
+import com.kh.elephant.security.TokenProvider;
 import com.kh.elephant.service.*;
 import com.kh.elephant.domain.UserInfo;
 import com.querydsl.core.BooleanBuilder;
@@ -35,6 +36,8 @@ public class PostController {
     @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload")
     private String uploadPath;
 
+    @Autowired
+    private TokenProvider tokenProvider;
     @Autowired
     private PostService postService;
 
@@ -93,61 +96,63 @@ public class PostController {
 
 
     // 게시글 추가 http://localhost:8080/qiri/post
-    @PostMapping("/post")
-    public ResponseEntity<Post> createPost(@AuthenticationPrincipal String id, @RequestParam(name = "video", required = false) MultipartFile video, @RequestParam(name = "image", required = false) MultipartFile image, String title, @RequestParam(name = "content") String content, String userId, String placeSeq, String postThemaSeq, String boardSeq) {
-
-        Post vo = new Post();
-
-        try {
-            String uuid = UUID.randomUUID().toString();
-
-            if (video != null) {
-                String originalVideo = video.getOriginalFilename();
-                String realVideo = uuid + "_" + originalVideo;
-                Path pathVideo = Paths.get(uploadPath, realVideo);
-                video.transferTo(pathVideo);
-            }
-
-            if (image != null) {
-                String originalImage = image.getOriginalFilename();
-                String realImage = uuid + "_" + originalImage;
-                Path pathImage = Paths.get(uploadPath, realImage);
-                image.transferTo(pathImage);
-            }
-
-            // 아래 되면 날짜 조회수 추가
-            vo.setPostTitle(title);
-            vo.setPostContent(content);
-
-            vo.setPostUrl(uuid);
-
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserId(userId);
-            vo.setUserInfo(userInfo);
-
-            Place place = new Place();
-            place.setPlaceSeq(Integer.parseInt(placeSeq));
-            vo.setPlaceSeq(place);
-
-            PostThema postThema = new PostThema();
-            postThema.setPostThemaSeq(Integer.parseInt(postThemaSeq));
-            vo.setPostThemaSeq(postThema);
-
-            Board board = new Board();
-            board.setBoardSEQ(Integer.parseInt(boardSeq));
-            vo.setBoard(board);
-
-            Post savedPost = postService.create(vo);
-
-            if (savedPost != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(savedPost);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @PostMapping("/post")
+//    public ResponseEntity<Post> createPost(@AuthenticationPrincipal String id, @RequestParam(name = "video", required = false) MultipartFile video, @RequestParam(name = "image", required = false) MultipartFile image, String title, @RequestParam(name = "content") String content, String userId, String placeSeq, String postThemaSeq, String boardSeq ) {
+//
+////        String Id = tokenProvider.validateAndGetUserId(PostUploadDTO uploadDTO);
+//
+//        Post vo = new Post();
+//
+//        try {
+//            String uuid = UUID.randomUUID().toString();
+//
+//            if (video != null) {
+//                String originalVideo = video.getOriginalFilename();
+//                String realVideo = uuid + "_" + originalVideo;
+//                Path pathVideo = Paths.get(uploadPath, realVideo);
+//                video.transferTo(pathVideo);
+//            }
+//
+//            if (image != null) {
+//                String originalImage = image.getOriginalFilename();
+//                String realImage = uuid + "_" + originalImage;
+//                Path pathImage = Paths.get(uploadPath, realImage);
+//                image.transferTo(pathImage);
+//            }
+//
+//            // 아래 되면 날짜 조회수 추가
+//            vo.setPostTitle(title);
+//            vo.setPostContent(content);
+//
+//            vo.setPostUrl(uuid);
+//
+//            UserInfo userInfo = new UserInfo();
+//            userInfo.setUserId(userId);
+//            vo.setUserInfo(userInfo);
+//
+//            Place place = new Place();
+//            place.setPlaceSeq(Integer.parseInt(placeSeq));
+//            vo.setPlaceSeq(place);
+//
+//            PostThema postThema = new PostThema();
+//            postThema.setPostThemaSeq(Integer.parseInt(postThemaSeq));
+//            vo.setPostThemaSeq(postThema);
+//
+//            Board board = new Board();
+//            board.setBoardSEQ(Integer.parseInt(boardSeq));
+//            vo.setBoard(board);
+//
+//            Post savedPost = postService.create(vo);
+//
+//            if (savedPost != null) {
+//                return ResponseEntity.status(HttpStatus.OK).body(savedPost);
+//            } else {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
+//        } catch (IOException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
 //    // 리뷰 추가
 //    @PostMapping("/reviews")
@@ -178,6 +183,17 @@ public class PostController {
 //        }
 //    }
 
+    @PostMapping("/post")
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO postDTO){
+        log.info("나와라이~ 나와라이~" + postDTO.toString());
+
+        Post post = postService.create(postDTO);
+
+//        String userId = tokenProvider.validateAndGetUserId(userInfoDTO.getToken());
+
+
+        return ResponseEntity.ok().body(post);
+    }
     //    게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post) {

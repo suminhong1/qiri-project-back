@@ -64,7 +64,24 @@ public class UserInfoController {
     @PutMapping("/userInfo/editProfile")
     public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
+            UserInfo existingUser = userService.show(user.getUserId());
+            // 새로운 사용자 정보로 업데이트
+            existingUser.setUserName(user.getUserName());
+            existingUser.setUserNickname(user.getUserNickname());
+            existingUser.setAge(user.getAge());
+            existingUser.setGender(user.getGender());
+            existingUser.setPhone(user.getPhone());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setStatusMessage(user.getStatusMessage());
+            existingUser.setHasPartner(user.getHasPartner());
+            existingUser.setBloodType(user.getBloodType());
+            existingUser.setMbti(user.getMbti());
+            existingUser.setBirthday(user.getBirthday());
+            existingUser.setPlaceType(user.getPlaceType());
+
+            UserInfo updatedUser = userService.update(existingUser);
+
+            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -104,6 +121,7 @@ public class UserInfoController {
                 .joinDate(new Date())
                 .build();
 
+
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
@@ -123,23 +141,7 @@ public class UserInfoController {
         UserInfo userInfo = userService.getByCredentials(dto.getId(), dto.getPwd(), passwordEncoder);
         if (userInfo != null) { // -> 토큰 생성
             String token = tokenProvider.create(userInfo);
-            UserInfoDTO responseDTO = UserInfoDTO.builder()
-                    .id(userInfo.getUserId())
-                    .pwd(userInfo.getUserPwd())
-                    .name(userInfo.getUserName())
-                    .nickname(userInfo.getUserNickname())
-                    .age(userInfo.getAge())
-                    .gender(userInfo.getGender())
-                    .placeType(userInfo.getPlaceType())
-                    .phone(userInfo.getPhone())
-                    .email(userInfo.getEmail())
-                    .statusMessage(userInfo.getStatusMessage())
-                    .hasPartner(userInfo.getHasPartner())
-                    .bloodType(userInfo.getBloodType())
-                    .mbti(userInfo.getMbti())
-                    .birthday(userInfo.getBirthday())
-                    .token(token)
-                    .build();
+            UserInfoDTO responseDTO = userService.buildUserInfoDTO(userInfo, token);
             return ResponseEntity.ok().body(responseDTO);
         } else {
             return ResponseEntity.badRequest().build();

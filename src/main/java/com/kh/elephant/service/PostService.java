@@ -1,16 +1,17 @@
 package com.kh.elephant.service;
 
-import com.kh.elephant.domain.PostAttachments;
-import com.kh.elephant.domain.PostDTO;
+import com.kh.elephant.domain.*;
+import com.kh.elephant.repo.UserInfoDAO;
+import com.kh.elephant.security.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
-import com.kh.elephant.domain.Post;
 import com.kh.elephant.repo.PostDAO;
 import com.querydsl.core.BooleanBuilder;
+import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
@@ -22,8 +23,23 @@ public class PostService {
     private PostDAO dao;
 
     @Autowired
+    private UserInfoDAO userDao;
+
+    @Autowired
     private PostAttachmentsService postAttachmentsService;
 
+    @Autowired
+    private PlaceService placeService;
+
+    @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private PostThemaService postThemaService;
+
+    @Autowired UserInfoService userService;
+    @Autowired
+    private TokenProvider tokenProvider;
 
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder) {
 
@@ -54,21 +70,28 @@ public class PostService {
         return post;
     }
 
+    public Post create(PostDTO postDTO){
 
-//    public Post create(PostDTO postDTO, List<PostAttachments> postAttachments) {
-//        Post post = postDTO.ToPost();
-//
-//        Post savePost = dao.save(post);
-//
-//        for (PostAttachments attachments : postAttachments){
-//            attachments.setPost(savePost);
-//        }
-//
-//        List<PostAttachments> savedAttachments = postAttachmentsService.createAll(postAttachments);
-//        return savePost;
-//    }
-public Post create(Post post){
-    return dao.save(post);
+
+
+
+        // UserInfo 준영이가 수정해주면 UserService로 불러와서 짧게 넣으면됨
+
+//        UserInfo userInfo = userDao.findById(post.getUserInfo().getUserId().orElse(null));
+
+//        PostUploadDTO uploadDTO = buildPostDTO()
+
+        Post post = buildPostDTO(postDTO);
+
+
+
+
+
+
+//        Post post = Post.builder().userInfo(userInfo).build();
+
+
+        return dao.save(post);
 }
 
     public Post update(Post post) {
@@ -110,5 +133,30 @@ public Post create(Post post){
 //    }
 
 
+    public Post buildPostDTO (PostDTO dto){
+
+        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+        UserInfo userInfo = userService.show(userId);
+
+        Place place = placeService.show(dto.getPlaceSeq());
+
+        Board board = boardService.show(dto.getBoardSeq());
+
+
+
+        Post post = Post.builder()
+
+                .postTitle(dto.getPostTitle())
+                .postContent(dto.getPostContent())
+                .postView(dto.getPostView())
+                .postUrl(dto.getPostUrl())
+                .userInfo(userInfo)
+//                .placeSeq(place)
+//                .board(board)
+                .build();
+
+        return post;
+
+    }
 
 }

@@ -21,7 +21,7 @@ public class Post {
     @Id
     @Column(name="post_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "postSequence")
-    @SequenceGenerator(name="postSequence", sequenceName = "SEQ_POST",allocationSize = 1)
+    @SequenceGenerator(name="postSequence", sequenceName = "SEQ_POST",allocationSize = 1, initialValue = 1)
     private int postSEQ;
 
     @Column(name ="post_title")
@@ -61,6 +61,8 @@ public class Post {
     @Column(name = "post_delete")
     private String postDelete;
 
+    // 5개 추가.. 우리가 고르는 카테고리 타입 5개
+    // private int type1; .....
 
 
 }
