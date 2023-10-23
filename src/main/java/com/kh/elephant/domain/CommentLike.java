@@ -19,7 +19,7 @@ public class CommentLike {
     @Column(name="cl_seq")
     @GeneratedValue(strategy= GenerationType.IDENTITY, generator = "clSeq")
     @SequenceGenerator(name = "clSeq", sequenceName = "SEQ_COMMENT_LIKE", allocationSize = 1)
-    private int clSeq;
+    private int clSEQ;
 
     @Column(name = "cl_date")
     private Date clDate;

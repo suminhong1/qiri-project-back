@@ -1,22 +1,25 @@
 package com.kh.elephant.config;
 
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.WebSocketHandler;
+
 import org.springframework.web.socket.config.annotation.*;
 
-@RequiredArgsConstructor
 @Configuration
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
-
-    private final WebSocketHandler webSocketHandler;
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registery) {
-        registery.addHandler(webSocketHandler, "ws/chat").setAllowedOrigins("*");
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/sub");
+        registry.setApplicationDestinationPrefixes("/pub");
+    }
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registery) {
+        registery.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 
 }

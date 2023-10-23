@@ -9,40 +9,40 @@ import org.hibernate.annotations.DynamicInsert;
 import java.util.Date;
 
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Entity
-//@DynamicInsert
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@DynamicInsert
 public class ChatMessage {
-//    @Id
-//    @Column(name = "chatmessage_seq")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "chatMessageSequence")
-//    @SequenceGenerator(name = "chatMessageSequence", sequenceName = "SEQ_CHATMESSAGE", allocationSize = 1)
-//    private int chatMessageSeq;
+    @Id
+    @Column(name = "chatmessage_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "chatMessageSequence")
+    @SequenceGenerator(name = "chatMessageSequence", sequenceName = "SEQ_CHATMESSAGE", allocationSize = 1)
+    private int chatMessageSeq;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserInfo userInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "CHATROOM_SEQ")
+    private ChatRoom chatRoom;
+
+    @Lob // BLOB 데이터를 저장하기 위한 어노테이션
+    @Column(name = "MSS_CONTENT")
+    private byte[] messageContent;
+
+
+
+//    public enum MessageType {
+//        ENTER, TALK
+//    }
 //
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private UserInfo userInfo;
+//    private MessageType type; // 메시지 타입
 //
-//    @ManyToOne
-//    @JoinColumn(name = "CHATROOM_SEQ")
-//    private ChatRoom chatRoom;
+//    private String roomId;
 //
-//    @Column(name = "MSS_CONTENT")
-//    private String messageContent;
+//    private String sender;
 //
-//    @Column(name = "SENT_TIME")
-//    private Date sentTime;
-
-    public enum MessageType {
-        ENTER, TALK
-    }
-
-    private MessageType type; // 메시지 타입
-
-    private String roomId;
-
-    private String sender;
-
-    private String message;
+//    private String message;
 }
