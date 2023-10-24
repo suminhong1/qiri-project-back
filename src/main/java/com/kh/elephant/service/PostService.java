@@ -1,16 +1,17 @@
 package com.kh.elephant.service;
 
-import com.kh.elephant.domain.PostAttachments;
-import com.kh.elephant.domain.PostDTO;
+import com.kh.elephant.domain.*;
+import com.kh.elephant.repo.UserInfoDAO;
+import com.kh.elephant.security.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
-import com.kh.elephant.domain.Post;
 import com.kh.elephant.repo.PostDAO;
 import com.querydsl.core.BooleanBuilder;
+import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
@@ -21,10 +22,24 @@ public class PostService {
     @Autowired
     private PostDAO dao;
 
+    @Autowired
+    private UserInfoDAO userDao;
 
+    @Autowired
+    private PostAttachmentsService postAttachmentsService;
 
+    @Autowired
+    private PlaceService placeService;
 
+    @Autowired
+    private BoardService boardService;
 
+    @Autowired
+    private PostThemaService postThemaService;
+
+    @Autowired UserInfoService userService;
+    @Autowired
+    private TokenProvider tokenProvider;
 
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder) {
 
@@ -50,21 +65,15 @@ public class PostService {
             post.setPostView(post.getPostView()+1);// 조회수 1 증가
 
             dao.save(post); // 증가된거 저장
-    }
+        }
 
         return post;
     }
 
+    public Post create(Post post){
 
-    public Post create(PostDTO postDTO, List<PostAttachments> postattachments) {
-        Post post =postDTO.ToPost();
 
-        Post savePost = dao.save(post);
-
-        for (PostAttachments attachments : postattachments){
-            attachments.setPost(savePost);
-        }
-        return savePost;
+        return dao.save(post);
     }
 
     public Post update(Post post) {
@@ -85,8 +94,6 @@ public class PostService {
 
         return dao.findByBoardCode(code);
     }
-
-
 
 
 
