@@ -24,7 +24,7 @@ public class QCommentLike extends EntityPathBase<CommentLike> {
 
     public final DateTimePath<java.util.Date> clDate = createDateTime("clDate", java.util.Date.class);
 
-    public final NumberPath<Integer> clSeq = createNumber("clSeq", Integer.class);
+    public final NumberPath<Integer> clSEQ = createNumber("clSEQ", Integer.class);
 
     public final NumberPath<Integer> commentSeq = createNumber("commentSeq", Integer.class);
 
