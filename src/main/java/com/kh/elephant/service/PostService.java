@@ -70,25 +70,7 @@ public class PostService {
         return post;
     }
 
-    public Post create(PostDTO postDTO){
-
-
-
-
-        // UserInfo 준영이가 수정해주면 UserService로 불러와서 짧게 넣으면됨
-
-//        UserInfo userInfo = userDao.findById(post.getUserInfo().getUserId().orElse(null));
-
-//        PostUploadDTO uploadDTO = buildPostDTO()
-
-        Post post = buildPostDTO(postDTO);
-
-
-
-
-
-
-//        Post post = Post.builder().userInfo(userInfo).build();
+    public Post create(Post post){
 
 
         return dao.save(post);
@@ -115,48 +97,29 @@ public class PostService {
 
 
 
+//    public Post buildPostDTO (PostDTO dto){
 
-
-
-//    public Post increaseViewCount(int code){
-//        log.info("조회수가 증가하나여"+code);
+//        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+//        UserInfo userInfo = userService.show(userId);
 //
-//        Post post = dao.findById(code).orElse(null);
+//        Place place = placeService.show(dto.getPlaceSeq());
 //
-//        if(post != null){
-//            post.setPostView(post.getPostView()+1);// 조회수 1 증가
+//        Board board = boardService.show(dto.getBoardSeq());
+
+
+
+//        Post post = Post.builder()
 //
-//            dao.save(post); // 증가된거 저장
-//
-//        }
-//        return post;
-//    }
-
-
-    public Post buildPostDTO (PostDTO dto){
-
-        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
-        UserInfo userInfo = userService.show(userId);
-
-        Place place = placeService.show(dto.getPlaceSeq());
-
-        Board board = boardService.show(dto.getBoardSeq());
-
-
-
-        Post post = Post.builder()
-
-                .postTitle(dto.getPostTitle())
-                .postContent(dto.getPostContent())
-                .postView(dto.getPostView())
-                .postUrl(dto.getPostUrl())
-                .userInfo(userInfo)
+//                .postTitle(dto.getPostTitle())
+//                .postContent(dto.getPostContent())
+//                .postView(dto.getPostView())
+//                .postUrl(dto.getPostUrl())
+//                .userInfo(userInfo)
 //                .placeSeq(place)
 //                .board(board)
-                .build();
+//                .build();
+//        return dao.save(dto);
 
-        return post;
-
-    }
+//    }
 
 }

@@ -51,11 +51,22 @@ public class PostController {
     private PlaceService plService;
 
     @Autowired
-    private PostThemaService ptService;
+    private PlaceTypeService pTypeService;
+
+    @Autowired
+    private PostThemaService pThemaService;
 
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private MatchingCategoryInfoService mciService;
+
+    @Autowired
+    private PostAttachmentsService paService;
 
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/public/post")
@@ -183,17 +194,49 @@ public class PostController {
 //        }
 //    }
 
-    @PostMapping("/post")
-    public ResponseEntity<Post> createPost(@RequestBody PostDTO postDTO){
-        log.info("나와라이~ 나와라이~" + postDTO.toString());
+    @PostMapping("/postWrite")
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO dto){
+        log.info("나와라이~ 나와라이~" + dto.toString());
 
-        Post post = postService.create(postDTO);
+        Place place = plService.show(dto.getPlaceSeq());
 
-//        String userId = tokenProvider.validateAndGetUserId(userInfoDTO.getToken());
+        PostThema postThema = pThemaService.show(dto.getPostThemaSeq());
 
+        Board board = boardService.show(dto.getBoardSeq());
 
+// Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서씀
+       Post post = Post.builder()
+               .postTitle(dto.getPostTitle())
+               .postContent(dto.getPostTitle())
+               .postView(dto.getPostView())
+               .postUrl("URL박아야함")
+               .place(place)
+               .postThema(postThema)
+               .board(board)
+               .build();
+
+        for (Integer categorySEQ : dto.getCategoryList()) {
+            Category category = categoryService.show(categorySEQ);
+            MatchingCategoryInfo matchingCategoryInfo
+                    = MatchingCategoryInfo.builder()
+                                    .post(post)
+                                    .category(category)
+                                            .build();
+            ResponseEntity.ok().body(mciService.create(matchingCategoryInfo));
+        }
+
+        for(String attachmentURL: dto.getAttachmentList()) {
+                        PostAttachments postAttachments
+                    = PostAttachments.builder()
+                    .post(post)
+                    .attachmentURL(attachmentURL)
+                    .build();
+            ResponseEntity.ok().body(paService.create(postAttachments));
+        }
+//        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         return ResponseEntity.ok().body(post);
     }
+
     //    게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post) {
