@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -28,6 +29,7 @@ public class UserInfoDTO {
     private String bloodType; // 혈액형
     private String mbti; // mbti
     private Date birthday; // 생일
+ //   private String profileImg;
 
     public UserInfo toUserInfo() {
         UserInfo userInfo = new UserInfo();
@@ -45,10 +47,8 @@ public class UserInfoDTO {
         userInfo.setBloodType(this.bloodType); // 혈액형
         userInfo.setMbti(this.mbti); // mbti
         userInfo.setBirthday(this.birthday); // 생일
+   //     userInfo.setProfileImg(this.profileImg);
 
         return userInfo;
     }
-
-
 }
-

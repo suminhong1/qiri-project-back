@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class SignUpDTO {
     private UserInfoDTO userInfoDTO;
     private List<UserCategoryInfo> userCategories;

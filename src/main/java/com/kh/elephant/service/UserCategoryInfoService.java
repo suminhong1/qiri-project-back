@@ -19,8 +19,8 @@ public class UserCategoryInfoService {
 
     public UserCategoryInfo create(UserCategoryInfo userCategoryInfo) { return dao.save(userCategoryInfo); }
 
-    public List<UserCategoryInfo> createAll(List<UserCategoryInfo> userCategoryInfos) {
-        return dao.saveAll(userCategoryInfos);
+    public List<UserCategoryInfo> createAll(List<UserCategoryInfo> userCategoryInfoList) {
+        return dao.saveAll(userCategoryInfoList);
     }
 
     public UserCategoryInfo update(UserCategoryInfo userCategoryInfo) { return dao.save(userCategoryInfo); }
@@ -31,4 +31,5 @@ public class UserCategoryInfoService {
         dao.delete(data);
         return data;
     }
+
 }

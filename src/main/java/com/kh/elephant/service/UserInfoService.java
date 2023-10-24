@@ -2,7 +2,9 @@ package com.kh.elephant.service;
 
 
 import com.kh.elephant.domain.SignUpDTO;
+import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.domain.UserInfo;
+import com.kh.elephant.domain.UserInfoDTO;
 import com.kh.elephant.repo.UserInfoDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ public class UserInfoService {
 
     @Autowired
     private UserCategoryInfoService userCategoryInfoService;
+    private UserCategoryInfo userCategoryInfo;
 
     public List<UserInfo> showAll (){
         return dao.findAll();
@@ -56,15 +59,32 @@ public class UserInfoService {
         return null;
     }
 
-    public UserInfo createWithCategories(SignUpDTO signUpDTO) {
-        UserInfo userInfo = create(signUpDTO.getUserInfoDTO().toUserInfo()); // assuming 'create' saves the user
-        userCategoryInfoService.createAll(signUpDTO.getUserCategories());
-        return userInfo;
+//    public UserInfo createWithCategories(SignUpDTO signUpDTO) {
+//        UserInfo userInfo = create(signUpDTO.getUserInfoDTO().toUserInfo()); // assuming 'create' saves the user
+//        userCategoryInfoService.createAll(signUpDTO.getUserCategories());
+//        return userInfo;
+//    }
+
+    public UserInfoDTO buildUserInfoDTO(UserInfo userInfo, String token) {
+        return UserInfoDTO.builder()
+                .id(userInfo.getUserId())
+                .name(userInfo.getUserName())
+                .nickname(userInfo.getUserNickname())
+                .age(userInfo.getAge())
+                .gender(userInfo.getGender())
+                .placeType(userInfo.getPlaceType())
+                .phone(userInfo.getPhone())
+                .email(userInfo.getEmail())
+                .statusMessage(userInfo.getStatusMessage())
+                .hasPartner(userInfo.getHasPartner())
+                .bloodType(userInfo.getBloodType())
+                .mbti(userInfo.getMbti())
+                .birthday(userInfo.getBirthday())
+            //    .profileImg(userInfo.getProfileImg())
+                .token(token)
+                .build();
+
     }
-
-
-
-
 
 
 }
