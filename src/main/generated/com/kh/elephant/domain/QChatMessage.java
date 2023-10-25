@@ -26,7 +26,9 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
 
     public final QChatRoom chatRoom;
 
-    public final ArrayPath<byte[], Byte> messageContent = createArray("messageContent", byte[].class);
+    public final StringPath messageContent = createString("messageContent");
+
+    public final DateTimePath<java.util.Date> sendTime = createDateTime("sendTime", java.util.Date.class);
 
     public final QUserInfo userInfo;
 

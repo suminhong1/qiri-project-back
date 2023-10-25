@@ -32,21 +32,5 @@ public class ChatRoom {
     @Column(name = "CREATED_TIME")
     private Date createdTime;
 
-    @Column(name = "ENDED")
-    private String ended;
-
-
-
-//    private String roomId;
-//
-//    private String name;
-//
-//    public static ChatRoom create(String name) {
-//        ChatRoom chatRoom = new ChatRoom();
-//        chatRoom.roomId = UUID.randomUUID().toString();
-//        chatRoom.name = name;
-//        return chatRoom;
-//    }
-
 
 }

@@ -23,7 +23,10 @@ public class UserChatRoomInfo {
     @JoinColumn(name = "CHATROOM_SEQ")
     private ChatRoom chatRoom;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private UserInfo userInfo;
+
+    @Column(name = "LEAVE")
+    private String leave;
 }

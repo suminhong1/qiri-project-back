@@ -24,9 +24,9 @@ public class QPostLike extends EntityPathBase<PostLike> {
 
     public final DateTimePath<java.util.Date> plDate = createDateTime("plDate", java.util.Date.class);
 
-    public final NumberPath<Integer> postLikeSeq = createNumber("postLikeSeq", Integer.class);
+    public final QPost post;
 
-    public final QPost postSeq;
+    public final NumberPath<Integer> postLikeSeq = createNumber("postLikeSeq", Integer.class);
 
     public final QUserInfo userInfo;
 
@@ -48,7 +48,7 @@ public class QPostLike extends EntityPathBase<PostLike> {
 
     public QPostLike(Class<? extends PostLike> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.postSeq = inits.isInitialized("postSeq") ? new QPost(forProperty("postSeq"), inits.get("postSeq")) : null;
+        this.post = inits.isInitialized("post") ? new QPost(forProperty("post"), inits.get("post")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 

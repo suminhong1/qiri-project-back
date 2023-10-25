@@ -26,8 +26,6 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
 
     public final DateTimePath<java.util.Date> createdTime = createDateTime("createdTime", java.util.Date.class);
 
-    public final StringPath ended = createString("ended");
-
     public final QPost post;
 
     public QChatRoom(String variable) {

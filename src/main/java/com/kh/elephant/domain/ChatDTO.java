@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatDTO {
 
-    private String token;
+    private String nickName;
 
     private int chatRoomSEQ;
 
     private String message;
+
+    private int postSEQ;
 
 }

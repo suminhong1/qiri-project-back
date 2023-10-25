@@ -1,54 +1,41 @@
-//package com.kh.elephant.service;
-//
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.kh.elephant.domain.ChatRoom;
-//import jakarta.annotation.PostConstruct;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.socket.TextMessage;
-//import org.springframework.web.socket.WebSocketSession;
-//
-//import java.io.IOException;
-//import java.util.*;
-//
-//@Slf4j
-//@RequiredArgsConstructor
-//@Service
-//public class ChatService {
-//
-//    private final ObjectMapper objectMapper;
-//
-//    private Map<String, ChatRoom> chatRooms;
-//
-//    @PostConstruct
-//    private void init() {
-//        chatRooms = new LinkedHashMap<>();
-//    }
-//
-//    public List<ChatRoom> findAllRoom() {
-//        return new ArrayList<>(chatRooms.values());
-//    }
-//
-//    public ChatRoom findRoomById(String roomId) {
-//        return chatRooms.get(roomId);
-//    }
-//
-//    public ChatRoom createRoom(String name) {
-//        String radomId = UUID.randomUUID().toString();
-//        ChatRoom chatRoom = ChatRoom.builder()
-//                .roomId(radomId)
-//                .name(name)
-//                .build();
-//        chatRooms.put(radomId, chatRoom);
-//        return chatRoom;
-//    }
-//
-//    public <T> void sendMessage(WebSocketSession session, T message) {
-//        try {
-//            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-//        } catch (IOException e) {
-//            log.error(e.getMessage(), e);
-//        }
-//    }
-//}
+package com.kh.elephant.service;
+
+import com.kh.elephant.repo.ChatMessageDAO;
+import com.kh.elephant.repo.ChatRoomDAO;
+import com.kh.elephant.repo.UserChatRoomInfoDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class ChatService {
+
+    @Autowired
+    private UserChatRoomInfoDAO userChatRoomInfoDAO;
+
+    @Autowired
+    private ChatRoomDAO chatRoomDAO;
+
+    @Autowired
+    private ChatMessageDAO chatMessageDAO;
+
+    @Transactional
+    public void leaveChatRoom(int chatroomSeq) {
+        // 모든 유저의 LEAVE 값이 'Y'인지 확인
+        boolean allUsersLeft = userChatRoomInfoDAO.allUsersLeft(chatroomSeq);
+
+        if (allUsersLeft) {
+            // 채팅 메세지 테이블에서 해당 채팅방 관련 데이터 삭제
+            chatMessageDAO.deleteByRoomSEQ(chatroomSeq);
+
+            // 유저 채팅방 정보 테이블에서 해당 채팅방 정보 삭제
+            userChatRoomInfoDAO.deleteByChatroomSeq(chatroomSeq);
+
+        }
+
+        // 채팅방 테이블에서 해당 채팅방 데이터 삭제
+        chatRoomDAO.deleteByRoomSEQ(chatroomSeq);
+
+
+    }
+}

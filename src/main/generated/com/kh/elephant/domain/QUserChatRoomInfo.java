@@ -24,6 +24,8 @@ public class QUserChatRoomInfo extends EntityPathBase<UserChatRoomInfo> {
 
     public final QChatRoom chatRoom;
 
+    public final StringPath leave = createString("leave");
+
     public final NumberPath<Integer> userChatRoomInfoSeq = createNumber("userChatRoomInfoSeq", Integer.class);
 
     public final QUserInfo userInfo;

@@ -33,6 +33,14 @@ public class UserChatRoomInfoService {
         return null;
     }
 
+    public int chatRoomLeave(String id, int code) {
+        return dao.updateLeaveStatus(id, code);
+    }
+
+    public List<UserChatRoomInfo> findByUserId(String id) {
+        return dao.findByUserId(id);
+    }
+
     public UserChatRoomInfo delete(int code) {
         UserChatRoomInfo data = dao.findById(code).orElse(null);
         dao.delete(data);

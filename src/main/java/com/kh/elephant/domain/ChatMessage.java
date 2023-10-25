@@ -30,21 +30,9 @@ public class ChatMessage {
     @JoinColumn(name = "CHATROOM_SEQ")
     private ChatRoom chatRoom;
 
-    @Lob // BLOB 데이터를 저장하기 위한 어노테이션
-    @Column(name = "MSS_CONTENT")
-    private byte[] messageContent;
+    @Column(name = "MESSAGE")
+    private String messageContent;
 
-
-
-//    public enum MessageType {
-//        ENTER, TALK
-//    }
-//
-//    private MessageType type; // 메시지 타입
-//
-//    private String roomId;
-//
-//    private String sender;
-//
-//    private String message;
+    @Column(name = "send_time")
+    private Date sendTime;
 }

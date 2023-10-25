@@ -29,6 +29,11 @@ public class UserInfoService {
         return dao.findById(id).orElse(null);
     }
 
+    public UserInfo findByNickname(String nickname)
+    {
+        return dao.findByNickname(nickname);
+    }
+
     public UserInfo create(UserInfo vo){
         log.info("UserInfo : " + vo);
         return dao.save(vo);
