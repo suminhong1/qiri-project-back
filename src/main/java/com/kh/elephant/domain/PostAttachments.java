@@ -1,10 +1,7 @@
 package com.kh.elephant.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 @Data
@@ -12,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 @AllArgsConstructor
 @EqualsAndHashCode
 @DynamicInsert
+@Builder
 @Entity
 public class PostAttachments {
 
@@ -20,7 +18,6 @@ public class PostAttachments {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "postAttachmentSequence")
     @SequenceGenerator(name="postAttachmentSequence", sequenceName = "SEQ_POST_ATTACHMENT",allocationSize = 1)
     private int postAttachmentSEQ;
-
 
     @ManyToOne
     @JoinColumn(name = "post_seq")

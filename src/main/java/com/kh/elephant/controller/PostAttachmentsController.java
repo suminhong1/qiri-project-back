@@ -42,7 +42,7 @@ public class PostAttachmentsController {
     @PostMapping("/PostAttachments")
     public ResponseEntity<PostAttachments> insert(@RequestBody PostAttachments postAttachments){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(postAttachments));
+            return ResponseEntity.status(HttpStatus.OK).body((PostAttachments) service.create(postAttachments));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

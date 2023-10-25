@@ -16,9 +16,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -58,7 +65,7 @@ public class PostController {
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/public/post")
     public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
-       log.info("post List 호출 컨트롤러 진입;");
+        log.info("post List 호출 컨트롤러 진입;");
 
 
         Sort sort = Sort.by("postSEQ").descending();
@@ -92,18 +99,6 @@ public class PostController {
         }
     }
 
-//   @PutMapping("/public/post/view/{id}")
-////    // 도메인 주소에 나올 주소 정한거
-//
-//    public ResponseEntity<Post> ViewCount(@PathVariable int id){
-//
-//        Post viewPost = postService.show(id);
-//        if(viewPost == null){
-//            return ResponseEntity.notFound().build();
-//        }
-//return ResponseEntity.ok(viewPost);
-//
-//    }
 
     // 게시글 추가 http://localhost:8080/qiri/post
 //    @PostMapping("/post")
@@ -175,6 +170,73 @@ public class PostController {
 //    @PostMapping("/reviewUpdate")
 //    public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
 //        log.info("들어옴?");
+//    public ResponseEntity<Post> createPost(@AuthenticationPrincipal String id, @RequestParam(name = "video", required = false) MultipartFile video, @RequestParam(name = "image", required = false) MultipartFile image, String title, @RequestParam(name = "content") String content, String userId, String placeSeq, String postThemaSeq, String boardSeq ) {
+//
+////        String Id = tokenProvider.validateAndGetUserId(PostUploadDTO uploadDTO);
+//
+//        Post vo = new Post();
+//
+//        try {
+//            String uuid = UUID.randomUUID().toString();
+//
+//            if (video != null) {
+//                String originalVideo = video.getOriginalFilename();
+//                String realVideo = uuid + "_" + originalVideo;
+//                Path pathVideo = Paths.get(uploadPath, realVideo);
+//                video.transferTo(pathVideo);
+//            }
+//
+//            if (image != null) {
+//                String originalImage = image.getOriginalFilename();
+//                String realImage = uuid + "_" + originalImage;
+//                Path pathImage = Paths.get(uploadPath, realImage);
+//                image.transferTo(pathImage);
+//            }
+//
+//            // 아래 되면 날짜 조회수 추가
+//            vo.setPostTitle(title);
+//            vo.setPostContent(content);
+//
+//            vo.setPostUrl(uuid);
+//
+//            UserInfo userInfo = new UserInfo();
+//            userInfo.setUserId(userId);
+//            vo.setUserInfo(userInfo);
+//
+//            Place place = new Place();
+//            place.setPlaceSeq(Integer.parseInt(placeSeq));
+//            vo.setPlaceSeq(place);
+//
+//            PostThema postThema = new PostThema();
+//            postThema.setPostThemaSeq(Integer.parseInt(postThemaSeq));
+//            vo.setPostThemaSeq(postThema);
+//
+//            Board board = new Board();
+//            board.setBoardSEQ(Integer.parseInt(boardSeq));
+//            vo.setBoard(board);
+//
+//            Post savedPost = postService.create(vo);
+//
+//            if (savedPost != null) {
+//                return ResponseEntity.status(HttpStatus.OK).body(savedPost);
+//            } else {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
+//        } catch (IOException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+
+//    // 리뷰 추가
+//    @PostMapping("/reviews")
+//    public ResponseEntity<Post> saveReview(@RequestBody Post post) {
+//        log.info("Received post data: " + post);
+//        try {
+//            // userId를 사용하여 UserInfo 엔터티 조회
+//            if (post.getUserInfo() == null || post.getUserInfo().getUserId() == null) {
+//                log.error("UserInfo or UserId is null in the request");
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//            }
 //
 //
 //        Post post = Post.builder()
@@ -186,18 +248,53 @@ public class PostController {
 //        return ResponseEntity.ok().body(postService.update(post));
 //    }
 
+    @PostMapping("/post")
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO dto){
+        log.info("나와라이~ 나와라이~" + dto.toString());
 
+        Place place = plService.show(dto.getPlaceSeq());
 
+        PostThema postThema = pThemaService.show(dto.getPostThemaSeq());
 
+        Board board = boardService.show(dto.getBoardSeq());
 
+        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+        UserInfo userInfo = userInfoService.show(userId);
 
+// Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서씀
+       Post post = Post.builder()
+               .postTitle(dto.getPostTitle())
+               .postContent(dto.getPostTitle())
+               .postView(dto.getPostView())
+               .postUrl("URL박아야함")
+               .place(place)
+               .postThema(postThema)
+               .board(board)
+               .build();
 
+        for (Integer categorySEQ : dto.getCategoryList()) {
+            Category category = categoryService.show(categorySEQ);
+            MatchingCategoryInfo matchingCategoryInfo
+                    = MatchingCategoryInfo.builder()
+                                    .post(post)
+                                    .category(category)
+                                            .build();
+            mciService.create(matchingCategoryInfo);
+        }
 
+        for(String attachmentURL: dto.getAttachmentList()) {
+                        PostAttachments postAttachments
+                    = PostAttachments.builder()
+                    .post(post)
+                    .attachmentURL(attachmentURL)
+                    .build();
+            paService.create(postAttachments);
+        }
 
+        return ResponseEntity.ok().body(post);
+    }
 
-
-
-    // 게시글 수정 http://localhost:8080/qiri/post
+    //    게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody Post post) {
         try {
@@ -207,7 +304,7 @@ public class PostController {
         }
     }
 
-    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    //     게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/post/{id}")
     public ResponseEntity<Post> delete(@PathVariable int id) {
         try {
@@ -216,34 +313,34 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 게시글 좋아요
 
-    // 검색
-    @GetMapping("/public/post/search/{keyword}")
+}
 
-    public ResponseEntity<Page<Post>> search(@PathVariable String keyword,@PageableDefault(size = 20, sort = "postSEQ")Pageable pageable){
-        Page<Post> searchResult = postService.searchPost(keyword, pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(searchResult);
 
-//    public ResponseEntity<Page<Post>> search(@PathVariable String keyword, Pageable pageable){
+   //  검색
+//    @GetMapping("/public/post/search/{keyword}")
+
+//    public ResponseEntity<Page<Post>> search(@PathVariable String keyword,@PageableDefault(size = 20, sort = "postSEQ")Pageable pageable){
+//        Page<Post> searchResult=postService.searchPost(keyword,pageable);
+//        return ResponseEntity.status(HttpStatus.OK).body(searchResult);
 //
-//        Page<Post> list = null;
+//    public ResponseEntity<Page<Post>>search(@PathVariable String keyword,Pageable pageable){
 //
-//        if(keyword == null){
-//            pageable = PageRequest.of(0,20,Sort.by("postSEQ"));
-//            list = postService.showAll(pageable); // 기존 리스트들 보여줌 얘왜 서비스에 showAll 안에 pageable 못불러오냐
-//        }else {
-//            list = postService.searchPost(keyword,pageable); // 검색리스트 반환
+//        Page<Post> list=null;
+//
+//        if(keyword==null){
+//        pageable=PageRequest.of(0,20,Sort.by("postSEQ"));
+//        list=postService.showAll(pageable); // 기존 리스트들 보여줌 얘왜 서비스에 showAll 안에 pageable 못불러오냐
+//        }else{
+//        list=postService.searchPost(keyword,pageable); // 검색리스트 반환
 //        }
-//    return ResponseEntity.status(HttpStatus.OK).body(list);
-
+//        return ResponseEntity.status(HttpStatus.OK).body(list);
+//        }
+//        }
         /*Page<Post>result = postService.search(keyword,pageable);
         return ResponseEntity.status(HttpStatus.OK).body(result);*/
 
-        }
+
 
 //        return null;
-    }
-
-
-
-

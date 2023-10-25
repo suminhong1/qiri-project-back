@@ -5,14 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostUploadDTO {
-    private PostDTO postDTO;
-    private List<PostAttachments> postAttachments;
+public class PostLikeDTO {
+    private int postSEQ;
 
+    private String userId;
 }

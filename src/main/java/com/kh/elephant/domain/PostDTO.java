@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDTO {
 
-    // post받을때 혹은 던질때... 유정정보..
+    // post받을때 혹은 던질때... 유저 정보..
     private String token;
 
     // 게시글 작성 관련 필요 데이터
@@ -28,22 +28,21 @@ public class PostDTO {
 
     private int postView;
 
-
 //    private String postUrl;
-
-//    private String userId;
-
 
     private int placeSeq;
 
     private int postThemaSeq;
 
     private int boardSeq;
-
-
+    
     private List<Integer> categoryList;
 
     private List<String> attachmentList;
+
+    // 게시글 좋아요 관련 필요 데이터
+
+    private int postSeq;
 
 
 }

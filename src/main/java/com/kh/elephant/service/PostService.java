@@ -72,9 +72,8 @@ public class PostService {
 
     public Post create(Post post){
 
-
         return dao.save(post);
-    }
+}
 
 
 
@@ -96,24 +95,5 @@ public class PostService {
 
         return dao.findByBoardCode(code);
     }
-
-
-
-
-//    public Post increaseViewCount(int code){
-//        log.info("조회수가 증가하나여"+code);
-//
-//        Post post = dao.findById(code).orElse(null);
-//
-//        if(post != null){
-//            post.setPostView(post.getPostView()+1);// 조회수 1 증가
-//
-//            dao.save(post); // 증가된거 저장
-//
-//        }
-//        return post;
-//    }
-
-
 
 }
