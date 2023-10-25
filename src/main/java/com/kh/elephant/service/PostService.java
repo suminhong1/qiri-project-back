@@ -76,6 +76,8 @@ public class PostService {
         return dao.save(post);
     }
 
+
+
     public Post update(Post post) {
         Post target = dao.findById(post.getPostSEQ()).orElse(null);
         if (target != null) {

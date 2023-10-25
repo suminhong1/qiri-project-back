@@ -171,6 +171,23 @@ public class PostController {
         return ResponseEntity.ok().body(postService.create(post));
     }
 
+    // 리뷰 업데이트 테스트용
+//    @PostMapping("/reviewUpdate")
+//    public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
+//        log.info("들어옴?");
+//
+//
+//        Post post = Post.builder()
+//                .postTitle(dto.getPostTitle())
+//                .postContent(dto.getPostContent())
+//                .build();
+//
+//
+//        return ResponseEntity.ok().body(postService.update(post));
+//    }
+
+
+
 
 
 

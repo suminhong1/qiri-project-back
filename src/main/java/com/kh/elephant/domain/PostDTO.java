@@ -28,6 +28,7 @@ public class PostDTO {
 
     private int postView;
 
+
 //    private String postUrl;
 
 //    private String userId;
