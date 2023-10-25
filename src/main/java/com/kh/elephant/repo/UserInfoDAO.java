@@ -13,3 +13,4 @@ public interface UserInfoDAO extends JpaRepository<UserInfo,String> {
     @Query(value = "SELECT * FROM USER_INFO WHERE USER_NICKNAME = :id", nativeQuery = true)
     UserInfo findByNickname(@Param("id") String id);
 }
+

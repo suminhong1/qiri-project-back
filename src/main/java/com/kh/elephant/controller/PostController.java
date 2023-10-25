@@ -1,13 +1,14 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.*;
-import com.kh.elephant.service.PostService;
+import com.kh.elephant.security.TokenProvider;
+import com.kh.elephant.service.*;
 import com.kh.elephant.domain.UserInfo;
-import com.kh.elephant.service.UserInfoService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +26,34 @@ import java.util.List;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PostController {
 
+    @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload")
+    private String uploadPath;
+
+    @Autowired
+    private TokenProvider tokenProvider;
     @Autowired
     private PostService postService;
 
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private CommentsService commService;
+
+    @Autowired
+    private PlaceService plService;
+
+    @Autowired
+    private PlaceTypeService pTypeService;
+
+    @Autowired
+    private PostThemaService pThemaService;
+
+    @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/public/post")
@@ -83,21 +106,21 @@ public class PostController {
 //    }
 
     // 게시글 추가 http://localhost:8080/qiri/post
-    @PostMapping("/post")
-    public ResponseEntity <String> upload(@RequestBody PostUploadDTO UploadDTO) {
+//    @PostMapping("/post")
+//    public ResponseEntity <String> upload(@RequestBody PostUploadDTO UploadDTO) {
+//
+//        List<PostAttachments>postAttachments = UploadDTO.getPostAttachments();
+//
+//        PostDTO postDTO = UploadDTO.getPostDTO();
 
-        List<PostAttachments>postAttachments = UploadDTO.getPostAttachments();
+//        Post upload = postService.create(postDTO);
 
-        PostDTO postDTO = UploadDTO.getPostDTO();
-
-        Post upload = postService.create(postDTO, postAttachments);
-
-        if(upload != null){
-            return new ResponseEntity<>("게시물이 등록되었습니다", HttpStatus.CREATED);
-
-        }else {
-            return new ResponseEntity<>("게시물 등록에 실패했습니다",HttpStatus.BAD_REQUEST);
-        }
+//        if(upload != null){
+//            return new ResponseEntity<>("게시물이 등록되었습니다", HttpStatus.CREATED);
+//
+//        }else {
+//            return new ResponseEntity<>("게시물 등록에 실패했습니다",HttpStatus.BAD_REQUEST);
+//        }
 //        Post post = Post.builder()
 //                .postSEQ(dto.getPostDTO().getSeq())
 //                .postTitle(dto.getPostDTO().getTitle())
@@ -118,37 +141,54 @@ public class PostController {
 //        } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
+//    }
+
+
+
+
+
+
+
+
+
+    // 리뷰 DB 저장
+    @PostMapping("/reviewWrite")
+    public ResponseEntity<Post> create(@RequestBody PostDTO dto) {
+        log.info("들어옴?");
+        Board board = boardService.show(dto.getBoardSeq());
+        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+        UserInfo userinfo = userInfoService.show(userId);
+
+
+        Post post = Post.builder()
+                .postTitle(dto.getPostTitle())
+                .postContent(dto.getPostContent())
+                .userInfo(userinfo)
+                .board(board)
+                .build();
+
+        
+        return ResponseEntity.ok().body(postService.create(post));
     }
 
-
-//    // 리뷰 추가
-//    @PostMapping("/reviews")
-//    public ResponseEntity<Post> saveReview(@RequestBody Post post) {
-//        log.info("Received post data: " + post);
-//        try {
-//            // userId를 사용하여 UserInfo 엔터티 조회
-//            if (post.getUserInfo() == null || post.getUserInfo().getUserId() == null) {
-//                log.error("UserInfo or UserId is null in the request");
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//            }
+    // 리뷰 업데이트 테스트용
+//    @PostMapping("/reviewUpdate")
+//    public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
+//        log.info("들어옴?");
 //
-//            UserInfo userInfo = userInfoService.show(post.getUserInfo().getUserId());
-//            if (userInfo == null) {
-//                log.error("No UserInfo found for the given UserId");
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//            }
 //
-//            // 조회한 UserInfo 엔터티를 post의 userInfo 필드에 설정
-//            post.setUserInfo(userInfo);
+//        Post post = Post.builder()
+//                .postTitle(dto.getPostTitle())
+//                .postContent(dto.getPostContent())
+//                .build();
 //
-//            // 리뷰 내용을 postContent 필드에 저장
-//            Post savedPost = postService.create(post);
-//            return ResponseEntity.status(HttpStatus.OK).body(savedPost);
-//        } catch (Exception e) {
-//            log.error("Error while saving review: ", e);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
+//
+//        return ResponseEntity.ok().body(postService.update(post));
 //    }
+
+
+
+
 
 
 

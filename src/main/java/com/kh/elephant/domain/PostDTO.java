@@ -1,11 +1,15 @@
 package com.kh.elephant.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,57 +17,33 @@ import java.util.Date;
 @AllArgsConstructor
 public class PostDTO {
 
-    private int Seq;
+    // post받을때 혹은 던질때... 유정정보..
+    private String token;
 
-    private String Title;
+    // 게시글 작성 관련 필요 데이터
 
-    private String Content;
+    private String postTitle;
 
-    private Date Date;
+    private String postContent;
 
-    private int View;
+    private int postView;
 
-    private String Url;
 
-    private UserInfo userInfo;
+//    private String postUrl;
 
-    private Place placeSeq;
+//    private String userId;
 
-    private PostThema postThemaSeq;
 
-    private Board board;
+    private int placeSeq;
 
-    private String postNotice;
+    private int postThemaSeq;
 
-    private String Delete;
+    private int boardSeq;
 
-    public Post ToPost(){
-        Post post = new Post();
 
-        post.setPostSEQ(this.Seq);
+    private List<Integer> categoryList;
 
-        post.setPostTitle(this.Title);
+    private List<String> attachmentList;
 
-        post.setPostContent(this.Content);
 
-        post.setPostDate(this.Date);
-
-        post.setPostView(this.View);
-
-        post.setPostUrl(this.Url);
-
-        post.setUserInfo(this.userInfo);
-
-        post.setPlaceSeq(this.placeSeq);
-
-        post.setPostThemaSeq(this.postThemaSeq);
-
-        post.setBoard(this.board);
-
-        post.setPostNotice(this.postNotice);
-
-        post.setPostDelete(this.Delete);
-
-        return post;
-    }
 }
