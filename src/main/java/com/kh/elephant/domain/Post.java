@@ -55,6 +55,9 @@ public class Post {
     @JoinColumn(name="board_seq")
     private Board board;
 
+    @Column(name = "matched")
+    private String matched;
+
     @Column(name="post_notice")
     private String postNotice;
 
