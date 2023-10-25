@@ -1,18 +1,25 @@
 package com.kh.elephant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 
 import java.util.Date;
 
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@DynamicInsert
+@DynamicUpdate
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Comments {
 
     @Id
@@ -22,12 +29,20 @@ public class Comments {
     private int commentsSeq;
 
 
-    @ManyToOne
-    @JoinColumn(name = "POST_SEQ")
-    private Post post;
+//    @ManyToOne
+//    @JoinColumn(name = "POST_SEQ")
+//    private Post post;
+
+    @Column(name = "POST_SEQ")
+    private int post;
 
     @Column(name = "COMMENTS_PARENT_SEQ")
     private Integer commentsParentSeq;
+
+    @JsonIgnore
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="COMMENTS_PARENT_SEQ", referencedColumnName = "comments_seq", insertable = false, updatable = false)
+    private Comments parent;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
