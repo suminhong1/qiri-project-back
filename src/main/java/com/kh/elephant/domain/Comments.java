@@ -29,9 +29,12 @@ public class Comments {
     private int commentsSeq;
 
 
-    @ManyToOne
-    @JoinColumn(name = "POST_SEQ")
-    private Post post;
+//    @ManyToOne
+//    @JoinColumn(name = "POST_SEQ")
+//    private Post post;
+
+    @Column(name = "POST_SEQ")
+    private int post;
 
     @Column(name = "COMMENTS_PARENT_SEQ")
     private Integer commentsParentSeq;

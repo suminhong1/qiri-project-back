@@ -10,6 +10,6 @@ import java.util.List;
 public interface CommentsDAO extends JpaRepository<Comments, Integer> {
 
     // 게시물 1개에 따른 댓글 전체 조회
-    @Query(value="SELECT * FROM comments WHERE post_SEQ = :id", nativeQuery = true)
-    List<Comments> findByCommentsSeq(@Param("id") int id);
+    @Query(value="SELECT * FROM comments WHERE post_seq = :id", nativeQuery = true)
+    List<Comments> findByPostSeq(@Param("id") int id);
 }

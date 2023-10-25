@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -13,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentsDTO {
-    private Post post;
+    private int post;
     private int commentsSeq;
-    private Integer CommentsParentSeq;
+    private Date commentDate;
     private UserInfo userInfo;
     private String commentDesc;
     @Builder.Default

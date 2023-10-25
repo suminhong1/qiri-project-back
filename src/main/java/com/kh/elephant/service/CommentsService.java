@@ -42,22 +42,22 @@ public class CommentsService {
         return date;
     }
 
-    public List<Comments> findByVideoCode(int id) {
-        return dao.findByCommentsSeq(id);
+    public List<Comments> findByPostSeq(int id) {
+        return dao.findByPostSeq(id);
     }
 
-    public List<Comments> getAllTopLevelComments(int commentSeq) {
+    public List<Comments> getAllTopLevelComments(int postSeq) {
         return queryFactory.selectFrom(qComments)
                 .where(qComments.parent.isNull())
-                .where(qComments.commentsSeq.eq(commentSeq))
+                .where(qComments.post.eq(postSeq))
                 .orderBy(qComments.commentDate.desc())
                 .fetch();
     }
 
-    public List<Comments> getRepliesByCommentId(Integer parentId, int commentSeq) {
+    public List<Comments> getRepliesByCommentId(Integer parentId, int postSeq) {
         return queryFactory.selectFrom(qComments)
                 .where(qComments.commentsParentSeq.eq(parentId))
-                .where(qComments.commentsSeq.eq(commentSeq))
+                .where(qComments.post.eq(postSeq))
                 .orderBy(qComments.commentDate.asc())
                 .fetch();
     }

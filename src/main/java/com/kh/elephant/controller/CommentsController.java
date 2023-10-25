@@ -32,9 +32,9 @@ public class CommentsController {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 //        }
 //    }
-    // 게시물 1개에 따른 댓글 전체 조회 : GET - http://localhost:8080/api/video/1/comment
-    @GetMapping("/public/comments/{id}/comment")
-    public ResponseEntity<List<CommentsDTO>> videoCommentList(@PathVariable int id) {
+    // 게시물 1개에 따른 댓글 전체 조회 : GET - http://localhost:8080/qiri/public/post/1/comments
+    @GetMapping("/public/post/{id}/comments")
+    public ResponseEntity<List<CommentsDTO>> commentList(@PathVariable int id) {
         List<Comments> topList = comments.getAllTopLevelComments(id);
         log.info("top : " + topList);
 
@@ -65,8 +65,8 @@ public class CommentsController {
 //        }
 //    }
 
-    // 댓글 추가 : POST - http://localhost:8080/qiri/comments
-    @PostMapping("/comments")
+    // 댓글 추가 : POST - http://localhost:8080/qiri/post/comments
+    @PostMapping("/post/comments")
     public ResponseEntity<Comments> create(@RequestBody Comments vo, @AuthenticationPrincipal String id) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(id);
@@ -74,8 +74,8 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
     }
 
-    // 댓글 수정 : PUT - http://localhost:8080/qiri/comments
-    @PutMapping("/comments")
+    // 댓글 수정 : PUT - http://localhost:8080/qiri/post/comments
+    @PutMapping("/post/comments")
     public ResponseEntity<Comments> update(@RequestBody Comments vo, @AuthenticationPrincipal String id){
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(id);
@@ -84,8 +84,8 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body(comments.update(vo));
     }
 
-    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/comments/1
-    @DeleteMapping("/comments/{id}")
+    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
+    @DeleteMapping("/post/comments/{id}")
     public ResponseEntity<Comments> delete(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(comments.delete(id));
