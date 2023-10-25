@@ -132,7 +132,7 @@ public class UserInfoController {
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
-         //  List<UserCategoryInfo> savedCategories = userCategoryInfoService.createAll(userCategories);
+          // List<UserCategoryInfo> savedCategories = userCategoryInfoService.createAll(userCategories);
 
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(registeredUser.getUserId())
@@ -168,7 +168,7 @@ public class UserInfoController {
         }
     }
 
-    // 프로필 사진 업로드 엔드포인트
+    // 프로필 사진 업로드
     @PostMapping("/uploadProfilePicture")
     public ResponseEntity<String> uploadProfilePicture(@RequestParam("profileImg") MultipartFile file) {
         try {
@@ -189,6 +189,14 @@ public class UserInfoController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    // 이메일로 아이디 찾기
+    @GetMapping("/userInfo/findIdByEmail")
+    public ResponseEntity<UserInfo> findIdByEmail(@RequestParam String email) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(userService.findIdByEmail(email));
+
     }
 
 

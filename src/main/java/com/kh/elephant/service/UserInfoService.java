@@ -6,6 +6,8 @@ import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.domain.UserInfoDTO;
 import com.kh.elephant.repo.UserInfoDAO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +21,9 @@ public class UserInfoService {
 
     @Autowired
     private UserInfoDAO dao;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private UserCategoryInfoService userCategoryInfoService;
@@ -83,8 +88,14 @@ public class UserInfoService {
                 .profileImg(userInfo.getProfileImg())
                 .token(token)
                 .build();
-
     }
 
-
+    public UserInfo findIdByEmail(String email) {
+        UserInfo user = dao.findByEmail(email);
+        if (user != null) {
+            return user;
+        } else {
+            return null;
+        }
+    }
 }
