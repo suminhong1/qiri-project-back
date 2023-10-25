@@ -1,9 +1,11 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.SignUpDTO;
+import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.domain.UserInfoDTO;
 import com.kh.elephant.security.TokenProvider;
+import com.kh.elephant.service.UserCategoryInfoService;
 import com.kh.elephant.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userService;
+    private UserCategoryInfoService userCategoryInfoService;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -68,6 +71,7 @@ public class UserInfoController {
             // 새로운 사용자 정보로 업데이트
             existingUser.setUserName(user.getUserName());
             existingUser.setUserNickname(user.getUserNickname());
+            existingUser.setUserPwd(user.getUserPwd());
             existingUser.setAge(user.getAge());
             existingUser.setGender(user.getGender());
             existingUser.setPhone(user.getPhone());
@@ -116,15 +120,20 @@ public class UserInfoController {
                 .mbti(dto.getUserInfoDTO().getMbti())
                 .birthday(dto.getUserInfoDTO().getBirthday())
                 .placeType(dto.getUserInfoDTO().getPlaceType())
+                .profileImg(dto.getUserInfoDTO().getProfileImg())
                 .isAdmin("N")
                 .isDeleted("N")
                 .joinDate(new Date())
                 .build();
 
+        List<UserCategoryInfo> userCategories = dto.getUserCategories();
+
 
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
+          // List<UserCategoryInfo> savedCategories = userCategoryInfoService.createAll(userCategories);
+
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(registeredUser.getUserId())
                     .nickname(registeredUser.getUserNickname())
@@ -137,7 +146,7 @@ public class UserInfoController {
 
     // 로그인 -> token
     @PostMapping("/userInfo/signin")
-    public ResponseEntity authenticate(@RequestBody UserInfoDTO dto) {
+    public ResponseEntity<UserInfoDTO> authenticate(@RequestBody UserInfoDTO dto) {
         UserInfo userInfo = userService.getByCredentials(dto.getId(), dto.getPwd(), passwordEncoder);
         if (userInfo != null) { // -> 토큰 생성
             String token = tokenProvider.create(userInfo);
@@ -158,4 +167,39 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    // 프로필 사진 업로드
+    @PostMapping("/uploadProfilePicture")
+    public ResponseEntity<String> uploadProfilePicture(@RequestParam("profileImg") MultipartFile file) {
+        try {
+            // 프로필 사진을 업로드할 디렉토리 경로 설정
+            String uploadDir = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
+
+            // 프로필 사진 파일 이름을 생성(고유)
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+            // 프로필 사진을 디렉토리에 저장
+            Path filePath = Paths.get(uploadDir, fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // 클라이언트에게 이미지 URL 전송
+            String imageUrl = "http://localhost:8080/qiri/public/upload/" + fileName;
+            return ResponseEntity.status(HttpStatus.OK).body(imageUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // 이메일로 아이디 찾기
+    @GetMapping("/userInfo/findIdByEmail")
+    public ResponseEntity<UserInfo> findIdByEmail(@RequestParam String email) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(userService.findIdByEmail(email));
+
+    }
+
+
+
+
 }

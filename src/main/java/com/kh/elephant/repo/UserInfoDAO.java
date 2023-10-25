@@ -12,5 +12,10 @@ public interface UserInfoDAO extends JpaRepository<UserInfo,String> {
 
     @Query(value = "SELECT * FROM USER_INFO WHERE USER_NICKNAME = :id", nativeQuery = true)
     UserInfo findByNickname(@Param("id") String id);
+
+    @Query(value = "SELECT * FROM USER_INFO WHERE EMAIL = :email", nativeQuery = true)
+    UserInfo findByEmail(String email);
+
+    
 }
 

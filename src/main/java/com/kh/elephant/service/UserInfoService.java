@@ -2,9 +2,12 @@ package com.kh.elephant.service;
 
 
 import com.kh.elephant.domain.SignUpDTO;
+import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.domain.UserInfoDTO;
 import com.kh.elephant.repo.UserInfoDAO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +23,11 @@ public class UserInfoService {
     private UserInfoDAO dao;
 
     @Autowired
+    private EntityManager entityManager;
+
+    @Autowired
     private UserCategoryInfoService userCategoryInfoService;
+    private UserCategoryInfo userCategoryInfo;
 
     public List<UserInfo> showAll (){
         return dao.findAll();
@@ -62,11 +69,11 @@ public class UserInfoService {
         return null;
     }
 
-    public UserInfo createWithCategories(SignUpDTO signUpDTO) {
-        UserInfo userInfo = create(signUpDTO.getUserInfoDTO().toUserInfo()); // assuming 'create' saves the user
-        userCategoryInfoService.createAll(signUpDTO.getUserCategories());
-        return userInfo;
-    }
+//    public UserInfo createWithCategories(SignUpDTO signUpDTO) {
+//        UserInfo userInfo = create(signUpDTO.getUserInfoDTO().toUserInfo()); // assuming 'create' saves the user
+//        userCategoryInfoService.createAll(signUpDTO.getUserCategories());
+//        return userInfo;
+//    }
 
     public UserInfoDTO buildUserInfoDTO(UserInfo userInfo, String token) {
         return UserInfoDTO.builder()
@@ -83,11 +90,17 @@ public class UserInfoService {
                 .bloodType(userInfo.getBloodType())
                 .mbti(userInfo.getMbti())
                 .birthday(userInfo.getBirthday())
+                .profileImg(userInfo.getProfileImg())
                 .token(token)
                 .build();
     }
 
-
-
-
+    public UserInfo findIdByEmail(String email) {
+        UserInfo user = dao.findByEmail(email);
+        if (user != null) {
+            return user;
+        } else {
+            return null;
+        }
+    }
 }
