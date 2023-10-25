@@ -80,7 +80,7 @@ public class UserInfoService {
                 .bloodType(userInfo.getBloodType())
                 .mbti(userInfo.getMbti())
                 .birthday(userInfo.getBirthday())
-            //    .profileImg(userInfo.getProfileImg())
+                .profileImg(userInfo.getProfileImg())
                 .token(token)
                 .build();
 

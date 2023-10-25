@@ -120,7 +120,7 @@ public class UserInfoController {
                 .mbti(dto.getUserInfoDTO().getMbti())
                 .birthday(dto.getUserInfoDTO().getBirthday())
                 .placeType(dto.getUserInfoDTO().getPlaceType())
-            //    .profileImg(dto.getUserInfoDTO().getProfileImg())
+                .profileImg(dto.getUserInfoDTO().getProfileImg())
                 .isAdmin("N")
                 .isDeleted("N")
                 .joinDate(new Date())
@@ -167,4 +167,31 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    // 프로필 사진 업로드 엔드포인트
+    @PostMapping("/uploadProfilePicture")
+    public ResponseEntity<String> uploadProfilePicture(@RequestParam("profileImg") MultipartFile file) {
+        try {
+            // 프로필 사진을 업로드할 디렉토리 경로 설정
+            String uploadDir = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
+
+            // 프로필 사진 파일 이름을 생성(고유)
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+            // 프로필 사진을 디렉토리에 저장
+            Path filePath = Paths.get(uploadDir, fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // 클라이언트에게 이미지 URL 전송
+            String imageUrl = "http://localhost:8080/qiri/public/upload/" + fileName;
+            return ResponseEntity.status(HttpStatus.OK).body(imageUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
+
 }
