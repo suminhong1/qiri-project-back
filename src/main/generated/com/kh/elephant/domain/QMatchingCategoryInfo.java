@@ -22,7 +22,7 @@ public class QMatchingCategoryInfo extends EntityPathBase<MatchingCategoryInfo> 
 
     public static final QMatchingCategoryInfo matchingCategoryInfo = new QMatchingCategoryInfo("matchingCategoryInfo");
 
-    public final QCategory Category;
+    public final QCategory category;
 
     public final NumberPath<Integer> matchingCategorySEQ = createNumber("matchingCategorySEQ", Integer.class);
 
@@ -46,7 +46,7 @@ public class QMatchingCategoryInfo extends EntityPathBase<MatchingCategoryInfo> 
 
     public QMatchingCategoryInfo(Class<? extends MatchingCategoryInfo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.Category = inits.isInitialized("Category") ? new QCategory(forProperty("Category"), inits.get("Category")) : null;
+        this.category = inits.isInitialized("category") ? new QCategory(forProperty("category"), inits.get("category")) : null;
         this.post = inits.isInitialized("post") ? new QPost(forProperty("post"), inits.get("post")) : null;
     }
 

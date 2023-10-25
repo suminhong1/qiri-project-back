@@ -34,7 +34,7 @@ public class QComments extends EntityPathBase<Comments> {
 
     public final QComments parent;
 
-    public final QPost post;
+    public final NumberPath<Integer> post = createNumber("post", Integer.class);
 
     public final StringPath secretComment = createString("secretComment");
 
@@ -59,7 +59,6 @@ public class QComments extends EntityPathBase<Comments> {
     public QComments(Class<? extends Comments> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.parent = inits.isInitialized("parent") ? new QComments(forProperty("parent"), inits.get("parent")) : null;
-        this.post = inits.isInitialized("post") ? new QPost(forProperty("post"), inits.get("post")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 

@@ -35,33 +35,30 @@ public class PostController {
 
     @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload")
     private String uploadPath;
-
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
     private PostService postService;
-
     @Autowired
     private UserInfoService userInfoService;
-
     @Autowired
     private CommentsService commService;
-
     @Autowired
     private PlaceService plService;
-
     @Autowired
     private PlaceTypeService pTypeService;
-
     @Autowired
     private PostThemaService pThemaService;
-
     @Autowired
     private BoardService boardService;
-
     @Autowired
     private CategoryService categoryService;
-
+    @Autowired
+    private PostAttachmentsService paService;
+    @Autowired
+    private PostLikeService postLikeService;
+    @Autowired
+    private MatchingCategoryInfoService mciService;
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/public/post")
     public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
