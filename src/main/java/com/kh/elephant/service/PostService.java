@@ -72,7 +72,6 @@ public class PostService {
 
     public Post create(Post post){
 
-
         return dao.save(post);
 }
 
@@ -94,32 +93,5 @@ public class PostService {
 
         return dao.findByBoardCode(code);
     }
-
-
-
-//    public Post buildPostDTO (PostDTO dto){
-
-//        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
-//        UserInfo userInfo = userService.show(userId);
-//
-//        Place place = placeService.show(dto.getPlaceSeq());
-//
-//        Board board = boardService.show(dto.getBoardSeq());
-
-
-
-//        Post post = Post.builder()
-//
-//                .postTitle(dto.getPostTitle())
-//                .postContent(dto.getPostContent())
-//                .postView(dto.getPostView())
-//                .postUrl(dto.getPostUrl())
-//                .userInfo(userInfo)
-//                .placeSeq(place)
-//                .board(board)
-//                .build();
-//        return dao.save(dto);
-
-//    }
 
 }

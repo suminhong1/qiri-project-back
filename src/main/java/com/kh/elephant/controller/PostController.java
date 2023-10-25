@@ -68,6 +68,9 @@ public class PostController {
     @Autowired
     private PostAttachmentsService paService;
 
+    @Autowired
+    private PostLikeService postLikeService;
+
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/public/post")
     public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
@@ -194,7 +197,7 @@ public class PostController {
 //        }
 //    }
 
-    @PostMapping("/postWrite")
+    @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto){
         log.info("나와라이~ 나와라이~" + dto.toString());
 
@@ -203,6 +206,9 @@ public class PostController {
         PostThema postThema = pThemaService.show(dto.getPostThemaSeq());
 
         Board board = boardService.show(dto.getBoardSeq());
+
+        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+        UserInfo userInfo = userInfoService.show(userId);
 
 // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서씀
        Post post = Post.builder()
@@ -233,7 +239,7 @@ public class PostController {
                     .build();
             ResponseEntity.ok().body(paService.create(postAttachments));
         }
-//        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+
         return ResponseEntity.ok().body(post);
     }
 
@@ -256,6 +262,8 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    // 게시글 좋아요
+
 }
 
 

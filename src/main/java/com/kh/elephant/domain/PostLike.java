@@ -2,6 +2,7 @@ package com.kh.elephant.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -12,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @DynamicInsert
 @Entity
+@Builder
 public class PostLike {
 
     @Id
@@ -25,7 +27,7 @@ public class PostLike {
     
     @ManyToOne
     @JoinColumn(name="post_seq")
-    private Post postSeq;
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name="user_id")
