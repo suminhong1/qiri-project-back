@@ -96,53 +96,6 @@ public class PostController {
         }
     }
 
-
-    // 게시글 추가 http://localhost:8080/qiri/post
-//    @PostMapping("/post")
-//    public ResponseEntity <String> upload(@RequestBody PostUploadDTO UploadDTO) {
-//
-//        List<PostAttachments>postAttachments = UploadDTO.getPostAttachments();
-//
-//        PostDTO postDTO = UploadDTO.getPostDTO();
-
-//        Post upload = postService.create(postDTO);
-
-//        if(upload != null){
-//            return new ResponseEntity<>("게시물이 등록되었습니다", HttpStatus.CREATED);
-//
-//        }else {
-//            return new ResponseEntity<>("게시물 등록에 실패했습니다",HttpStatus.BAD_REQUEST);
-//        }
-//        Post post = Post.builder()
-//                .postSEQ(dto.getPostDTO().getSeq())
-//                .postTitle(dto.getPostDTO().getTitle())
-//                .postContent(dto.getPostDTO().getContent())
-//                .postDate(dto.getPostDTO().getDate())
-//                .postView(dto.getPostDTO().getView())
-//                .postUrl(dto.getPostDTO().getUrl())
-//                .userInfo(dto.getPostDTO().getUserInfo())
-//                .placeSeq(dto.getPostDTO().getPlaceSeq())
-//                .postThemaSeq(dto.getPostDTO().getPostThemaSeq())
-//                .board(dto.getPostDTO().getBoard())
-//                .postNotice(dto.getPostDTO().getPostNotice())
-//                .postDelete(dto.getPostDTO().getDelete())
-//                .build();
-
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(postService.create(post));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-//    }
-
-
-
-
-
-
-
-
-
     // 리뷰 DB 저장
     @PostMapping("/reviewWrite")
     public ResponseEntity<Post> create(@RequestBody PostDTO dto) {
@@ -247,7 +200,6 @@ public class PostController {
 
     @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto){
-        log.info("나와라이~ 나와라이~" + dto.toString());
 
         Place place = plService.show(dto.getPlaceSeq());
 
@@ -287,8 +239,9 @@ public class PostController {
                     .build();
             paService.create(postAttachments);
         }
-
+        log.info("나와라이~ 나와라이~" +post);
         return ResponseEntity.ok().body(post);
+
     }
 
     //    게시글 수정 http://localhost:8080/qiri/post
