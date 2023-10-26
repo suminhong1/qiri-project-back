@@ -77,8 +77,12 @@ public class PostService {
 
 
     public Post update(Post post) {
+
         Post target = dao.findById(post.getPostSEQ()).orElse(null);
         if (target != null) {
+            target.setPostTitle(post.getPostTitle());
+            target.setPostContent(post.getPostContent());
+            target.setPlace(post.getPlace()); // 걍 이렇게 불러와 써도 되나?
             return dao.save(post);
         }
         return null;

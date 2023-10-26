@@ -36,8 +36,6 @@ public class Post {
     @Column(name="post_view", columnDefinition = "integer default 0",nullable = false)
     private int postView;
 
-    @Column(name="post_url")
-    private String postUrl;
 
     @ManyToOne
     @JoinColumn(name="user_id")

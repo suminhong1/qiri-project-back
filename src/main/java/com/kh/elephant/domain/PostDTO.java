@@ -28,19 +28,15 @@ public class PostDTO {
 
     private int postView;
 
-//    private String postUrl;
+    private int postSeq;
 
     private int placeSeq;
 
+    private int placeTypeSeq;
+
     private int boardSeq;
     
-    private List<Integer> categoryList;
+    private int[] categorys;
 
-    private List<String> attachmentList;
-
-    // 게시글 좋아요 관련 필요 데이터
-
-    private int postSeq;
-
-
+    private String[] attachments;
 }
