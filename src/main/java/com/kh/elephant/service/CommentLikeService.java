@@ -13,29 +13,32 @@ import java.util.List;
 public class CommentLikeService {
 
     @Autowired
-    private CommentLikeDAO commentLikeDAO;
+    private CommentLikeDAO dao;
+
+    // 댓글 1개에 따른 좋아요 전체 조회
+    public List<CommentLike> findByCommentSeq(int id) { return dao.findByCommentSeq(id); }
 
     public List<CommentLike> showAll() {
-        return commentLikeDAO.findAll();
+        return dao.findAll();
     }
     public CommentLike show(int id) {
-        return commentLikeDAO.findById(id).orElse(null);
+        return dao.findById(id).orElse(null);
     }
 
     public CommentLike create(CommentLike commentLike){
-        return commentLikeDAO.save(commentLike);
+        return dao.save(commentLike);
     }
-    public CommentLike update(CommentLike commentLike) {
-        CommentLike target = commentLikeDAO.findById(commentLike.getCommentSeq()).orElse(null);
-        if(target!=null){
-            return commentLikeDAO.save(commentLike);
-        }
-        return null;
-    }
+//    public CommentLike update(CommentLike commentLike) {
+//        CommentLike target = dao.findById(commentLike.getCommentSeq()).orElse(null);
+//        if(target!=null){
+//            return dao.save(commentLike);
+//        }
+//        return null;
+//    }
 
     public CommentLike delete(int id) {
-        CommentLike target = commentLikeDAO.findById(id).orElse(null);
-        commentLikeDAO.delete(target);
+        CommentLike target = dao.findById(id).orElse(null);
+        dao.delete(target);
         return target;
     }
 }

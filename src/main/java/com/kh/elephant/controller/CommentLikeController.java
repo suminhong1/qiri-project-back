@@ -1,7 +1,6 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.Board;
-import com.kh.elephant.domain.CommentLike;
+import com.kh.elephant.domain.*;
 import com.kh.elephant.service.BoardService;
 import com.kh.elephant.service.CommentLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,9 +30,16 @@ public class CommentLikeController {
     }
 
     @GetMapping("/commentLike/{id}")
-    public ResponseEntity<CommentLike> show(@PathVariable int id) {
+    public ResponseEntity<List<CommentLikeDTO>> show(@PathVariable int id) {
+        List<CommentLikeDTO> response = new ArrayList<>();
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(commentLike.show(id));
+            CommentLikeDTO dto = new CommentLikeDTO();
+            UserInfo userInfo = new UserInfo();
+            dto.setClSEQ(dto.getClSEQ());
+            dto.setClDate(dto.getClDate());
+            dto.setCommentSeq(dto.getCommentSeq());
+            dto.setUserInfo(userInfo);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -46,14 +53,14 @@ public class CommentLikeController {
         }
     }
 
-    @PutMapping("/commentLike")
-    public ResponseEntity<CommentLike> update(@RequestBody CommentLike vo){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(commentLike.update(vo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+//    @PutMapping("/commentLike")
+//    public ResponseEntity<CommentLike> update(@RequestBody CommentLike vo){
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(commentLike.update(vo));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
     @DeleteMapping("/commentLike/{id}")
     public ResponseEntity<CommentLike> delete(@PathVariable int id) {

@@ -36,12 +36,18 @@ public class CommentsService {
         return  dao.save(comments);
     }
 
-    public Comments delete(int code) {
-        Comments date = dao.findById(code).orElse(null);
-        dao.delete(date);
-        return date;
+    public Comments delete(Comments comments) {
+        return  dao.save(comments);
     }
 
+
+//    public Comments delete(int code) {
+//        Comments date = dao.findById(code).orElse(null);
+//        dao.delete(date);
+//        return date;
+//    }
+
+    // 게시물 1개에 따른 댓글 전체 조회
     public List<Comments> findByPostSeq(int id) {
         return dao.findByPostSeq(id);
     }

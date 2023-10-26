@@ -28,7 +28,6 @@ public class Comments {
     @SequenceGenerator(name = "commentSequence", sequenceName = "SEQ_COMMENTS", allocationSize = 1)
     private int commentsSEQ;
 
-
 //    @ManyToOne
 //    @JoinColumn(name = "POST_SEQ")
 //    private Post post;

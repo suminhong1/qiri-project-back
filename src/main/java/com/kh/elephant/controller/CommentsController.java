@@ -46,6 +46,7 @@ public class CommentsController {
             dto.setCommentsSEQ(item.getCommentsSEQ());
             dto.setCommentDesc(item.getCommentDesc());
             dto.setUserInfo(item.getUserInfo());
+            dto.setCommentDelete(item.getCommentDelete());
             List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSEQ(), id);
             dto.setReplies(result);
             response.add(dto);
@@ -81,18 +82,31 @@ public class CommentsController {
         userInfo.setUserId(id);
         vo.setUserInfo(userInfo);
         vo.setCommentDate(new Date());
+        vo.setSecretComment("N");
+        vo.setCommentDelete("N");
         return ResponseEntity.status(HttpStatus.OK).body(comments.update(vo));
     }
 
-    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
-    @DeleteMapping("/post/comments/{id}")
-    public ResponseEntity<Comments> delete(@PathVariable int id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(comments.delete(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @PutMapping("/post/comments/delete")
+    public ResponseEntity<Comments> delete(@RequestBody Comments vo, @AuthenticationPrincipal String id){
+        vo.setCommentDesc(vo.getCommentDesc());
+        vo.setCommentDate(new Date());
+        vo.setCommentDelete("Y");
+        vo.setCommentsParentSeq(vo.getCommentsParentSeq());
+        vo.setUserInfo(vo.getUserInfo());
+        vo.setSecretComment(vo.getSecretComment());
+        return ResponseEntity.status(HttpStatus.OK).body(comments.delete(vo));
     }
+
+//    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
+//    @DeleteMapping("/post/comments/{id}")
+//    public ResponseEntity<Comments> delete(@PathVariable int id) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(comments.delete(id));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
     // 댓글 좋아요 추가
     
     // 댓글 좋아요 취소
