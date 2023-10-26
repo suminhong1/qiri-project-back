@@ -24,6 +24,8 @@ public class QPost extends EntityPathBase<Post> {
 
     public final QBoard board;
 
+    public final StringPath matched = createString("matched");
+
     public final QPlace place;
 
     public final StringPath postContent = createString("postContent");
@@ -35,8 +37,6 @@ public class QPost extends EntityPathBase<Post> {
     public final StringPath postNotice = createString("postNotice");
 
     public final NumberPath<Integer> postSEQ = createNumber("postSEQ", Integer.class);
-
-    public final QPostThema postThema;
 
     public final StringPath postTitle = createString("postTitle");
 
@@ -66,7 +66,6 @@ public class QPost extends EntityPathBase<Post> {
         super(type, metadata, inits);
         this.board = inits.isInitialized("board") ? new QBoard(forProperty("board")) : null;
         this.place = inits.isInitialized("place") ? new QPlace(forProperty("place"), inits.get("place")) : null;
-        this.postThema = inits.isInitialized("postThema") ? new QPostThema(forProperty("postThema"), inits.get("postThema")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 

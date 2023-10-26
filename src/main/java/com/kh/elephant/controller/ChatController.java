@@ -81,8 +81,8 @@ public class ChatController {
     }
 
     //채팅방 나가기와 채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제
-    @PutMapping("/chatroom/leave/{id}/{code}")
-    public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@PathVariable String id, int code) {
+    @PutMapping("/chatroom/leave")
+    public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody String id, int code) {
         try {
             int result = ucriService.chatRoomLeave(id, code);
             chatService.leaveChatRoom(code);

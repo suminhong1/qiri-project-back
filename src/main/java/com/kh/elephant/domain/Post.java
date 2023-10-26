@@ -48,12 +48,11 @@ public class Post {
     private Place place;
 
     @ManyToOne
-    @JoinColumn(name="post_thema_seq")
-    private PostThema postThema;
-
-    @ManyToOne
     @JoinColumn(name="board_seq")
     private Board board;
+
+    @Column(name = "matched")
+    private String matched;
 
     @Column(name="post_notice")
     private String postNotice;

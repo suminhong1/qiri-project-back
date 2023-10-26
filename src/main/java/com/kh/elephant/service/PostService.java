@@ -34,8 +34,7 @@ public class PostService {
     @Autowired
     private BoardService boardService;
 
-    @Autowired
-    private PostThemaService postThemaService;
+
 
     @Autowired UserInfoService userService;
     @Autowired

@@ -1,7 +1,10 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.MatchingUserInfo;
+import com.kh.elephant.domain.MatchingUserInfoDTO;
 import com.kh.elephant.service.MatchingUserInfoService;
+import com.kh.elephant.service.PostService;
+import com.kh.elephant.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +19,17 @@ import java.util.List;
 public class MatchingUserInfoController {
 
     @Autowired
-    private MatchingUserInfoService service;
+    private MatchingUserInfoService muiService;
+    @Autowired
+    private UserInfoService uiService;
+    @Autowired
+    private PostService postService;
+
 
     @GetMapping("/matchingUserInfo")
     public ResponseEntity<List<MatchingUserInfo>> showAll() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(muiService.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -30,16 +38,21 @@ public class MatchingUserInfoController {
     @GetMapping("/matchingUserInfo/{id}")
     public ResponseEntity<MatchingUserInfo> show(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(muiService.show(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
+    //매칭 신청자 정보 생성
     @PostMapping("/MatchingUserInfo")
-    public ResponseEntity<MatchingUserInfo> create(@RequestBody MatchingUserInfo matchingUserInfo) {
+    public ResponseEntity<MatchingUserInfo> create(@RequestBody MatchingUserInfoDTO dto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(matchingUserInfo));
+            MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
+                    .userInfo(uiService.show(dto.getId()))
+                    .post(postService.show(dto.getPostSEQ()))
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -48,7 +61,7 @@ public class MatchingUserInfoController {
     @PutMapping("/MatchingUserInfo")
     public ResponseEntity<MatchingUserInfo> update(@RequestBody MatchingUserInfo matchingUserInfo){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(matchingUserInfo));
+            return ResponseEntity.status(HttpStatus.OK).body(muiService.update(matchingUserInfo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -56,7 +69,7 @@ public class MatchingUserInfoController {
 
     @DeleteMapping("/MatchingUserInfo/{id}")
     public ResponseEntity<MatchingUserInfo> delete(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.delete(Integer.parseInt(id)));
+        return ResponseEntity.status(HttpStatus.OK).body(muiService.delete(Integer.parseInt(id)));
     }
 
 }

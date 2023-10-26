@@ -26,6 +26,8 @@ public class QMatchingUserInfo extends EntityPathBase<MatchingUserInfo> {
 
     public final NumberPath<Integer> matchingUserInfoSeq = createNumber("matchingUserInfoSeq", Integer.class);
 
+    public final QPost post;
+
     public final NumberPath<Integer> score = createNumber("score", Integer.class);
 
     public final QUserInfo userInfo;
@@ -48,6 +50,7 @@ public class QMatchingUserInfo extends EntityPathBase<MatchingUserInfo> {
 
     public QMatchingUserInfo(Class<? extends MatchingUserInfo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.post = inits.isInitialized("post") ? new QPost(forProperty("post"), inits.get("post")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 

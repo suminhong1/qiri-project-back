@@ -2,11 +2,13 @@ package com.kh.elephant.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "MATCHING_USER_INFO")
@@ -17,6 +19,10 @@ public class MatchingUserInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "matchingUserInfoSequence")
     @SequenceGenerator(name = "matchingUserInfoSequence", sequenceName = "SEQ_MATCHING_USER_INFO", allocationSize = 1)
     private int matchingUserInfoSeq;
+
+    @ManyToOne
+    @JoinColumn(name="post_seq")
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name="user_id")
