@@ -25,10 +25,10 @@ import java.util.Date;
 public class UserInfo {
 
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private String userId;
 
-    @Column(name="user_pwd")
+    @Column(name = "user_pwd")
     private String userPwd;
 
     @Column(name = "user_name")
@@ -40,7 +40,7 @@ public class UserInfo {
     @Column(name = "age")
     private Integer age;
 
-    @Column(name="gender")
+    @Column(name = "gender")
     private String gender;
 
     @ManyToOne
@@ -87,4 +87,5 @@ public class UserInfo {
     @Column(name = "IS_DELETED")
     @ColumnDefault("N")
     private String isDeleted;
+
 }

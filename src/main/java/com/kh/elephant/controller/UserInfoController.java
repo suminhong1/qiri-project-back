@@ -128,11 +128,13 @@ public class UserInfoController {
 
         List<UserCategoryInfo> userCategories = dto.getUserCategories();
 
-
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
-          // List<UserCategoryInfo> savedCategories = userCategoryInfoService.createAll(userCategories);
+//           List<UserCategoryInfo> savedCategories = userCategoryInfoService.createAll(userCategories);
+//            for (UserCategoryInfo categoryInfo : savedCategories) {
+//                categoryInfo.setUserInfo(registeredUser);
+//            }
 
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(registeredUser.getUserId())

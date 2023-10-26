@@ -26,10 +26,8 @@ public class UserCategoryInfoService {
     public UserCategoryInfo update(UserCategoryInfo userCategoryInfo) { return dao.save(userCategoryInfo); }
 
     public UserCategoryInfo delete(int code) {
-
-        UserCategoryInfo data = dao.findById(Integer.valueOf(String.valueOf(code))).orElse(null);
+        UserCategoryInfo data = dao.findById(code).orElse(null);
         dao.delete(data);
         return data;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.kh.elephant.controller;
 
+import com.kh.elephant.domain.SignUpDTO;
 import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.service.UserCategoryInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +42,9 @@ public class UserCategoryInfoController {
 
     // 유저 관심사 카테고리 정보 등록
     @PostMapping("/userCategoryInfo")
-    public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody List<UserCategoryInfo> categories) {
+    public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody SignUpDTO dto) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(categories));
+            return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(dto.getUserCategories()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
