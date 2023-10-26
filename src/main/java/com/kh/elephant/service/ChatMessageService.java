@@ -44,6 +44,10 @@ public class ChatMessageService {
         dao.delete(data);
         return data;
     }
+
+    public List<ChatMessage> messageFindByChatroomSEQ(int id) {
+        return dao.messageFindByChatroomSEQ(id);
+    }
 }
 
 

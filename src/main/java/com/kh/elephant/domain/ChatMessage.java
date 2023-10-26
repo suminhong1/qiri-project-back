@@ -15,9 +15,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicInsert
+@Table(name = "CHATMESSAGE")
 public class ChatMessage {
     @Id
-    @Column(name = "chatmessage_seq")
+    @Column(name = "CHATMESSAGE_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "chatMessageSequence")
     @SequenceGenerator(name = "chatMessageSequence", sequenceName = "SEQ_CHATMESSAGE", allocationSize = 1)
     private int chatMessageSeq;

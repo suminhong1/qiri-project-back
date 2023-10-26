@@ -1,10 +1,7 @@
 package com.kh.elephant.service;
 
 
-import com.kh.elephant.domain.SignUpDTO;
-import com.kh.elephant.domain.UserCategoryInfo;
-import com.kh.elephant.domain.UserInfo;
-import com.kh.elephant.domain.UserInfoDTO;
+import com.kh.elephant.domain.*;
 import com.kh.elephant.repo.UserInfoDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -12,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class UserInfoService {
 
     @Autowired
     private UserCategoryInfoService userCategoryInfoService;
-    private UserCategoryInfo userCategoryInfo;
+
 
     public List<UserInfo> showAll (){
         return dao.findAll();
@@ -40,6 +38,11 @@ public class UserInfoService {
     public UserInfo findByNickname(String nickname)
     {
         return dao.findByNickname(nickname);
+    }
+
+    public UserInfo findByDTO(ChatDTO dto)
+    {
+        return dao.findByNickname(dto.getNickname());
     }
 
     public UserInfo create(UserInfo vo){

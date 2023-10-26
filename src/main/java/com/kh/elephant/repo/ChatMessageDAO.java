@@ -15,4 +15,6 @@ public interface ChatMessageDAO extends JpaRepository<ChatMessage, Integer> {
     @Query(value = "DELETE FROM CHATMESSAGE WHERE CHATROOM_SEQ = :id", nativeQuery = true)
     int deleteByRoomSEQ(@Param("id") int id);
 
+    @Query(value = "SELECT * FROM CHATMESSAGE WHERE CHATROOM_SEQ = :id", nativeQuery = true)
+    List<ChatMessage> messageFindByChatroomSEQ(@Param("id") int id);
 }

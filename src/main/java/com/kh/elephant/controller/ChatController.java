@@ -41,7 +41,17 @@ public class ChatController {
         }
     }
 
-    //채팅방 접속, 채팅방의 채팅보기
+    // 참여중인 채팅방의 내 참여정보 가져오기
+    @GetMapping("/public/chatRoomInfo/{code}/{userId}")
+    public ResponseEntity<UserChatRoomInfo> findByUserId(@PathVariable int code, String userId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByIdAndChatRoomSEQ(code, userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    //채팅방 접속
     @GetMapping("/chat/room/{id}")
     public ResponseEntity<ChatRoom> show(@PathVariable int id) {
         try {
@@ -51,22 +61,16 @@ public class ChatController {
         }
     }
 
-    //채팅 내용 저장
-//    @PostMapping("/chat/create")
-//    public ResponseEntity<ChatMessage> createMsg(@RequestBody ChatDTO dto) {
-//        UserInfo userInfo = uiService.findByNickname(dto.getNickName());
-//        ChatRoom chatRoom = crService.show(dto.getChatRoomSEQ());
-//        try {
-//            ChatMessage chatMessage = ChatMessage.builder()
-//                    .userInfo(userInfo)
-//                    .chatRoom(chatRoom)
-//                    .message(dto.getMessage())
-//                    .build();
-//            return ResponseEntity.status(HttpStatus.OK).body(cmService.create(chatMessage));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
+    //채팅방 채팅보기
+    @GetMapping("/chat/room/message/{id}")
+    public ResponseEntity<List<ChatMessage>> messageFindByChatroomSEQ(@PathVariable int id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(cmService.messageFindByChatroomSEQ(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
 
     // 채팅방 생성
     @PostMapping("/chatroom/create")

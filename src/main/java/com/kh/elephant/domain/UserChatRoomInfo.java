@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+
+import java.util.Date;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -29,4 +32,7 @@ public class UserChatRoomInfo {
 
     @Column(name = "LEAVE")
     private String leave;
+
+    @Column(name = "join_date")
+    private Date joinDate;
 }

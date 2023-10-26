@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@DynamicInsert
 public class UserCategoryInfo {
     @Id
     @Column(name = "user_category_seq")

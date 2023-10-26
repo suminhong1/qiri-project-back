@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserChatRoomInfoDAO extends JpaRepository<UserChatRoomInfo, Integer> {
 
-    @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE USER_ID = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE USER_ID = :id AND LEAVE = 'N'", nativeQuery = true)
     List<UserChatRoomInfo> findByUserId(@Param("id") String id);
 
     @Query(value = "UPDATE USER_CHATROOM_INFO SET LEAVE = 'Y' WHERE USER_ID = :id AND CHATROOM_SEQ = :code", nativeQuery = true)
@@ -22,4 +22,7 @@ public interface UserChatRoomInfoDAO extends JpaRepository<UserChatRoomInfo, Int
     @Modifying
     @Query(value = "DELETE FROM USER_CHATROOM_INFO WHERE CHATROOM_SEQ = :chatroom_seq", nativeQuery = true)
     void deleteByChatroomSeq(@Param("chatroom_seq") int chatroomSeq);
+
+    @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE LEAVE = 'N' AND CHATROOM_SEQ = :code AND USER_ID = :id", nativeQuery = true)
+    UserChatRoomInfo findByIdAndChatRoomSEQ(@Param("code") int code, @Param("id") String id);
 }

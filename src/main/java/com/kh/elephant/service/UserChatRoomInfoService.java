@@ -46,4 +46,8 @@ public class UserChatRoomInfoService {
         dao.delete(data);
         return data;
     }
+
+    public UserChatRoomInfo findByIdAndChatRoomSEQ(int code, String id) {
+        return dao.findByIdAndChatRoomSEQ(code, id);
+    }
 }

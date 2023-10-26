@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Slf4j
@@ -32,14 +33,12 @@ public class WebSocketController {
     @Autowired
     private ChatRoomService crService;
 
+    @Transactional
     @MessageMapping("/chat/message")
     public void message(ChatDTO dto) {
         messagingTemplate.convertAndSend("/sub/chat/room/" + dto.getChatRoomSEQ(), dto);
         UserInfo userInfo = uiService.findByNickname(dto.getNickname());
         ChatRoom chatRoom = crService.show(dto.getChatRoomSEQ());
-        log.info("유저닉네임: " + dto.getNickname());
-        log.info("유저: " + userInfo);
-        log.info("채팅방: " + chatRoom);
         try {
             ChatMessage chatMessage = ChatMessage.builder()
                     .userInfo(userInfo)
