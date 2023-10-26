@@ -64,7 +64,6 @@ public class PostController {
     public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
         log.info("post List 호출 컨트롤러 진입;");
 
-
         Sort sort = Sort.by("postSEQ").descending();
 
         Pageable pageable = PageRequest.of(page - 1, 20, sort);
@@ -201,6 +200,7 @@ public class PostController {
     @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto){
 
+
         Place place = plService.show(dto.getPlaceSeq());
 
         PostThema postThema = pThemaService.show(dto.getPostThemaSeq());
@@ -213,33 +213,42 @@ public class PostController {
 // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서씀
        Post post = Post.builder()
                .postTitle(dto.getPostTitle())
-               .postContent(dto.getPostTitle())
+               .postContent(dto.getPostContent())
                .postView(dto.getPostView())
-               .postUrl("URL박아야함")
+//               .postUrl("URL박아야함")
                .place(place)
                .postThema(postThema)
                .board(board)
                .build();
 
-        for (Integer categorySEQ : dto.getCategoryList()) {
-            Category category = categoryService.show(categorySEQ);
-            MatchingCategoryInfo matchingCategoryInfo
-                    = MatchingCategoryInfo.builder()
-                                    .post(post)
-                                    .category(category)
-                                            .build();
-            mciService.create(matchingCategoryInfo);
+       // dto로 가져오는 List들에 아직 데이터가 없어서 분기처리 해줘야함
+            if(dto.getCategoryList() !=null)
+            {
+                for (Integer categorySEQ : dto.getCategoryList()) {
+                Category category = categoryService.show(categorySEQ);
+                MatchingCategoryInfo matchingCategoryInfo
+                        = MatchingCategoryInfo.builder()
+                        .post(post)
+                        .category(category)
+                        .build();
+                    mciService.create(matchingCategoryInfo);
+            }
+
         }
 
-        for(String attachmentURL: dto.getAttachmentList()) {
-                        PostAttachments postAttachments
-                    = PostAttachments.builder()
-                    .post(post)
-                    .attachmentURL(attachmentURL)
-                    .build();
-            paService.create(postAttachments);
+        if(dto.getAttachmentList() != null)
+        {
+            for(String attachmentURL: dto.getAttachmentList()) {
+                PostAttachments postAttachments
+                        = PostAttachments.builder()
+                        .post(post)
+                        .attachmentURL(attachmentURL)
+                        .build();
+                paService.create(postAttachments);
+            }
         }
-        log.info("나와라이~ 나와라이~" +post);
+
+        log.info("나와라이~ 나와라이~");
         return ResponseEntity.ok().body(post);
 
     }

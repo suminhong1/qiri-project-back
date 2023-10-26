@@ -1,7 +1,10 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.Place;
+import com.kh.elephant.domain.QPlace;
 import com.kh.elephant.service.PlaceService;
+import com.querydsl.core.BooleanBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/qiri/*")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
+@Slf4j
 public class PlaceController {
 
     @Autowired
@@ -19,9 +23,11 @@ public class PlaceController {
 
     @GetMapping("/public/place")
     public ResponseEntity<List<Place>> showAll() {
+
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
         } catch (Exception e) {
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
