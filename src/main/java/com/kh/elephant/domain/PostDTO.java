@@ -28,8 +28,6 @@ public class PostDTO {
 
     private int postView;
 
-    private String postUrl;
-
     private int placeSeq;
 
     private int boardSeq;

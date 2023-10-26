@@ -31,7 +31,7 @@ public class ChatMessage {
     private ChatRoom chatRoom;
 
     @Column(name = "MESSAGE")
-    private String messageContent;
+    private String message;
 
     @Column(name = "send_time")
     private Date sendTime;

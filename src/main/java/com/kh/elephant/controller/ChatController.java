@@ -27,6 +27,8 @@ public class ChatController {
     private ChatService chatService;
     @Autowired
     private PostService postService;
+    @Autowired
+    private MatchingUserInfoService muiService;
 
 
     // 내가 참여중인 채팅 리스트
@@ -50,32 +52,46 @@ public class ChatController {
     }
 
     //채팅 내용 저장
-    @PostMapping("/chat/save")
-    public ResponseEntity<ChatMessage> createMsg(@RequestBody ChatDTO dto) {
-        UserInfo userInfo = uiService.findByNickname(dto.getNickName());
-        ChatRoom chatRoom = crService.show(dto.getChatRoomSEQ());
+//    @PostMapping("/chat/create")
+//    public ResponseEntity<ChatMessage> createMsg(@RequestBody ChatDTO dto) {
+//        UserInfo userInfo = uiService.findByNickname(dto.getNickName());
+//        ChatRoom chatRoom = crService.show(dto.getChatRoomSEQ());
+//        try {
+//            ChatMessage chatMessage = ChatMessage.builder()
+//                    .userInfo(userInfo)
+//                    .chatRoom(chatRoom)
+//                    .message(dto.getMessage())
+//                    .build();
+//            return ResponseEntity.status(HttpStatus.OK).body(cmService.create(chatMessage));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
+
+    // 채팅방 생성
+    @PostMapping("/chatroom/create")
+    public ResponseEntity<ChatRoom> createChatRoom(@RequestBody ChatDTO dto) {
         try {
-            ChatMessage chatMessage = ChatMessage.builder()
-                    .userInfo(userInfo)
-                    .chatRoom(chatRoom)
-                    .messageContent(dto.getMessage())
+            ChatRoom chatRoom = ChatRoom.builder()
+                    .post(postService.show(dto.getPostSEQ()))
                     .build();
-            return ResponseEntity.status(HttpStatus.OK).body(cmService.create(chatMessage));
+            return ResponseEntity.status(HttpStatus.OK).body(crService.create(chatRoom));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    //채팅방 정보 저장
-    @PostMapping("/chatroom/save")
-    public ResponseEntity<ChatRoom> createChatRoom(@RequestBody ChatDTO dto) {
-        Post post = postService.show(dto.getPostSEQ());
+    //매칭신청시 저장될 정보
+    @PostMapping("/matching/{postSEQ}")
+    public ResponseEntity<MatchingUserInfo> create(@PathVariable int postSEQ, @RequestBody String id) {
         try {
-            ChatRoom chatRoom = ChatRoom.builder()
-                    .post(post)
+            MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
+                    .userInfo(uiService.show(id))
+                    .post(postService.show(postSEQ))
                     .build();
-            return ResponseEntity.status(HttpStatus.OK).body(crService.create(chatRoom));
+            return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
         } catch (Exception e) {
+            log.info("delete error");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

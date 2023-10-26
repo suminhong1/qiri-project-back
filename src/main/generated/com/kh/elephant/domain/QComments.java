@@ -30,7 +30,7 @@ public class QComments extends EntityPathBase<Comments> {
 
     public final NumberPath<Integer> commentsParentSeq = createNumber("commentsParentSeq", Integer.class);
 
-    public final NumberPath<Integer> commentsSeq = createNumber("commentsSeq", Integer.class);
+    public final NumberPath<Integer> commentsSEQ = createNumber("commentsSEQ", Integer.class);
 
     public final QComments parent;
 
