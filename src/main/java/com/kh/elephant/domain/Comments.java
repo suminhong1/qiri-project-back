@@ -26,7 +26,7 @@ public class Comments {
     @Column(name = "COMMENTS_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "commentSequence")
     @SequenceGenerator(name = "commentSequence", sequenceName = "SEQ_COMMENTS", allocationSize = 1)
-    private int commentsSeq;
+    private int commentsSEQ;
 
 
 //    @ManyToOne

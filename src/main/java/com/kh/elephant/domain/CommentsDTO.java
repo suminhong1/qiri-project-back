@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentsDTO {
     private int post;
-    private int commentsSeq;
+    private int commentsSEQ;
     private Date commentDate;
     private UserInfo userInfo;
     private String commentDesc;

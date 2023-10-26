@@ -43,10 +43,10 @@ public class CommentsController {
         for(Comments item : topList) {
             CommentsDTO dto = new CommentsDTO();
             dto.setPost(item.getPost());
-            dto.setCommentsSeq(item.getCommentsSeq());
+            dto.setCommentsSEQ(item.getCommentsSEQ());
             dto.setCommentDesc(item.getCommentDesc());
             dto.setUserInfo(item.getUserInfo());
-            List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSeq(), id);
+            List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSEQ(), id);
             dto.setReplies(result);
             response.add(dto);
         }
