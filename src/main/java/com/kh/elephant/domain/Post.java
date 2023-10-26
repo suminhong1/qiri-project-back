@@ -48,10 +48,6 @@ public class Post {
     private Place place;
 
     @ManyToOne
-    @JoinColumn(name="post_thema_seq")
-    private PostThema postThema;
-
-    @ManyToOne
     @JoinColumn(name="board_seq")
     private Board board;
 

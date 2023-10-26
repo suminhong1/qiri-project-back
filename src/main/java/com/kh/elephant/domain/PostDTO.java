@@ -32,8 +32,6 @@ public class PostDTO {
 
     private int placeSeq;
 
-    private int postThemaSeq;
-
     private int boardSeq;
     
     private List<Integer> categoryList;

@@ -47,16 +47,14 @@ public class PostController {
     private PlaceService plService;
     @Autowired
     private PlaceTypeService pTypeService;
-    @Autowired
-    private PostThemaService pThemaService;
+
     @Autowired
     private BoardService boardService;
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private PostAttachmentsService paService;
-    @Autowired
-    private PostLikeService postLikeService;
+
     @Autowired
     private MatchingCategoryInfoService mciService;
     // 게시글 전체 조회 http://localhost:8080/qiri/post
@@ -203,8 +201,6 @@ public class PostController {
 
         Place place = plService.show(dto.getPlaceSeq());
 
-        PostThema postThema = pThemaService.show(dto.getPostThemaSeq());
-
         Board board = boardService.show(dto.getBoardSeq());
 
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
@@ -217,7 +213,6 @@ public class PostController {
                .postView(dto.getPostView())
                .postUrl("URL박아야함")
                .place(place)
-               .postThema(postThema)
                .board(board)
                .build();
 
