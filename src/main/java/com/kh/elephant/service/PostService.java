@@ -90,6 +90,11 @@ public class PostService {
         return post;
     }
 
+
+
+
+
+
     public List<Post> findByBoardCode(int code) {
 
         return dao.findByBoardCode(code);

@@ -94,6 +94,8 @@ public class PostController {
         }
     }
 
+
+
     // 리뷰 DB 저장
     @PostMapping("/reviewWrite")
     public ResponseEntity<Post> reviewCreate(@RequestBody PostDTO dto) {
@@ -121,20 +123,26 @@ public class PostController {
         Board board = boardService.show(dto.getBoardSeq());
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
+        Place place = plService.show(dto.getPlaceSeq());
 
-        Post postToUpdate = Post.builder()
+
+
+        Post post = Post.builder()
                 .postSEQ(dto.getPostSeq())  // 여기서 ID를 설정해야 합니다.
                 .postTitle(dto.getPostTitle())
                 .postContent(dto.getPostContent())
+                .place(place)
                 .postDate(new Date())
                 .userInfo(userinfo)
                 .postDelete("N")
+                .matched("N")
+                .postNotice("N")
                 .board(board)
                 .build();
 
-        Post updatedPost = postService.update(postToUpdate);
+        Post updatedPost = postService.update(post);
 
-        log.info("수정된 정보"+ updatedPost);
+        log.info("수정된 정보확인용!"+ updatedPost);
         if (updatedPost == null) {
         }
         return ResponseEntity.ok().body(updatedPost);
@@ -142,14 +150,22 @@ public class PostController {
 
 
     // 리뷰 삭제
-    @DeleteMapping("/reviewDelete/{postSeq}")
+// 리뷰 삭제
+    @PutMapping("/reviewDelete/{postSeq}")
     public ResponseEntity<String> reviewDelete(@PathVariable int postSeq) {
-        Post deletedPost = postService.delete(postSeq);
-        if (deletedPost == null) {
-            return ResponseEntity.badRequest().body("Delete failed");
+        try {
+            Post post = postService.show(postSeq);
+            if (post == null) {
+                return ResponseEntity.badRequest().body("Post not found!");
+            }
+            post.setPostDelete("Y");
+            postService.update(post);
+            return ResponseEntity.ok().body("Post marked as deleted!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
         }
-        return ResponseEntity.ok().body("Post successfully deleted.");
     }
+
 
     @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto){

@@ -40,5 +40,9 @@ public class PostDTO {
 
     private int postSeq;
 
+    private String matched;
+
+    private String postNotice;
+
 
 }
