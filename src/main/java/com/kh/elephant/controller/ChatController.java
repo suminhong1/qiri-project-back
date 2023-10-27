@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -102,10 +103,10 @@ public class ChatController {
 
     //채팅방 나가기와 채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제
     @PutMapping("/chatroom/leave")
-    public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody String id, int code) {
+    public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody ChatDTO dto) {
         try {
-            int result = ucriService.chatRoomLeave(id, code);
-            chatService.leaveChatRoom(code);
+            int result = ucriService.chatRoomLeave(uiService.findByNickname(dto.getNickname()).getUserId(), dto.getChatRoomSEQ());
+            chatService.leaveChatRoom(dto.getChatRoomSEQ());
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             log.info("delete error");

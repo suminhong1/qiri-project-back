@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 public class ChatService {
 
@@ -24,7 +25,8 @@ public class ChatService {
         // 모든 유저의 LEAVE 값이 'Y'인지 확인
         boolean allUsersLeft = userChatRoomInfoDAO.allUsersLeft(chatroomSeq);
 
-        if (allUsersLeft) {
+        if (!allUsersLeft) {
+
             // 채팅 메세지 테이블에서 해당 채팅방 관련 데이터 삭제
             chatMessageDAO.deleteByRoomSEQ(chatroomSeq);
 

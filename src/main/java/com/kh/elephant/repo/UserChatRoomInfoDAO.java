@@ -21,7 +21,7 @@ public interface UserChatRoomInfoDAO extends JpaRepository<UserChatRoomInfo, Int
 
     @Modifying
     @Query(value = "DELETE FROM USER_CHATROOM_INFO WHERE CHATROOM_SEQ = :chatroom_seq", nativeQuery = true)
-    void deleteByChatroomSeq(@Param("chatroom_seq") int chatroomSeq);
+    int deleteByChatroomSeq(@Param("chatroom_seq") int chatroomSeq);
 
     @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE LEAVE = 'N' AND CHATROOM_SEQ = :code AND USER_ID = :id", nativeQuery = true)
     UserChatRoomInfo findByIdAndChatRoomSEQ(@Param("code") int code, @Param("id") String id);
