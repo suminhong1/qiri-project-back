@@ -72,11 +72,6 @@ public class UserInfoService {
         return null;
     }
 
-    public UserInfo createWithCategories(SignUpDTO signUpDTO) {
-        UserInfo userInfo = create(signUpDTO.getUserInfoDTO().toUserInfo()); // assuming 'create' saves the user
-        userCategoryInfoService.createAll(signUpDTO.getUserCategories());
-        return userInfo;
-    }
 
     public UserInfoDTO buildUserInfoDTO(UserInfo userInfo, String token) {
         return UserInfoDTO.builder()
@@ -106,8 +101,5 @@ public class UserInfoService {
             return null;
         }
     }
-
-
-
 
 }

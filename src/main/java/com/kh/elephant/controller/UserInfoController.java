@@ -66,30 +66,18 @@ public class UserInfoController {
     // 유저 수정 http://localhost:8080/qiri/userInfo/1 <--id
     @PutMapping("/userInfo/editProfile")
     public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user) {
-        try {
-            UserInfo existingUser = userService.show(user.getUserId());
-            // 새로운 사용자 정보로 업데이트
-            existingUser.setUserName(user.getUserName());
-            existingUser.setUserNickname(user.getUserNickname());
-            existingUser.setUserPwd(user.getUserPwd());
-            existingUser.setAge(user.getAge());
-            existingUser.setGender(user.getGender());
-            existingUser.setPhone(user.getPhone());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setStatusMessage(user.getStatusMessage());
-            existingUser.setHasPartner(user.getHasPartner());
-            existingUser.setBloodType(user.getBloodType());
-            existingUser.setMbti(user.getMbti());
-            existingUser.setBirthday(user.getBirthday());
-            existingUser.setPlaceType(user.getPlaceType());
+            try {
+                UserInfo updatedUser = userService.update(user);
 
-            UserInfo updatedUser = userService.update(existingUser);
-
-            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                if (updatedUser != null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+                } else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
         }
-    }
 
     // 유저 삭제 http://localhost:8080/qiri/userInfo/1 <--id
     @DeleteMapping("/userInfo/{id}")
@@ -126,15 +114,10 @@ public class UserInfoController {
                 .joinDate(new Date())
                 .build();
 
-        List<UserCategoryInfo> userCategories = dto.getUserCategories();
-
+        
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
-//           List<UserCategoryInfo> savedCategories = userCategoryInfoService.createAll(userCategories);
-//            for (UserCategoryInfo categoryInfo : savedCategories) {
-//                categoryInfo.setUserInfo(registeredUser);
-//            }
 
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(registeredUser.getUserId())
