@@ -204,4 +204,40 @@ public class UserInfoController {
 
 
 
+
+    // 토큰을 이용한 사용자 정보 조회
+    @GetMapping("/userInfo/byToken")
+    public ResponseEntity<UserInfoDTO> getUserInfoByToken(@RequestHeader("Authorization") String token) {
+        try {
+            // 1. 토큰에서 사용자 정보 추출
+            String userId = tokenProvider.validateAndGetUserId(token);
+
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            // 2. 사용자 정보 조회
+            UserInfo userInfo = userService.show(userId);
+
+            if (userInfo == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            // 3. 응답 반환
+            UserInfoDTO responseDTO = userService.buildUserInfoDTO(userInfo, token);
+            return ResponseEntity.ok().body(responseDTO);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
