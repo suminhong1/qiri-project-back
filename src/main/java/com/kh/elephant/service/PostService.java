@@ -72,7 +72,7 @@ public class PostService {
     public Post create(Post post){
 
         return dao.save(post);
-}
+    }
 
 
 

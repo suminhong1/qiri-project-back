@@ -22,6 +22,8 @@ public class PostAttachmentsService {
         return dao.save(postAttachments);
     }
 
+
+
     public PostAttachments update(PostAttachments postAttachments) { return dao.save(postAttachments); }
 
     public PostAttachments delete(int code) {

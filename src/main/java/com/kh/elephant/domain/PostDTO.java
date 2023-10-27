@@ -35,8 +35,9 @@ public class PostDTO {
     private int placeTypeSeq;
 
     private int boardSeq;
-    
-    private int[] categorys;
 
-    private String[] attachments;
+    private List<Integer> categoryList;
+    private List<Integer> categoryTypeList;
+
+    private List<String> attachmentList;
 }
