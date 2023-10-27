@@ -19,6 +19,7 @@ public class CommentsDTO {
     private Date commentDate;
     private UserInfo userInfo;
     private String commentDesc;
+    private String commentDelete;
     @Builder.Default
     private List<Comments> replies = new ArrayList<>();
 }
