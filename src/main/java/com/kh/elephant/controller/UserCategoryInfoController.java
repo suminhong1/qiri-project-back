@@ -66,7 +66,7 @@ public class UserCategoryInfoController {
 
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(list));
-//
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
