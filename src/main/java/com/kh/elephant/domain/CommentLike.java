@@ -25,8 +25,8 @@ public class CommentLike {
     private Date clDate;
 
     @ManyToOne
-    @JoinColumn(name = "comment_seq")
-    private Comments commentSeq;
+    @JoinColumn(name = "comments_seq")
+    private Comments comments;
 
     @ManyToOne
     @JoinColumn(name="user_id")

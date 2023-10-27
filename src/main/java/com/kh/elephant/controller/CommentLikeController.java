@@ -28,22 +28,33 @@ public class CommentLikeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
+    // 댓글 하나에 대한 좋아요 조회
+//    http://localhost:8080/qiri/commentLike/106
     @GetMapping("/commentLike/{id}")
-    public ResponseEntity<List<CommentLikeDTO>> show(@PathVariable int id) {
+    public ResponseEntity<Integer> show(@PathVariable int id) {
+        List<CommentLike> findByCommentSeq = commentLike.findByCommentSeq(id);
         List<CommentLikeDTO> response = new ArrayList<>();
-        try {
+
+        for(CommentLike item : findByCommentSeq) {
             CommentLikeDTO dto = new CommentLikeDTO();
-            UserInfo userInfo = new UserInfo();
-            dto.setClSEQ(dto.getClSEQ());
-            dto.setClDate(dto.getClDate());
-            dto.setCommentSeq(dto.getCommentSeq());
-            dto.setUserInfo(userInfo);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            dto.setClSEQ(item.getClSEQ());
+            dto.setClDate(item.getClDate());
+            dto.setComments(item.getComments());
+            dto.setUserInfo(item.getUserInfo());
+            response.add(dto);
         }
+
+        List<CommentLikeDTO> list = response;
+
+        int total = response.size();
+
+        // 객체방식.. ---> {
+        //     List<CommentLikeDTO> list : response
+        //     int total : response.size()
+        // }
+            return ResponseEntity.status(HttpStatus.OK).body(total);
     }
+    // 좋아요 추가
     @PostMapping("/commentLike")
     public ResponseEntity<CommentLike> create(@RequestBody CommentLike vo) {
         try {

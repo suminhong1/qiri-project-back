@@ -45,6 +45,7 @@ public class CommentsController {
             dto.setPost(item.getPost());
             dto.setCommentsSEQ(item.getCommentsSEQ());
             dto.setCommentDesc(item.getCommentDesc());
+            dto.setCommentDate(item.getCommentDate());
             dto.setUserInfo(item.getUserInfo());
             dto.setCommentDelete(item.getCommentDelete());
             List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSEQ(), id);
@@ -98,7 +99,7 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body(comments.delete(vo));
     }
 
-//    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
+    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
 //    @DeleteMapping("/post/comments/{id}")
 //    public ResponseEntity<Comments> delete(@PathVariable int id) {
 //        try {

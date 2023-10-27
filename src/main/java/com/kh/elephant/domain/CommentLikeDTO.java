@@ -14,6 +14,6 @@ import java.util.Date;
 public class CommentLikeDTO {
     private int clSEQ;
     private Date clDate;
-    private int commentSeq;
+    private Comments comments;
     private UserInfo userInfo;
 }

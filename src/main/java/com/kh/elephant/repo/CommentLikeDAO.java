@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CommentLikeDAO extends JpaRepository <CommentLike, Integer> {
-    @Query(value="SELECT * FROM comment_like WHERE comments_seq = :id", nativeQuery = true)
+    @Query(value="SELECT cl_seq,cl_date,comments_seq,user_id FROM comment_like WHERE comments_seq = :id", nativeQuery = true)
     List<CommentLike> findByCommentSeq(@Param("id") Integer id);
 
 }

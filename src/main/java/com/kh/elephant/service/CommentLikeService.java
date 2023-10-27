@@ -21,13 +21,16 @@ public class CommentLikeService {
     public List<CommentLike> showAll() {
         return dao.findAll();
     }
+    
     public CommentLike show(int id) {
         return dao.findById(id).orElse(null);
     }
 
+    // 좋아요 추가
     public CommentLike create(CommentLike commentLike){
         return dao.save(commentLike);
     }
+
 //    public CommentLike update(CommentLike commentLike) {
 //        CommentLike target = dao.findById(commentLike.getCommentSeq()).orElse(null);
 //        if(target!=null){
@@ -36,6 +39,7 @@ public class CommentLikeService {
 //        return null;
 //    }
 
+    // 좋아요 삭제
     public CommentLike delete(int id) {
         CommentLike target = dao.findById(id).orElse(null);
         dao.delete(target);
