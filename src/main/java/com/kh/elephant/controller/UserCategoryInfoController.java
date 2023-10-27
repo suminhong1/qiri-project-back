@@ -1,7 +1,9 @@
 package com.kh.elephant.controller;
 
+import com.kh.elephant.domain.Category;
 import com.kh.elephant.domain.SignUpDTO;
 import com.kh.elephant.domain.UserCategoryInfo;
+import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.service.UserCategoryInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -43,8 +46,27 @@ public class UserCategoryInfoController {
     // 유저 관심사 카테고리 정보 등록
     @PostMapping("/userCategoryInfo")
     public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody SignUpDTO dto) {
+        List<UserCategoryInfo> list = new ArrayList<>();
+        for(int i=0; i<dto.getUserCategories().size(); i++) {
+            UserCategoryInfo info = new UserCategoryInfo();
+
+            UserInfo user = new UserInfo();
+            user.setUserId(dto.getUserInfoDTO().getId());
+
+            Category category = new Category();
+            category.setCategorySEQ(dto.getUserCategories().get(i).getUserCategorySeq());
+
+            info.setUserInfo(user);
+            info.setCategory(category);
+
+            list.add(info);
+        }
+//        log.info("info :: " + dto.getUserCategories());
+//        return ResponseEntity.status(HttpStatus.OK).build();
+
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(dto.getUserCategories()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(list));
+//
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

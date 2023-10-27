@@ -19,8 +19,8 @@ public class UserCategoryInfoService {
 
     public UserCategoryInfo create(UserCategoryInfo userCategoryInfo) { return dao.save(userCategoryInfo); }
 
-    public List<UserCategoryInfo> createAll(List<UserCategoryInfo> userCategoryInfoList) {
-        return dao.saveAll(userCategoryInfoList);
+    public List<UserCategoryInfo> createAll(List<UserCategoryInfo> userCategoryInfo) {
+        return dao.saveAll(userCategoryInfo);
     }
 
     public UserCategoryInfo update(UserCategoryInfo userCategoryInfo) { return dao.save(userCategoryInfo); }
