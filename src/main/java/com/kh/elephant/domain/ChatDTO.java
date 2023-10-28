@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatDTO {
 
+    private String id;
+
     private String nickname;
 
     private int chatRoomSEQ;

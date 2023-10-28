@@ -6,7 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -30,6 +37,9 @@ public class ChatController {
     private PostService postService;
     @Autowired
     private MatchingUserInfoService muiService;
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+
 
 
     // 내가 참여중인 채팅 리스트
@@ -43,12 +53,14 @@ public class ChatController {
     }
 
     // 참여중인 채팅방의 내 참여정보 가져오기
-    @GetMapping("/public/chatRoomInfo/{code}/{userId}")
-    public ResponseEntity<UserChatRoomInfo> findByUserId(@PathVariable int code, String userId) {
+    @Transactional
+    @GetMapping("/public/chatRoomInfo/{userId}/{code}")
+    public ResponseEntity<UserChatRoomInfo> findByUserId(@PathVariable String userId, @PathVariable int code) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByIdAndChatRoomSEQ(code, userId));
+            UserChatRoomInfo userChatRoomInfo = ucriService.findByIdAndChatRoomSEQ(code, userId);
+            return ResponseEntity.status(HttpStatus.OK).body(userChatRoomInfo);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return null;
         }
     }
 
@@ -62,7 +74,7 @@ public class ChatController {
         }
     }
 
-    //채팅방 채팅보기
+    //채팅방의 채팅보기
     @GetMapping("/chat/room/message/{id}")
     public ResponseEntity<List<ChatMessage>> messageFindByChatroomSEQ(@PathVariable int id) {
         try {
@@ -104,15 +116,22 @@ public class ChatController {
     //채팅방 나가기와 채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제
     @PutMapping("/chatroom/leave")
     public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody ChatDTO dto) {
+        UserInfo userInfo = uiService.findByNickname(dto.getNickname());
         try {
-            int result = ucriService.chatRoomLeave(uiService.findByNickname(dto.getNickname()).getUserId(), dto.getChatRoomSEQ());
-            chatService.leaveChatRoom(dto.getChatRoomSEQ());
+            // 채팅방 나가기(UPDATE쿼리문)
+            int result = ucriService.chatRoomLeave(userInfo.getUserId(), dto.getChatRoomSEQ());
+            //채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제(SELECT쿼리문, DELETE쿼리문)
+            if(result > 0) {
+                chatService.leaveChatRoom(dto.getChatRoomSEQ());
+            }
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             log.info("delete error");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
 
 
 

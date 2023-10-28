@@ -3,11 +3,18 @@ package com.kh.elephant.service;
 import com.kh.elephant.repo.ChatMessageDAO;
 import com.kh.elephant.repo.ChatRoomDAO;
 import com.kh.elephant.repo.UserChatRoomInfoDAO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 
+@Slf4j
 @Service
 public class ChatService {
 
@@ -20,24 +27,33 @@ public class ChatService {
     @Autowired
     private ChatMessageDAO chatMessageDAO;
 
+
+
     @Transactional
-    public void leaveChatRoom(int chatroomSeq) {
-        // 모든 유저의 LEAVE 값이 'Y'인지 확인
-        boolean allUsersLeft = userChatRoomInfoDAO.allUsersLeft(chatroomSeq);
+    public void leaveChatRoom(int chatroomSeq) throws Exception {
 
-        if (!allUsersLeft) {
-
-            // 채팅 메세지 테이블에서 해당 채팅방 관련 데이터 삭제
-            chatMessageDAO.deleteByRoomSEQ(chatroomSeq);
-
-            // 유저 채팅방 정보 테이블에서 해당 채팅방 정보 삭제
-            userChatRoomInfoDAO.deleteByChatroomSeq(chatroomSeq);
-
+        // 모든 유저의 LEAVE 값이 'Y'인지 확인(SELECT 쿼리문)
+        int result = userChatRoomInfoDAO.allUsersLeft(chatroomSeq);
+        if (result == 0) {
+            deleteChatMessages(chatroomSeq);
+            deleteUserChatRoomInfo(chatroomSeq);
+            deleteChatRoom(chatroomSeq);
         }
+    }
 
-        // 채팅방 테이블에서 해당 채팅방 데이터 삭제
+    @Transactional
+    public void deleteChatMessages(int chatroomSeq) {
+        chatMessageDAO.deleteByRoomSEQ(chatroomSeq);
+    }
+
+    @Transactional
+    public void deleteUserChatRoomInfo(int chatroomSeq) {
+        userChatRoomInfoDAO.deleteByChatroomSeq(chatroomSeq);
+    }
+
+    @Transactional
+    public void deleteChatRoom(int chatroomSeq) {
         chatRoomDAO.deleteByRoomSEQ(chatroomSeq);
-
 
     }
 }
