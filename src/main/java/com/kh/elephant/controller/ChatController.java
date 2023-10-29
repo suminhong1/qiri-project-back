@@ -48,7 +48,7 @@ public class ChatController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserId(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return null;
         }
     }
 
