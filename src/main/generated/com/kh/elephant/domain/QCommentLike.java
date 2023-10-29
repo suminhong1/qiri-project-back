@@ -26,7 +26,7 @@ public class QCommentLike extends EntityPathBase<CommentLike> {
 
     public final NumberPath<Integer> clSEQ = createNumber("clSEQ", Integer.class);
 
-    public final NumberPath<Integer> commentSeq = createNumber("commentSeq", Integer.class);
+    public final QComments comments;
 
     public final QUserInfo userInfo;
 
@@ -48,6 +48,7 @@ public class QCommentLike extends EntityPathBase<CommentLike> {
 
     public QCommentLike(Class<? extends CommentLike> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.comments = inits.isInitialized("comments") ? new QComments(forProperty("comments"), inits.get("comments")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 
