@@ -131,6 +131,16 @@ public class ChatController {
         }
     }
 
+    //채팅방에 참여중인 유저목록 가져오기
+    @PostMapping("/chatroom/userlist")
+    public ResponseEntity<List<UserChatRoomInfo>> findByChatRoomSEQ(@RequestBody int code) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserChatRoomSEQ(code));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
 
 
 

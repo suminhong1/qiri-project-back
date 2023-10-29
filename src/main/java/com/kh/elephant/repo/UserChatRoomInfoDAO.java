@@ -15,6 +15,9 @@ public interface UserChatRoomInfoDAO extends JpaRepository<UserChatRoomInfo, Int
     @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE USER_ID = :id AND LEAVE = 'N'", nativeQuery = true)
     List<UserChatRoomInfo> findByUserId(@Param("id") String id);
 
+    @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE CHATROOM_SEQ = :code AND LEAVE = 'N'", nativeQuery = true)
+    List<UserChatRoomInfo> findByChatRoomSEQ(@Param("code") int code);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE USER_CHATROOM_INFO SET LEAVE = 'Y' WHERE USER_ID = :id AND CHATROOM_SEQ = :code", nativeQuery = true)
