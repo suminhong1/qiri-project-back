@@ -19,7 +19,7 @@ public class MatchingCategoryInfo {
     @Column(name = "matching_category_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "matchingCategorySequence")
     @SequenceGenerator(name="matchingCategorySequence", sequenceName = "SEQ_MATCHING_CATEGORY",allocationSize = 1)
-    private int matchingCategorySEQ;
+    private int matchingCategorySeq;
 
     @ManyToOne
     @JoinColumn(name = "post_seq")

@@ -37,6 +37,9 @@ public class PostDTO {
     private int boardSeq;
 
     private List<Integer> categoryList;
+
+//    private List<Integer>categoryList;
+
     private List<Integer> categoryTypeList;
 
     private List<String> attachmentList;
