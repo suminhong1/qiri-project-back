@@ -135,7 +135,6 @@ public class ChatController {
     @GetMapping("/chatroom/userlist/{code}")
     public ResponseEntity<List<UserChatRoomInfo>> findByChatRoomSEQ(@PathVariable int code) {
         try {
-            log.info("잘 받는지 : " + code);
             return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserChatRoomSEQ(code));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
