@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -166,12 +167,14 @@ public class PostController {
     }
 
 
+    // 매칭 게시물 생성
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto) {
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO dto) {
         // 지금 dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
 
-        log.info(dto.toString());
+//        log.info(dto.toString());
 
+//        log.info("카테고리리스트"+dto.getCategoryList().toString());
         try {
             // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
             Place place = plService.show(dto.getPlaceSeq()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
@@ -197,18 +200,6 @@ public class PostController {
                     .board(board)
                     .build();
 
-            // dto로 가져오는 List들에 아직 데이터가 없어서 분기처리 해줘야함
-            // 카테고리 선택은 5개까지 프론트에서 처리
-
-        for (Integer categorySEQ : dto.getCategoryList()) {
-            Category category = categoryService.show(categorySEQ);
-            MatchingCategoryInfo matchingCategoryInfo
-                    = MatchingCategoryInfo.builder()
-                    .post(post)
-                    .category(category)
-                    .build();
-            mciService.create(matchingCategoryInfo);
-        }
 
 //         첨부 파일 선택은 3개까지
 //        for (String attachmentURL : dto.getAttachmentList()) {
@@ -219,16 +210,16 @@ public class PostController {
 //                    .build();
 //            ResponseEntity.ok().body(paService.create(postAttachments));
 //        }
-
+//            return ResponseEntity.status(HttpStatus.CREATED).body(mciService.createAll(list));// create, save도 post랑 유사한 역할
             log.info("나와라이~ 나와라이~" + post);
-            return ResponseEntity.ok().body(null);// create, save도 post랑 유사한 역할
+            return ResponseEntity.ok().body(postService.create(post));// create, save도 post랑 유사한 역할
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
 
-    //    게시글 수정 http://localhost:8080/qiri/post
+    //   매칭 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
 
@@ -266,7 +257,7 @@ public class PostController {
 
 
 
-    //     게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/post/{id}")
     public ResponseEntity<Post> delete(@PathVariable int id) {
         try {

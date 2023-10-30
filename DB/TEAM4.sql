@@ -210,13 +210,7 @@ CREATE TABLE CHATROOM (
 
 -- 기본값 생성
 INSERT INTO USER_INFO(USER_ID, USER_PWD, USER_NAME, USER_NICKNAME, GENDER, PHONE, EMAIL) VALUES('없음', '없음', '없음', '없', '남', '0', '0');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(1, '오늘은 어느 부위를 조져볼까2', '홍수민의 하루1', 'user3');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(2, '오늘은 어느 부위를 조져볼까3', '홍수민의 하루2', 'user4');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(3, '오늘은 어느 부위를 조져볼까4', '홍수민의 하루3', 'user5');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(4, '오늘은 어느 부위를 조져볼까5', '홍수민의 하루4', 'user6');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(5, '오늘은 어느 부위를 조져볼까6', '홍수민의 하루5', 'user7');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(6, '오늘은 어느 부위를 조져볼까7', '홍수민의 하루6', 'user8');
-INSERT INTO POST(POST_SEQ, POST_TITLE, POST_CONTENT, USER_ID) VALUES(7, '오늘은 어느 부위를 조져볼까', '홍수민의 하루7', 'user9');
+
 
 
 

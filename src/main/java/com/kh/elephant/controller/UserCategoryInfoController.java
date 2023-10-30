@@ -72,7 +72,7 @@ public class UserCategoryInfoController {
 
             list.add(info);
         }
-//        log.info("info :: " + dto.getUserCategories());
+        log.info("info :: " + dto.getUserCategories());
 //        return ResponseEntity.status(HttpStatus.OK).build();
 
         try {

@@ -8,11 +8,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 // 첫번째는 사용할 엔티티 두번째는 primary키의 데이터타입
 public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicateExecutor<Post> {
+
+
+    @Transactional
+    @Query(value = "INSERT INTO matching_category_info (post_seq, category_seq) VALUES (:post_seq, :category_seq)", nativeQuery = true)
+    void savePostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq);
 
 
 

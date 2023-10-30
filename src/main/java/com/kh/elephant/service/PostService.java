@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -46,7 +47,7 @@ public class PostService {
         return dao.findAll(builder, pageable);
     }
 
-    // 검색 기능
+    // 검색 기능 구현 마저 해야함
     public Page<Post> searchPost(String keyword, Pageable pageable) {
         System.out.println("서비스 키워드 : " + keyword);
         return dao.findByPostTitleContaining(keyword, pageable);
@@ -68,6 +69,7 @@ public class PostService {
 
         return post;
     }
+
 
     public Post create(Post post){
 
