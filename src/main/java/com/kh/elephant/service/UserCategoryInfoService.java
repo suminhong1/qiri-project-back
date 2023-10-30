@@ -30,4 +30,8 @@ public class UserCategoryInfoService {
         dao.delete(data);
         return data;
     }
+
+    public List<UserCategoryInfo> findByUserId(String id) { return dao.findByUserId(id); }
+
+
 }
