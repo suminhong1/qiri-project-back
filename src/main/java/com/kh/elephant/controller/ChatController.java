@@ -42,7 +42,7 @@ public class ChatController {
 
 
 
-    // 내가 참여중인 채팅 리스트
+    // 내가 참여중인 채팅방 리스트
     @GetMapping("/public/chatRooms/{id}")
     public ResponseEntity<List<UserChatRoomInfo>> findByUserId(@PathVariable String id) {
         try {
@@ -132,9 +132,10 @@ public class ChatController {
     }
 
     //채팅방에 참여중인 유저목록 가져오기
-    @PostMapping("/chatroom/userlist")
-    public ResponseEntity<List<UserChatRoomInfo>> findByChatRoomSEQ(@RequestBody int code) {
+    @GetMapping("/chatroom/userlist/{code}")
+    public ResponseEntity<List<UserChatRoomInfo>> findByChatRoomSEQ(@PathVariable int code) {
         try {
+            log.info("잘 받는지 : " + code);
             return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserChatRoomSEQ(code));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
