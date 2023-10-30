@@ -43,6 +43,8 @@ public class UserInfoController {
 
     private static final String UPLOAD_DIR = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
 
+    private String url;
+
     // 유저 전체 조회 http://localhost:8080/qiri/userInfo
     @GetMapping("/userInfo")
     public ResponseEntity<List<UserInfo>> showAllUser() {
@@ -93,6 +95,8 @@ public class UserInfoController {
     @PostMapping("/userInfo/signup")
     public ResponseEntity<UserInfoDTO> register(@RequestBody SignUpDTO dto) {
 
+        log.info("image : " + dto.getUserInfoDTO().getProfileImg());
+
         UserInfo user = UserInfo.builder()
                 .userId(dto.getUserInfoDTO().getId())
                 .userPwd(passwordEncoder.encode(dto.getUserInfoDTO().getPwd()))
@@ -108,7 +112,7 @@ public class UserInfoController {
                 .mbti(dto.getUserInfoDTO().getMbti())
                 .birthday(dto.getUserInfoDTO().getBirthday())
                 .placeType(dto.getUserInfoDTO().getPlaceType())
-                .profileImg(dto.getUserInfoDTO().getProfileImg())
+                .profileImg(url)
                 .isAdmin("N")
                 .isDeleted("N")
                 .joinDate(new Date())
@@ -166,6 +170,10 @@ public class UserInfoController {
             // 프로필 사진을 디렉토리에 저장
             Path filePath = Paths.get(uploadDir, fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            log.info(fileName);
+
+            url = fileName;
 
             // 클라이언트에게 이미지 URL 전송
             String imageUrl = "http://localhost:8080/qiri/public/upload/" + fileName;
