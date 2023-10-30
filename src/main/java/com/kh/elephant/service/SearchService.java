@@ -11,7 +11,7 @@ import java.util.List;
 public class SearchService {
 
     @Autowired
-    private SearchDAO dao;
+    private SearchDAO searchDAO;
     // 키워드에 따른 게시물 여러개 조회
-    public List<Post> findByKeyword(String id) { return dao.findByKeyword(id); }
+    public List<Post> searchByKeyword(String keyword) { return searchDAO.searchByKeyword(keyword); }
 }

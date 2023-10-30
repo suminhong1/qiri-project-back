@@ -17,25 +17,15 @@ import java.util.List;
 public class SearchController {
 
     @Autowired
-    private SearchService search;
+    private SearchService searchService;
 
     // 키워드에 따른 게시물 전체 조회
-    @GetMapping("public/search/{id}")
-    public ResponseEntity<List<SearchDTO>> searchPost(@PathVariable String id) {
+    @GetMapping("public/search")
+    public ResponseEntity<List<Post>> searchPost(@RequestParam("keyword") String keyword) {
 
-        List<Post> findByKeyword = search.findByKeyword(id);
-        List<SearchDTO> response = new ArrayList<>();
+        List<Post> searchResults  = searchService.searchByKeyword(keyword);
+        return new ResponseEntity<>(searchResults, HttpStatus.OK);
 
-        for(Post item : findByKeyword) {
-            SearchDTO dto = new SearchDTO();
-            dto.setPostSEQ(item.getPostSEQ());
-            dto.setPostTitle(item.getPostTitle());
-            dto.setUserInfo(item.getUserInfo());
-            dto.setPlace(item.getPlace());
-            response.add(dto);
-        }
-
-        return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 

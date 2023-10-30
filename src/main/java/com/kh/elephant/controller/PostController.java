@@ -61,27 +61,41 @@ public class PostController {
     @Autowired
     private MatchingCategoryInfoService mciService;
 
-    // 게시글 전체 조회 http://localhost:8080/qiri/post
+    // 검색
+    @Autowired
+    private SearchService searchService;
+
     @GetMapping("/public/post")
-    public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
+    public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page,
+                                               @RequestParam(name = "board", required = false) Integer board,
+                                               @RequestParam(name = "keyword", required = false) String keyword) {
         log.info("post List 호출 컨트롤러 진입;");
-        //get 방식은 db에 저장돼 있는 걸 가져 오기 때문에 데이터를 안 넣어도 됨
         Sort sort = Sort.by("postSEQ").descending();
-
         Pageable pageable = PageRequest.of(page - 1, 20, sort);
-
         QPost qPost = QPost.post;
         BooleanBuilder builder = new BooleanBuilder();
 
         if (board != null) {
             BooleanExpression expression = qPost.board.boardSEQ.eq(board);
-
             builder.and(expression);
         }
-        Page<Post> result = postService.showAll(pageable, builder);
+
+        Page<Post> result = null;
+
+        if (keyword == null) {
+            // keyword가 없거나 비어있는 경우 전체 게시물을 가져옴
+            result = postService.showAll(pageable, builder);
+        } else {
+            List<Post> searchResults = searchService.searchByKeyword(keyword);
+            return ResponseEntity.status(HttpStatus.OK).body(searchResults);
+        }
+
         log.info("............LIST@@@@@@@@@@ :   " + result.toString());
+
+        // Page 객체에서 목록을 추출하여 반환
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
+
 
 
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
