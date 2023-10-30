@@ -106,16 +106,12 @@ public class PostController {
         Board board = boardService.show(dto.getBoardSeq());
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
-
-
         Post post = Post.builder()
                 .postTitle(dto.getPostTitle())
                 .postContent(dto.getPostContent())
                 .userInfo(userinfo)
                 .board(board)
                 .build();
-
-
         return ResponseEntity.ok().body(postService.create(post));
     }
 
