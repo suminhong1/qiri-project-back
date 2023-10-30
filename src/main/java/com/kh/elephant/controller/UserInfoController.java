@@ -67,19 +67,46 @@ public class UserInfoController {
 
     // 유저 수정 http://localhost:8080/qiri/userInfo/1 <--id
     @PutMapping("/userInfo/editProfile")
-    public ResponseEntity<UserInfo> updateUser(@RequestBody UserInfo user) {
-            try {
-                UserInfo updatedUser = userService.update(user);
+    public ResponseEntity<UserInfoDTO> updateUserProfile(@RequestBody SignUpDTO dto) {
+        try {
+            UserInfo loginUser = userService.show(dto.getUserInfoDTO().getId());
+
+            if (loginUser != null) {
+                loginUser.setUserPwd(passwordEncoder.encode(dto.getUserInfoDTO().getPwd()));
+                loginUser.setUserName(dto.getUserInfoDTO().getName());
+                loginUser.setUserNickname(dto.getUserInfoDTO().getNickname());
+                loginUser.setAge(dto.getUserInfoDTO().getAge());
+                loginUser.setGender(dto.getUserInfoDTO().getGender());
+                loginUser.setPhone(dto.getUserInfoDTO().getPhone());
+                loginUser.setEmail(dto.getUserInfoDTO().getEmail());
+                loginUser.setStatusMessage(dto.getUserInfoDTO().getStatusMessage());
+                loginUser.setHasPartner(dto.getUserInfoDTO().getHasPartner());
+                loginUser.setBloodType(dto.getUserInfoDTO().getBloodType());
+                loginUser.setMbti(dto.getUserInfoDTO().getMbti());
+                loginUser.setBirthday(dto.getUserInfoDTO().getBirthday());
+                loginUser.setPlaceType(dto.getUserInfoDTO().getPlaceType());
+
+                List<UserCategoryInfo> updatedUserCategories = dto.getUserCategories();
+
+                UserInfo updatedUser = userService.update(loginUser);
 
                 if (updatedUser != null) {
-                    return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+                    UserInfoDTO responseDTO = UserInfoDTO.builder()
+                            .id(updatedUser.getUserId())
+                            .nickname(updatedUser.getUserNickname())
+                            .build();
+                    return ResponseEntity.ok().body(responseDTO);
                 } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                 }
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
 
     // 유저 삭제 http://localhost:8080/qiri/userInfo/1 <--id
     @DeleteMapping("/userInfo/{id}")
@@ -222,13 +249,4 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-
-
-
-
-
-
-
-
 }
