@@ -173,7 +173,7 @@ public class PostController {
 
     // 매칭 게시물 생성
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto) {
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO dto) {
         // 지금 dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
 
 //        log.info(dto.toString());
@@ -203,39 +203,7 @@ public class PostController {
                     .userInfo(userInfo)
                     .board(board)
                     .build();
-            postService.create(post);
-            // dto로 가져오는 List들에 아직 데이터가 없어서 분기 처리 해줘야함
-            // 카테고리 선택은 5개까지 프론트에서 처리
 
-
-//        for (Integer categorySEQ : dto.getCategoryList()) {
-//            Category category = categoryService.show(categorySEQ);
-//            MatchingCategoryInfo matchingCategoryInfo
-//                    = MatchingCategoryInfo.builder()
-//                    .post(post)
-//                    .category(category)
-//                    .build();
-//            mciService.create(matchingCategoryInfo);
-
-//            List<MatchingCategoryInfo> list = new ArrayList<>();
-//
-//            for(int i=0; i<dto.getCategoryList().size(); i++){
-//                MatchingCategoryInfo info = new MatchingCategoryInfo();
-//                info.setPost(post);
-//             post.setPostSEQ(dto.getPostSeq());
-//
-//               Category category = new Category();
-//               category.setCategorySEQ(dto.getCategoryList().get(i).getMatchingCategorySEQ());
-//
-//               info.setPost(post);
-//               info.setCategory(category);
-//
-//               list.add(info);
-//
-//log.info("list :: "+list);
-
-//            log.info("matchingCategoryInfo :: 이 새끼도 안찍히네 ㅋㅋ " + list);
-//        }
 
 //         첨부 파일 선택은 3개까지
 //        for (String attachmentURL : dto.getAttachmentList()) {
@@ -248,7 +216,7 @@ public class PostController {
 //        }
 //            return ResponseEntity.status(HttpStatus.CREATED).body(mciService.createAll(list));// create, save도 post랑 유사한 역할
             log.info("나와라이~ 나와라이~" + post);
-            return ResponseEntity.ok().body(null);// create, save도 post랑 유사한 역할
+            return ResponseEntity.ok().body(postService.create(post));// create, save도 post랑 유사한 역할
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

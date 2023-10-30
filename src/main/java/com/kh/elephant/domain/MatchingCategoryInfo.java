@@ -18,7 +18,7 @@ public class MatchingCategoryInfo {
     @Id
     @Column(name = "matching_category_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "matchingCategorySequence")
-    @SequenceGenerator(name="matchingCategorySequence", sequenceName = "SEQ_MATCHING_CATEGORY",allocationSize = 1)
+    @SequenceGenerator(name="matchingCategorySequence", sequenceName = "SEQ_MATCHING_CATEGORY_INFO",allocationSize = 1)
     private int matchingCategorySeq;
 
     @ManyToOne

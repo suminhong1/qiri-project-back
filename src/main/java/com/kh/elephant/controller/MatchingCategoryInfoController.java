@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/qiri/*")
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
-@Slf4j
 public class MatchingCategoryInfoController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class MatchingCategoryInfoController {
     private PostService postService;
 
     // 게시글 전체 조회 http://localhost:8080/qiri/post
-    @GetMapping("/MatchingCategoryInfo")
+    @GetMapping("/matchingCategoryInfo")
     public ResponseEntity<List<MatchingCategoryInfo>> showAll(){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
@@ -36,7 +36,7 @@ public class MatchingCategoryInfoController {
         }
     }
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
-    @GetMapping("/MatchingCategoryInfo/{id}")
+    @GetMapping("/matchingCategoryInfo/{id}")
     public ResponseEntity<MatchingCategoryInfo> show(@PathVariable int id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
@@ -46,42 +46,36 @@ public class MatchingCategoryInfoController {
     }
 
     // 게시글 추가 http://localhost:8080/qiri/post
-    @PostMapping("/MatchingCategoryInfo")
+    @PostMapping("/matchingCategoryInfo")
     public ResponseEntity<List<MatchingCategoryInfo>> insert(@RequestBody MatchingCategoryInfoDTO dto) {
-
+    // 카테고리 선택은 5개까지 프론트에서 처리
         List<MatchingCategoryInfo> list = new ArrayList<>();
 
-        log.info(dto.toString());
+        log.info("matching category list : " + dto.toString());
 
-        for (int i = 0; i < dto.getMatchingCategories().size(); i++) {
+        for(int i=0; i<dto.getCategories().size(); i++) {
             MatchingCategoryInfo info = new MatchingCategoryInfo();
 
             Post post = new Post();
-            post.setPostSEQ(dto.getPostDTO().getPostSeq());
-
-            log.info("post :: " + post);
+            post.setPostSEQ(dto.getPostSeq());
+            info.setPost(post);
 
             Category category = new Category();
-            category.setCategorySEQ(dto.getMatchingCategories().get(i).getMatchingCategorySeq());
-
-            log.info("category :: " + category);
-
-            info.setPost(post);
+            category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
             info.setCategory(category);
 
-            log.info("info :: " + info);
             list.add(info);
         }
-            log.info("info :: " + dto.getMatchingCategories());
-            try {
-                return ResponseEntity.status(HttpStatus.CREATED).body(service.createAll(list));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
+
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.createAll(list));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
 
         // 게시글 수정 http://localhost:8080/qiri/post
-        @PutMapping("/MatchingCategoryInfo")
+        @PutMapping("/matchingCategoryInfo")
         public ResponseEntity<MatchingCategoryInfo> update (@RequestBody MatchingCategoryInfo matchingCategoryInfo){
             try {
                 return ResponseEntity.status(HttpStatus.OK).body(service.update(matchingCategoryInfo));
@@ -89,13 +83,13 @@ public class MatchingCategoryInfoController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         }
-        // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
-        @DeleteMapping("/MatchingCategoryInfo/{id}")
-        public ResponseEntity<MatchingCategoryInfo> delete ( @PathVariable int id){
-            try {
-                return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
+    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    @DeleteMapping("/matchingCategoryInfo/{id}")
+    public ResponseEntity<MatchingCategoryInfo> delete ( @PathVariable int id){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
     }
