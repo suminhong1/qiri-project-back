@@ -7,12 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MatchingUserInfoDTO {
 
+    private String token;
+
+    private int matchingUserInfoSEQ;
+
     private int postSEQ;
+
+    private String matchingAccept;
 
     private String id;
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MatchingUserInfoService {
@@ -28,4 +29,10 @@ public class MatchingUserInfoService {
         dao.delete(data);
         return data;
     }
+
+    // 수락정보 포스트 공용SEQ 체킹용
+    public Optional<MatchingUserInfo> findByUserIdAndPostSEQ(String userId, int postSEQ) {
+        return dao.findByUserInfo_UserIdAndPost_PostSEQ(userId, postSEQ);
+    }
+
 }
