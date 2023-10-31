@@ -21,4 +21,5 @@ public class ChatDTO {
 
     private int postSEQ;
 
+    private String joinMessageSent;
 }

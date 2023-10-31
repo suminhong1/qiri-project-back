@@ -141,6 +141,20 @@ public class ChatController {
         }
     }
 
+    //참여메세지 관련
+    @PutMapping("/chatroom/user/join")
+    public ResponseEntity<UserChatRoomInfo> joinMessage(@RequestBody ChatDTO dto) {
+        try {
+            log.info("아이디" + dto.getId());
+            log.info("seq" + dto.getChatRoomSEQ());
+            int result = ucriService.joinMessage(dto.getId(), dto.getChatRoomSEQ());
+            log.info("참여메세지" + result);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
 
 
 
