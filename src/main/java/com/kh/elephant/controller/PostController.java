@@ -66,6 +66,9 @@ public class PostController {
     @Autowired
     private SearchService searchService;
 
+    // 게시글 전체 보기 http://localhost:8080/qiri/post
+    // OR
+    // 게시글 키워드로 검색 http://localhost:8080/qiri/post?keyword=1
     @GetMapping("/public/post")
     public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page,
                                                @RequestParam(name = "board", required = false) Integer board,
@@ -111,7 +114,6 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
 
 
     // 리뷰 DB 저장
