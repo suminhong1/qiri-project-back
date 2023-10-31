@@ -35,4 +35,11 @@ public class MatchingUserInfoService {
         return dao.findByUserInfo_UserIdAndPost_PostSEQ(userId, postSEQ);
     }
 
+    // 매칭 정보 postSEQ확인
+    public List<MatchingUserInfo> findByPostSEQ(int postSEQ) {
+        return dao.findByPost_PostSEQ(postSEQ);
+    }
+
+
+
 }

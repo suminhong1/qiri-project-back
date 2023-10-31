@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +80,7 @@ public class MatchingUserInfoController {
         Optional<MatchingUserInfo> existingData = muiService.findByUserIdAndPostSEQ(userId, dto.getPostSEQ());
         if (existingData.isPresent()) {
             // 이미 존재하는 정보가 있다면, 해당 정보를 알리는 응답 반환
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Already exists.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("중복.");
         }
 
         MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
@@ -91,6 +92,26 @@ public class MatchingUserInfoController {
         return ResponseEntity.ok().body(muiService.create(matchingUserInfo));
     }
 
+    // 매칭유저 리스트보기
+    @GetMapping("/getApplyList/{postSEQ}")
+    public ResponseEntity<List<MatchingUserInfoDTO>> getApplyList(@PathVariable int postSEQ) {
+        try {
+            List<MatchingUserInfo> list = muiService.findByPostSEQ(postSEQ);
+            // DTO 변환 로직
+            List<MatchingUserInfoDTO> result = new ArrayList<>();
+            for (MatchingUserInfo item : list) {
+                MatchingUserInfoDTO dto = new MatchingUserInfoDTO();
+                dto.setId(item.getUserInfo().getUserId());
+                dto.setPostSEQ(postSEQ);
+                // 다른 필드들도 세팅
+                result.add(dto);
+            }
+            log.info("저장된것 보기"+result);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
 
