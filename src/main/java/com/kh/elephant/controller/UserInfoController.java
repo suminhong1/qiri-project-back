@@ -86,8 +86,6 @@ public class UserInfoController {
                 loginUser.setBirthday(dto.getUserInfoDTO().getBirthday());
                 loginUser.setPlaceType(dto.getUserInfoDTO().getPlaceType());
 
-                List<UserCategoryInfo> updatedUserCategories = dto.getUserCategories();
-
                 UserInfo updatedUser = userService.update(loginUser);
 
                 if (updatedUser != null) {
