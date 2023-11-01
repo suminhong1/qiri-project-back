@@ -135,7 +135,7 @@ public class PostController {
                 .userInfo(userinfo)
                 .postDelete("N")
                 .matched("N")
-                .postNotice("N")
+                .posTitleDropbox("N")
                 .board(board)
                 .build();
 
@@ -148,8 +148,8 @@ public class PostController {
     }
 
 
-    // 리뷰 삭제
-// 리뷰 삭제
+
+// 리뷰 삭제 (update사용)
     @PutMapping("/reviewDelete/{postSeq}")
     public ResponseEntity<String> reviewDelete(@PathVariable int postSeq) {
         try {
@@ -158,6 +158,25 @@ public class PostController {
                 return ResponseEntity.badRequest().body("Post not found!");
             }
             post.setPostDelete("Y");
+            postService.update(post);
+            return ResponseEntity.ok().body("Post marked as deleted!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
+        }
+    }
+
+
+
+
+    // 드롭박스 타이틀 삭제 (update사용)
+    @PutMapping("/updateDropdownTitle/{postSeq}")
+    public ResponseEntity<String> deleteDropdownTitle(@PathVariable int postSeq) {
+        try {
+            Post post = postService.show(postSeq);
+            if (post == null) {
+                return ResponseEntity.badRequest().body("Post not found!");
+            }
+            post.setPosTitleDropbox("Y");
             postService.update(post);
             return ResponseEntity.ok().body("Post marked as deleted!");
         } catch (Exception e) {
@@ -251,7 +270,7 @@ public class PostController {
                         .postContent(dto.getPostContent())
                         .postDelete("N")
                         .matched("N")
-                        .postNotice("N")
+                        .posTitleDropbox("N")
                         .place(place)
                         .userInfo(userInfo)
                         .board(board)

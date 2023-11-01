@@ -52,8 +52,8 @@ public class Post {
     @Column(name = "matched")
     private String matched;
 
-    @Column(name="post_notice")
-    private String postNotice;
+    @Column(name="post_title_dropbox")
+    private String posTitleDropbox;
 
     @Column(name = "post_delete")
     private String postDelete;
