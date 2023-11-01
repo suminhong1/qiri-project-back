@@ -207,18 +207,6 @@ public class PostController {
                     .userInfo(userInfo)
                     .board(board)
                     .build();
-
-
-//         첨부 파일 선택은 3개까지
-//        for (String attachmentURL : dto.getAttachmentList()) {
-//            PostAttachments postAttachments
-//                    = PostAttachments.builder()
-//                    .post(post)
-//                    .attachmentURL(attachmentURL)
-//                    .build();
-//            ResponseEntity.ok().body(paService.create(postAttachments));
-//        }
-//            return ResponseEntity.status(HttpStatus.CREATED).body(mciService.createAll(list));// create, save도 post랑 유사한 역할
             log.info("나와라이~ 나와라이~" + post);
             return ResponseEntity.ok().body(postService.create(post));// create, save도 post랑 유사한 역할
         } catch (Exception e) {
@@ -231,37 +219,45 @@ public class PostController {
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
 
-        try {
-            Post updatePost = postService.show(dto.getPostSeq());
+            log.info("dto : " + dto.toString());
 
             Place place = plService.show(dto.getPlaceSeq());
             PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSeq());
             place.setPlaceType(placeType);
+            log.info("여긴오냐?");
 
             String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+
+            UserInfo userinfo = userInfoService.show(userId); // 서비스에서 찾은 Id와 같다면
+
             Board board = boardService.show(dto.getBoardSeq());
 
-            if (updatePost.getUserInfo().getUserId().equals(userId)) {// userInfo에 들어있는 userId와
+//            if (updatePost.getUserInfo().getUserId().equals(userId)) {// userInfo에 들어있는 userId와
+                    log.info("유저 ID : " + userId);
+                    log.info("유저 : " + userinfo);
 
-                UserInfo userInfo = userInfoService.findByNickname(userId); // 서비스에서 찾은 Id와 같다면
                 Post post = Post.builder()
                         .postSEQ(dto.getPostSeq())
                         .postTitle(dto.getPostTitle())
                         .postContent(dto.getPostContent())
+                        .postDate(new Date())
+                        .postView(dto.getPostView())
                         .postDelete("N")
                         .matched("N")
                         .postNotice("N")
                         .place(place)
-                        .userInfo(userInfo)
+                        .userInfo(userinfo)
                         .board(board)
                         .build();
-                return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+                log.info("수정 : " + post);
+            Post updatedPost = postService.update(post);
+
+            log.info("되라고 씨발아"+ updatedPost);
+        if (updatedPost == null) {
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+            return ResponseEntity.ok().body(updatedPost);
+        }
 
 
 

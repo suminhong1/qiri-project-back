@@ -61,7 +61,6 @@ public class PostAttachmentsController {
     public ResponseEntity<List<String>> uploadFiles(@RequestParam List<MultipartFile> files, @RequestParam int postId) throws IOException {
 
         try{
-            PostDTO dto = new PostDTO();
             List<String> ImageList = new ArrayList<>();
 
             log.info("files : " + files); // 얘는 얘로 반복문!

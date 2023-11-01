@@ -37,6 +37,8 @@ public class PostDTO {
 
     private int boardSeq;
 
+    private Date postDate;
+
     private List<Integer> categoryList;
 
     private List<Integer> categoryTypeList;
