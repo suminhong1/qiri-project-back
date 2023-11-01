@@ -39,7 +39,7 @@ public class PostAttachmentsController {
 
     // 게시글 전체 조회 http://localhost:8080/qiri/post
     @GetMapping("/postAttachments")
-    public ResponseEntity<List<PostAttachments>> showAll(){
+    public ResponseEntity<List<PostAttachments>> showAll() {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.showAll());
 
@@ -47,15 +47,23 @@ public class PostAttachmentsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
+//    @GetMapping("/postAttachments/{id}")
+//    public ResponseEntity<PostAttachments> show(@PathVariable int id){
+//        try{
+//            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+//        }catch (Exception e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
+    // 게시글에 따른 첨부파일 조회
     @GetMapping("/postAttachments/{id}")
-    public ResponseEntity<PostAttachments> show(@PathVariable int id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<List<PostAttachments>> findByPostSeq(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSeq(id));
     }
+
     // 게시글 첨부 파일  추가 http://localhost:8080/qiri/post
     @PostMapping("/postAttachments")
     public ResponseEntity<List<String>> uploadFiles(@RequestParam List<MultipartFile> files, @RequestParam int postId) throws IOException {

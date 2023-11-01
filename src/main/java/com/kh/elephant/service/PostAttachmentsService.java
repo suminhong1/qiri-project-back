@@ -22,7 +22,8 @@ public class PostAttachmentsService {
         return dao.save(postAttachments);
     }
 
-
+    // 게시글 1개의 전체 첨부파일 조회
+    public List<PostAttachments> findByPostSeq(int id) {return dao.findByPostSeq(id);}
 
     public PostAttachments update(PostAttachments postAttachments) { return dao.save(postAttachments); }
 
