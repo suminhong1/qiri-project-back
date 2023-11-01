@@ -116,7 +116,7 @@ public class ChatController {
     //채팅방 나가기와 채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제
     @PutMapping("/chatroom/leave")
     public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody ChatDTO dto) {
-        UserInfo userInfo = uiService.findByNickname(dto.getNickname());
+        UserInfo userInfo = uiService.show(dto.getId());
         try {
             // 채팅방 나가기(UPDATE쿼리문)
             int result = ucriService.chatRoomLeave(userInfo.getUserId(), dto.getChatRoomSEQ());
