@@ -53,7 +53,7 @@ public class Post {
     private String matched;
 
     @Column(name="post_title_dropbox")
-    private String posTitleDropbox;
+    private String postTitleDropbox;
 
     @Column(name = "post_delete")
     private String postDelete;

@@ -47,8 +47,6 @@ public class PostDTO {
 
     private String matched;
 
-    private String postNotice;
-
     private String postDelete;
 
     private String titleDropbox;

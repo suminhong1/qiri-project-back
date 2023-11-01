@@ -123,7 +123,7 @@ public class PostController {
                 .postContent(dto.getPostContent())
                 .userInfo(userinfo)
                 .board(board)
-                .posTitleDropbox("Y")
+                .postTitleDropbox("Y")
                 .build();
         return ResponseEntity.ok().body(postService.create(post));
     }
@@ -148,7 +148,7 @@ public class PostController {
                 .userInfo(userinfo)
                 .postDelete("N")
                 .matched("N")
-                .posTitleDropbox("Y")
+                .postTitleDropbox("Y")
                 .board(board)
                 .build();
 
@@ -171,7 +171,7 @@ public class PostController {
                 return ResponseEntity.badRequest().body("Post not found!");
             }
             post.setPostDelete("Y");
-            post.setPosTitleDropbox("N");
+            post.setPostTitleDropbox("N");
             postService.update(post);
             return ResponseEntity.ok().body("Post marked as deleted!");
         } catch (Exception e) {
@@ -253,7 +253,7 @@ public class PostController {
                     .postView(dto.getPostView())
                     .postDelete(dto.getPostDelete())
                     .matched(dto.getMatched())
-                    .posTitleDropbox(dto.getTitleDropbox())
+                    .postTitleDropbox(dto.getTitleDropbox())
                     .place(place)
                     .userInfo(userinfo)
                     .board(board)
