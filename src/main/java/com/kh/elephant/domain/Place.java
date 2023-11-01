@@ -20,7 +20,7 @@ public class Place {
     @Column(name = "place_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "placeSequence")
     @SequenceGenerator(name = "placeSequence", sequenceName = "SEQ_PLACE", allocationSize = 1)
-    private int placeSeq;
+    private int placeSEQ;
 
     @Column(name = "PLACE_NAME")
     private String placeName;

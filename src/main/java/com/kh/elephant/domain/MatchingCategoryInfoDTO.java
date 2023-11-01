@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MatchingCategoryInfoDTO {
 
-    private int postSeq;
+    private int postSEQ;
 
     private List<Category> categories;
 }

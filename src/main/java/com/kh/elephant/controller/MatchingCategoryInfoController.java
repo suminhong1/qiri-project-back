@@ -57,7 +57,7 @@ public class MatchingCategoryInfoController {
             MatchingCategoryInfo info = new MatchingCategoryInfo();
 
             Post post = new Post();
-            post.setPostSEQ(dto.getPostSeq());
+            post.setPostSEQ(dto.getPostSEQ());
             info.setPost(post);
 
             Category category = new Category();
@@ -86,7 +86,7 @@ public class MatchingCategoryInfoController {
                 MatchingCategoryInfo info = new MatchingCategoryInfo();
 
                 Post post = new Post();
-                post.setPostSEQ(dto.getPostSeq());
+                post.setPostSEQ(dto.getPostSEQ());
                 info.setPost(post);
 
                 Category category = new Category();

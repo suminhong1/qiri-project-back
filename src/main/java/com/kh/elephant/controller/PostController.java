@@ -114,7 +114,7 @@ public class PostController {
     @PostMapping("/reviewWrite")
     public ResponseEntity<Post> reviewCreate(@RequestBody PostDTO dto) {
         log.info("들어옴?");
-        Board board = boardService.show(dto.getBoardSeq());
+        Board board = boardService.show(dto.getBoardSEQ());
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
         Post post = Post.builder()
@@ -130,15 +130,15 @@ public class PostController {
     @PutMapping("/reviewUpdate")
     public ResponseEntity<Post> reviewUpdate(@RequestBody PostDTO dto) {
 
-        Board board = boardService.show(dto.getBoardSeq());
+        Board board = boardService.show(dto.getBoardSEQ());
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
-        Place place = plService.show(dto.getPlaceSeq());
+        Place place = plService.show(dto.getPlaceSEQ());
 
 
 
         Post post = Post.builder()
-                .postSEQ(dto.getPostSeq())  // 여기서 ID를 설정해야 합니다.
+                .postSEQ(dto.getPostSEQ())  // 여기서 ID를 설정해야 합니다.
                 .postTitle(dto.getPostTitle())
                 .postContent(dto.getPostContent())
                 .place(place)
@@ -205,14 +205,14 @@ public class PostController {
 //        log.info("카테고리리스트"+dto.getCategoryList().toString());
         try {
             // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
-            Place place = plService.show(dto.getPlaceSeq()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
+            Place place = plService.show(dto.getPlaceSEQ()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
 
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSeq()); //place 안에 placeType가 join 돼있어도 선언해야함
+            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ()); //place 안에 placeType가 join 돼있어도 선언해야함
 
             place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌
             // 걍 place에 placeType을 합친거임
 
-            Board board = boardService.show(dto.getBoardSeq());
+            Board board = boardService.show(dto.getBoardSEQ());
 
             String userId = tokenProvider.validateAndGetUserId(dto.getToken());
             log.info(userId);
@@ -238,56 +238,61 @@ public class PostController {
     //   매칭 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
-
+        try {
             log.info("dto : " + dto.toString());
 
-            Place place = plService.show(dto.getPlaceSeq());
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSeq());
-            place.setPlaceType(placeType);
-            log.info("여긴오냐?");
+            Place place = plService.show(dto.getPlaceSEQ());
+            log.info("여긴 오냐?");
 
             String userId = tokenProvider.validateAndGetUserId(dto.getToken());
 
             UserInfo userinfo = userInfoService.show(userId); // 서비스에서 찾은 Id와 같다면
 
-            Board board = boardService.show(dto.getBoardSeq());
+            Board board = boardService.show(dto.getBoardSEQ());
 
 //            if (updatePost.getUserInfo().getUserId().equals(userId)) {// userInfo에 들어있는 userId와
-                    log.info("유저 ID : " + userId);
-                    log.info("유저 : " + userinfo);
+            log.info("유저 ID : " + userId);
+            log.info("유저 : " + userinfo);
 
-                Post post = Post.builder()
-                        .postSEQ(dto.getPostSeq())
-                        .postTitle(dto.getPostTitle())
-                        .postContent(dto.getPostContent())
-                        .postDate(new Date())
-                        .postView(dto.getPostView())
-                        .postDelete("N")
-                        .matched("N")
-                        .posTitleDropbox("N")
-                        .place(place)
-                        .userInfo(userinfo)
-                        .board(board)
-                        .build();
+            Post post = Post.builder()
+                    .postSEQ(dto.getPostSEQ())
+                    .postTitle(dto.getPostTitle())
+                    .postContent(dto.getPostContent())
+                    .postDate(new Date())
+                    .postView(dto.getPostView())
+                    .postDelete(dto.getPostDelete())
+                    .matched(dto.getMatched())
+                    .posTitleDropbox(dto.getTitleDropbox())
+                    .place(place)
+                    .userInfo(userinfo)
+                    .board(board)
 
-                log.info("수정 : " + post);
-            Post updatedPost = postService.update(post);
+                    .build();
 
-            log.info("되라고 씨발아"+ updatedPost);
-        if (updatedPost == null) {
-        }
-            return ResponseEntity.ok().body(updatedPost);
-        }
+            log.info("수정 : " + post);
+//            Post updatedPost = postService.update(post);
+//
+//            log.info("되라고 씨발아" + updatedPost);
 
-
-
-    //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
-    @DeleteMapping("/post/{id}")
-    public ResponseEntity<Post> delete(@PathVariable int id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(postService.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+    //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
+    @PutMapping("/post/{postSeq}")
+    public ResponseEntity<String> delete(@PathVariable int postSeq) {
+        try {
+            Post post = postService.show(postSeq);
+            if(post==null){
+                return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다.");
+            }
+            post.setPostDelete("Y");
+            postService.update(post);
+            return ResponseEntity.ok().body("삭제된 게시물 입니다.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
         }
     }
 
