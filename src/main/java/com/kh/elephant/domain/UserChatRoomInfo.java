@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicInsert
+@Table(name = "USER_CHATROOM_INFO")
 public class UserChatRoomInfo {
     @Id
     @Column(name = "USER_CHATROOM_INFO_SEQ")
@@ -35,4 +36,7 @@ public class UserChatRoomInfo {
 
     @Column(name = "join_date")
     private Date joinDate;
+
+    @Column(name = "JOIN_MESSAGE_SENT")
+    private String joinMessageSent;
 }

@@ -101,5 +101,4 @@ public class UserInfoService {
             return null;
         }
     }
-
 }

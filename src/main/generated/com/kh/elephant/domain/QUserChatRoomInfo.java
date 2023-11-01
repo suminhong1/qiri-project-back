@@ -26,6 +26,8 @@ public class QUserChatRoomInfo extends EntityPathBase<UserChatRoomInfo> {
 
     public final DateTimePath<java.util.Date> joinDate = createDateTime("joinDate", java.util.Date.class);
 
+    public final StringPath joinMessageSent = createString("joinMessageSent");
+
     public final StringPath leave = createString("leave");
 
     public final NumberPath<Integer> userChatRoomInfoSeq = createNumber("userChatRoomInfoSeq", Integer.class);

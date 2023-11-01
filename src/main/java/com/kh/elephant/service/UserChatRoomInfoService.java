@@ -57,4 +57,8 @@ public class UserChatRoomInfoService {
     public List<UserChatRoomInfo> findByUserChatRoomSEQ(int code) {
         return dao.findByChatRoomSEQ(code);
     }
+
+    public int joinMessage(String id, int code) {
+        return dao.joinMessage(id, code);
+    }
 }

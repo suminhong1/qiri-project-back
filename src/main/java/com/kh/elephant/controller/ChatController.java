@@ -116,7 +116,7 @@ public class ChatController {
     //채팅방 나가기와 채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제
     @PutMapping("/chatroom/leave")
     public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody ChatDTO dto) {
-        UserInfo userInfo = uiService.findByNickname(dto.getNickname());
+        UserInfo userInfo = uiService.show(dto.getId());
         try {
             // 채팅방 나가기(UPDATE쿼리문)
             int result = ucriService.chatRoomLeave(userInfo.getUserId(), dto.getChatRoomSEQ());
@@ -135,8 +135,21 @@ public class ChatController {
     @GetMapping("/chatroom/userlist/{code}")
     public ResponseEntity<List<UserChatRoomInfo>> findByChatRoomSEQ(@PathVariable int code) {
         try {
-            log.info("잘 받는지 : " + code);
             return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserChatRoomSEQ(code));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    //참여메세지 관련
+    @PutMapping("/chatroom/user/join")
+    public ResponseEntity<UserChatRoomInfo> joinMessage(@RequestBody ChatDTO dto) {
+        try {
+            log.info("아이디" + dto.getId());
+            log.info("seq" + dto.getChatRoomSEQ());
+            int result = ucriService.joinMessage(dto.getId(), dto.getChatRoomSEQ());
+            log.info("참여메세지" + result);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
