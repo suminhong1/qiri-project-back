@@ -47,13 +47,6 @@ public class PostService {
         return dao.findAll(builder, pageable);
     }
 
-    // 검색 기능 구현 마저 해야함
-    public Page<Post> searchPost(String keyword, Pageable pageable) {
-        System.out.println("서비스 키워드 : " + keyword);
-        return dao.findByPostTitleContaining(keyword, pageable);
-    }
-
-
     // 하나의 서비스 안에 여러 가지 기능의 로직을 짤수 있음
     public Post show(int id) {
 
@@ -84,8 +77,8 @@ public class PostService {
         if (target != null) {
             target.setPostTitle(post.getPostTitle());
             target.setPostContent(post.getPostContent());
-            target.setPlace(post.getPlace()); // 걍 이렇게 불러와 써도 되나?
-            return dao.save(post);
+            target.setPlace(post.getPlace());
+            return dao.save(target);
         }
         return null;
     }

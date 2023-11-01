@@ -37,8 +37,6 @@ public class PostDTO {
 
     private int boardSEQ;
 
-
-
     private Date postDate;
 
     private List<Integer> categoryList;
@@ -46,5 +44,13 @@ public class PostDTO {
     private List<Integer> categoryTypeList;
 
     private List<String> attachmentList;
+
+    private String matched;
+
+    private String postNotice;
+
+    private String postDelete;
+
+    private String titleDropbox;
 
 }

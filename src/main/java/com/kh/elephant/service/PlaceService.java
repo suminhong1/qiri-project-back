@@ -26,7 +26,7 @@ public class PlaceService {
     }
 
     public Place update(Place place) {
-        Place target = dao.findById(place.getPlaceSeq()).orElse(null);
+        Place target = dao.findById(place.getPlaceSEQ()).orElse(null);
         if(target!=null) {
             return dao.save(place);
         }

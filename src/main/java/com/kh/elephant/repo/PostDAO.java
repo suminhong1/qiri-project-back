@@ -20,6 +20,9 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
     @Query(value = "INSERT INTO matching_category_info (post_seq, category_seq) VALUES (:post_seq, :category_seq)", nativeQuery = true)
     void savePostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq);
 
+//    @Query(value = "UPDATE matching_category_info (post_seq, category_seq) VALUES (:post_seq, :category_seq)", nativeQuery = true)
+//    void updatePostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq);
+
 
 
     @Query(value = "SELECT * FROM post WHERE board_seq = :code", nativeQuery = true)
@@ -44,7 +47,7 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
     // @Query ("SELECT p FROM Post p WHERE p.postTitle LIKE %:keyword%")
     // Containing이 LIKE 연산을 수행하는 쿼리문을 자동으로 생성하고 실행함
-    Page<Post> findByPostTitleContaining(@Param("keyword") String keyword, Pageable pageable);
+
 
 
 

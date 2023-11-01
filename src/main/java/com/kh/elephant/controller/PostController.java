@@ -229,13 +229,11 @@ public class PostController {
     //   매칭 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
-
+        try {
             log.info("dto : " + dto.toString());
 
             Place place = plService.show(dto.getPlaceSEQ());
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ());
-            place.setPlaceType(placeType);
-            log.info("여긴오냐?");
+            log.info("여긴 오냐?");
 
             String userId = tokenProvider.validateAndGetUserId(dto.getToken());
 
@@ -244,41 +242,48 @@ public class PostController {
             Board board = boardService.show(dto.getBoardSEQ());
 
 //            if (updatePost.getUserInfo().getUserId().equals(userId)) {// userInfo에 들어있는 userId와
-                    log.info("유저 ID : " + userId);
-                    log.info("유저 : " + userinfo);
+            log.info("유저 ID : " + userId);
+            log.info("유저 : " + userinfo);
 
-                Post post = Post.builder()
-                        .postSEQ(dto.getPostSEQ())
-                        .postTitle(dto.getPostTitle())
-                        .postContent(dto.getPostContent())
-                        .postDate(new Date())
-                        .postView(dto.getPostView())
-                        .postDelete("N")
-                        .matched("N")
-                        .posTitleDropbox("N")
-                        .place(place)
-                        .userInfo(userinfo)
-                        .board(board)
-                        .build();
+            Post post = Post.builder()
+                    .postSEQ(dto.getPostSEQ())
+                    .postTitle(dto.getPostTitle())
+                    .postContent(dto.getPostContent())
+                    .postDate(new Date())
+                    .postView(dto.getPostView())
+                    .postDelete(dto.getPostDelete())
+                    .matched(dto.getMatched())
+                    .posTitleDropbox(dto.getTitleDropbox())
+                    .place(place)
+                    .userInfo(userinfo)
+                    .board(board)
 
-                log.info("수정 : " + post);
-            Post updatedPost = postService.update(post);
+                    .build();
 
-            log.info("되라고 씨발아"+ updatedPost);
-        if (updatedPost == null) {
-        }
-            return ResponseEntity.ok().body(updatedPost);
-        }
+            log.info("수정 : " + post);
+//            Post updatedPost = postService.update(post);
+//
+//            log.info("되라고 씨발아" + updatedPost);
 
-
-
-    //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
-    @DeleteMapping("/post/{id}")
-    public ResponseEntity<Post> delete(@PathVariable int id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(postService.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+    //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
+    @PutMapping("/post/{postSeq}")
+    public ResponseEntity<String> delete(@PathVariable int postSeq) {
+        try {
+            Post post = postService.show(postSeq);
+            if(post==null){
+                return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다.");
+            }
+            post.setPostDelete("Y");
+            postService.update(post);
+            return ResponseEntity.ok().body("삭제된 게시물 입니다.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
         }
     }
 
