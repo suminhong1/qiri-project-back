@@ -69,6 +69,8 @@ public class UserInfoController {
     @PutMapping("/userInfo/editProfile")
     public ResponseEntity<UserInfoDTO> updateUserProfile(@RequestBody SignUpDTO dto) {
         try {
+            log.info(dto.toString());
+
             UserInfo loginUser = userService.show(dto.getUserInfoDTO().getId());
 
             if (loginUser != null) {
