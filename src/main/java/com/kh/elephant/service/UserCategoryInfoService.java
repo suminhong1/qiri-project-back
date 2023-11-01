@@ -4,6 +4,7 @@ import com.kh.elephant.domain.UserCategoryInfo;
 import com.kh.elephant.repo.UserCategoryInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class UserCategoryInfoService {
         return dao.saveAll(userCategoryInfo);
     }
 
+    @Transactional
     public UserCategoryInfo update(UserCategoryInfo userCategoryInfo) { return dao.save(userCategoryInfo); }
 
     public UserCategoryInfo delete(int code) {
@@ -33,5 +35,5 @@ public class UserCategoryInfoService {
 
     public List<UserCategoryInfo> findByUserId(String id) { return dao.findByUserId(id); }
 
-
+    public List<UserCategoryInfo> deleteByUserId(String id) { return dao.deleteByUserId(id); }
 }
