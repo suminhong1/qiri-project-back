@@ -21,7 +21,7 @@ public class ChatMessage {
     @Column(name = "CHATMESSAGE_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "chatMessageSequence")
     @SequenceGenerator(name = "chatMessageSequence", sequenceName = "SEQ_CHATMESSAGE", allocationSize = 1)
-    private int chatMessageSeq;
+    private int chatMessageSEQ;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

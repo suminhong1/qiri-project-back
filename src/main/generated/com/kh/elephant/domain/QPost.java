@@ -34,7 +34,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath postDelete = createString("postDelete");
 
-    public final StringPath postNotice = createString("postNotice");
+    public final StringPath posTitleDropbox = createString("posTitleDropbox");
 
     public final NumberPath<Integer> postSEQ = createNumber("postSEQ", Integer.class);
 

@@ -22,7 +22,7 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
 
     public static final QChatMessage chatMessage = new QChatMessage("chatMessage");
 
-    public final NumberPath<Integer> chatMessageSeq = createNumber("chatMessageSeq", Integer.class);
+    public final NumberPath<Integer> chatMessageSEQ = createNumber("chatMessageSEQ", Integer.class);
 
     public final QChatRoom chatRoom;
 

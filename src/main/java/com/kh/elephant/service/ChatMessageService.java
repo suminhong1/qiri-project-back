@@ -32,7 +32,7 @@ public class ChatMessageService {
     }
 
     public ChatMessage update(ChatMessage chatMessage) {
-        ChatMessage target = dao.findById(chatMessage.getChatMessageSeq()).orElse(null);
+        ChatMessage target = dao.findById(chatMessage.getChatMessageSEQ()).orElse(null);
         if(target!=null) {
             return dao.save(chatMessage);
         }
