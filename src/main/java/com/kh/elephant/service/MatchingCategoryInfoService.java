@@ -38,6 +38,9 @@ public class MatchingCategoryInfoService {
 
     public MatchingCategoryInfo update(MatchingCategoryInfo matchingCategoryInfo) { return dao.save(matchingCategoryInfo); }
 
+    public List<MatchingCategoryInfo> updateAll(List<MatchingCategoryInfo> matchingCategoryInfoList){
+        return dao.saveAll(matchingCategoryInfoList);
+    }
     public MatchingCategoryInfo delete(int code) {
 
         MatchingCategoryInfo data = dao.findById(code).orElse(null);

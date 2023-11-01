@@ -76,9 +76,28 @@ public class MatchingCategoryInfoController {
 
         // 게시글 수정 http://localhost:8080/qiri/post
         @PutMapping("/matchingCategoryInfo")
-        public ResponseEntity<MatchingCategoryInfo> update (@RequestBody MatchingCategoryInfo matchingCategoryInfo){
+        public ResponseEntity<List<MatchingCategoryInfo>> update(@RequestBody MatchingCategoryInfoDTO dto) {
+            // 카테고리 선택은 5개까지 프론트에서 처리
+            List<MatchingCategoryInfo> list = new ArrayList<>();
+
+            log.info("matching category list : " + dto.toString());
+
+            for(int i=0; i<dto.getCategories().size(); i++) {
+                MatchingCategoryInfo info = new MatchingCategoryInfo();
+
+                Post post = new Post();
+                post.setPostSEQ(dto.getPostSeq());
+                info.setPost(post);
+
+                Category category = new Category();
+                category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
+                info.setCategory(category);
+
+                list.add(info);
+            }
+
             try {
-                return ResponseEntity.status(HttpStatus.OK).body(service.update(matchingCategoryInfo));
+                return ResponseEntity.status(HttpStatus.CREATED).body(service.updateAll(list));
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
