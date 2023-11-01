@@ -114,14 +114,16 @@ public class PostController {
     @PostMapping("/reviewWrite")
     public ResponseEntity<Post> reviewCreate(@RequestBody PostDTO dto) {
         log.info("들어옴?");
-        Board board = boardService.show(dto.getBoardSeq());
+        Board board = boardService.show(dto.getBoardSEQ());
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
+
         Post post = Post.builder()
                 .postTitle(dto.getPostTitle())
                 .postContent(dto.getPostContent())
                 .userInfo(userinfo)
                 .board(board)
+                .posTitleDropbox("Y")
                 .build();
         return ResponseEntity.ok().body(postService.create(post));
     }
@@ -130,15 +132,15 @@ public class PostController {
     @PutMapping("/reviewUpdate")
     public ResponseEntity<Post> reviewUpdate(@RequestBody PostDTO dto) {
 
-        Board board = boardService.show(dto.getBoardSeq());
+        Board board = boardService.show(dto.getBoardSEQ());
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
-        Place place = plService.show(dto.getPlaceSeq());
+        Place place = plService.show(dto.getPlaceSEQ());
 
 
 
         Post post = Post.builder()
-                .postSEQ(dto.getPostSeq())  // 여기서 ID를 설정해야 합니다.
+                .postSEQ(dto.getPostSEQ())  // 여기서 ID를 설정해야 합니다.
                 .postTitle(dto.getPostTitle())
                 .postContent(dto.getPostContent())
                 .place(place)
@@ -146,7 +148,7 @@ public class PostController {
                 .userInfo(userinfo)
                 .postDelete("N")
                 .matched("N")
-                .posTitleDropbox("N")
+                .posTitleDropbox("Y")
                 .board(board)
                 .build();
 
@@ -161,14 +163,15 @@ public class PostController {
 
 
 // 리뷰 삭제 (update사용)
-    @PutMapping("/reviewDelete/{postSeq}")
-    public ResponseEntity<String> reviewDelete(@PathVariable int postSeq) {
+    @PutMapping("/reviewDelete/{postSEQ}")
+    public ResponseEntity<String> reviewDelete(@PathVariable int postSEQ) {
         try {
-            Post post = postService.show(postSeq);
+            Post post = postService.show(postSEQ);
             if (post == null) {
                 return ResponseEntity.badRequest().body("Post not found!");
             }
             post.setPostDelete("Y");
+            post.setPosTitleDropbox("N");
             postService.update(post);
             return ResponseEntity.ok().body("Post marked as deleted!");
         } catch (Exception e) {
@@ -179,21 +182,9 @@ public class PostController {
 
 
 
-    // 드롭박스 타이틀 삭제 (update사용)
-    @PutMapping("/updateDropdownTitle/{postSeq}")
-    public ResponseEntity<String> deleteDropdownTitle(@PathVariable int postSeq) {
-        try {
-            Post post = postService.show(postSeq);
-            if (post == null) {
-                return ResponseEntity.badRequest().body("Post not found!");
-            }
-            post.setPosTitleDropbox("Y");
-            postService.update(post);
-            return ResponseEntity.ok().body("Post marked as deleted!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
-        }
-    }
+
+
+
 
 
     @PostMapping("/post")
@@ -205,14 +196,14 @@ public class PostController {
 //        log.info("카테고리리스트"+dto.getCategoryList().toString());
         try {
             // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
-            Place place = plService.show(dto.getPlaceSeq()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
+            Place place = plService.show(dto.getPlaceSEQ()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
 
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSeq()); //place 안에 placeType가 join 돼있어도 선언해야함
+            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ()); //place 안에 placeType가 join 돼있어도 선언해야함
 
             place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌
             // 걍 place에 placeType을 합친거임
 
-            Board board = boardService.show(dto.getBoardSeq());
+            Board board = boardService.show(dto.getBoardSEQ());
 
             String userId = tokenProvider.validateAndGetUserId(dto.getToken());
             log.info(userId);
@@ -241,8 +232,8 @@ public class PostController {
 
             log.info("dto : " + dto.toString());
 
-            Place place = plService.show(dto.getPlaceSeq());
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSeq());
+            Place place = plService.show(dto.getPlaceSEQ());
+            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ());
             place.setPlaceType(placeType);
             log.info("여긴오냐?");
 
@@ -250,14 +241,14 @@ public class PostController {
 
             UserInfo userinfo = userInfoService.show(userId); // 서비스에서 찾은 Id와 같다면
 
-            Board board = boardService.show(dto.getBoardSeq());
+            Board board = boardService.show(dto.getBoardSEQ());
 
 //            if (updatePost.getUserInfo().getUserId().equals(userId)) {// userInfo에 들어있는 userId와
                     log.info("유저 ID : " + userId);
                     log.info("유저 : " + userinfo);
 
                 Post post = Post.builder()
-                        .postSEQ(dto.getPostSeq())
+                        .postSEQ(dto.getPostSEQ())
                         .postTitle(dto.getPostTitle())
                         .postContent(dto.getPostContent())
                         .postDate(new Date())
