@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -84,10 +85,17 @@ public class UserCategoryInfoController {
     }
 
     // 관심사 카테고리 정보 수정
-    @PutMapping("/userCategoryInfo/{id}")
-    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable int id, @RequestBody UserCategoryInfo category) {
+    @Transactional
+    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable String id, @RequestBody List<UserCategoryInfo> categories) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.update(category));
+            categoryInfoService.deleteByUserId(id);
+            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(categories);
+
+            if (updatedCategories != null && !updatedCategories.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
