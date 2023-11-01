@@ -29,13 +29,15 @@ public class PostDTO {
 
     private int postView;
 
-    private int postSeq;
+    private int postSEQ;
 
-    private int placeSeq;
+    private int placeSEQ;
 
-    private int placeTypeSeq;
+    private int placeTypeSEQ;
 
-    private int boardSeq;
+    private int boardSEQ;
+
+
 
     private Date postDate;
 
