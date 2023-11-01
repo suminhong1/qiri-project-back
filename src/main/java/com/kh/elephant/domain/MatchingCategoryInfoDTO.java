@@ -5,20 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatDTO {
 
-    private String id;
+public class MatchingCategoryInfoDTO {
 
-    private String nickname;
+    private int postSeq;
 
-    private int chatRoomSEQ;
-
-    private String message;
-
-    private int postSEQ;
-
+    private List<Category> categories;
 }

@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -61,27 +62,41 @@ public class PostController {
     @Autowired
     private MatchingCategoryInfoService mciService;
 
-    // 게시글 전체 조회 http://localhost:8080/qiri/post
+    // 검색
+    @Autowired
+    private SearchService searchService;
+
     @GetMapping("/public/post")
-    public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "board", required = false) Integer board) {
+    public ResponseEntity<List<Post>> postList(@RequestParam(name = "page", defaultValue = "1") int page,
+                                               @RequestParam(name = "board", required = false) Integer board,
+                                               @RequestParam(name = "keyword", required = false) String keyword) {
         log.info("post List 호출 컨트롤러 진입;");
-        //get 방식은 db에 저장돼 있는 걸 가져 오기 때문에 데이터를 안 넣어도 됨
         Sort sort = Sort.by("postSEQ").descending();
-
         Pageable pageable = PageRequest.of(page - 1, 20, sort);
-
         QPost qPost = QPost.post;
         BooleanBuilder builder = new BooleanBuilder();
 
         if (board != null) {
             BooleanExpression expression = qPost.board.boardSEQ.eq(board);
-
             builder.and(expression);
         }
-        Page<Post> result = postService.showAll(pageable, builder);
+
+        Page<Post> result = null;
+
+        if (keyword == null) {
+            // keyword가 없거나 비어있는 경우 전체 게시물을 가져옴
+            result = postService.showAll(pageable, builder);
+        } else {
+            List<Post> searchResults = searchService.searchByKeyword(keyword);
+            return ResponseEntity.status(HttpStatus.OK).body(searchResults);
+        }
+
         log.info("............LIST@@@@@@@@@@ :   " + result.toString());
+
+        // Page 객체에서 목록을 추출하여 반환
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
+
 
 
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
@@ -186,11 +201,12 @@ public class PostController {
 
 
     @PostMapping("/post")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO dto) {
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO dto) {
         // 지금 dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
 
-        log.info(dto.toString());
+//        log.info(dto.toString());
 
+//        log.info("카테고리리스트"+dto.getCategoryList().toString());
         try {
             // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
             Place place = plService.show(dto.getPlaceSeq()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
@@ -216,18 +232,6 @@ public class PostController {
                     .board(board)
                     .build();
 
-            // dto로 가져오는 List들에 아직 데이터가 없어서 분기처리 해줘야함
-            // 카테고리 선택은 5개까지 프론트에서 처리
-
-        for (Integer categorySEQ : dto.getCategoryList()) {
-            Category category = categoryService.show(categorySEQ);
-            MatchingCategoryInfo matchingCategoryInfo
-                    = MatchingCategoryInfo.builder()
-                    .post(post)
-                    .category(category)
-                    .build();
-            mciService.create(matchingCategoryInfo);
-        }
 
 //         첨부 파일 선택은 3개까지
 //        for (String attachmentURL : dto.getAttachmentList()) {
@@ -238,16 +242,16 @@ public class PostController {
 //                    .build();
 //            ResponseEntity.ok().body(paService.create(postAttachments));
 //        }
-
+//            return ResponseEntity.status(HttpStatus.CREATED).body(mciService.createAll(list));// create, save도 post랑 유사한 역할
             log.info("나와라이~ 나와라이~" + post);
-            return ResponseEntity.ok().body(null);// create, save도 post랑 유사한 역할
+            return ResponseEntity.ok().body(postService.create(post));// create, save도 post랑 유사한 역할
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
 
-    //    게시글 수정 http://localhost:8080/qiri/post
+    //   매칭 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
 
@@ -285,7 +289,7 @@ public class PostController {
 
 
 
-    //     게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+    //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/post/{id}")
     public ResponseEntity<Post> delete(@PathVariable int id) {
         try {

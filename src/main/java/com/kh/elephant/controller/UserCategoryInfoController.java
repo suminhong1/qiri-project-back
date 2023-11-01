@@ -34,10 +34,21 @@ public class UserCategoryInfoController {
     }
 
     // 관심사 카테고리 상세 조회
-    @GetMapping("/userCategoryInfo/{id}")
-    public ResponseEntity<UserCategoryInfo> showCategory(@PathVariable int id) {
+//    @GetMapping("/userCategoryInfo/{id}")
+//    public ResponseEntity<UserCategoryInfo> showCategory(@PathVariable int id) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.show(id));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
+
+    // 아이디에 해당하는 관심사 카테고리 상세 조회
+    @GetMapping("/userCategoryInfo/{userId}")
+    public ResponseEntity<List<UserCategoryInfo>> getUserCategories(@PathVariable String userId) {
+        log.info("category :: -> " + userId);
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.findByUserId(userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -61,7 +72,7 @@ public class UserCategoryInfoController {
 
             list.add(info);
         }
-//        log.info("info :: " + dto.getUserCategories());
+        log.info("info :: " + dto.getUserCategories());
 //        return ResponseEntity.status(HttpStatus.OK).build();
 
         try {

@@ -4,6 +4,8 @@ import com.kh.elephant.domain.UserChatRoomInfo;
 import com.kh.elephant.repo.UserChatRoomInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class UserChatRoomInfoService {
         return null;
     }
 
+
     public int chatRoomLeave(String id, int code) {
         return dao.updateLeaveStatus(id, code);
     }
@@ -49,5 +52,9 @@ public class UserChatRoomInfoService {
 
     public UserChatRoomInfo findByIdAndChatRoomSEQ(int code, String id) {
         return dao.findByIdAndChatRoomSEQ(code, id);
+    }
+
+    public List<UserChatRoomInfo> findByUserChatRoomSEQ(int code) {
+        return dao.findByChatRoomSEQ(code);
     }
 }

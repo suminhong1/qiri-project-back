@@ -6,19 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class ChatDTO {
-
-    private String id;
-
-    private String nickname;
-
-    private int chatRoomSEQ;
-
-    private String message;
-
+@NoArgsConstructor
+@Builder
+public class SearchDTO {
     private int postSEQ;
-
+    private String postTitle;
+    private UserInfo userInfo;
+    private Place place;
+    private PlaceType placeType;
 }

@@ -2,9 +2,12 @@ package com.kh.elephant.service;
 
 
 import com.kh.elephant.domain.MatchingCategoryInfo;
+import com.kh.elephant.repo.CategoryDAO;
 import com.kh.elephant.repo.MatchingCategoryInfoDAO;
+import com.kh.elephant.repo.PostDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,11 +17,24 @@ public class MatchingCategoryInfoService {
     @Autowired
     private MatchingCategoryInfoDAO dao;
 
+    @Autowired
+    CategoryDAO Categorydao;
+
+    @Autowired
+    PostDAO Postdao;
+
     public List<MatchingCategoryInfo> showAll() { return dao.findAll(); }
 
     public MatchingCategoryInfo show(int code) { return dao.findById(code).orElse(null); }
 
-    public MatchingCategoryInfo create(MatchingCategoryInfo matchingCategoryInfo) { return dao.save(matchingCategoryInfo); }
+    @Transactional
+    public MatchingCategoryInfo create(MatchingCategoryInfo matchingCategoryInfo) {
+
+        return dao.save(matchingCategoryInfo); }
+
+    public List<MatchingCategoryInfo> createAll(List<MatchingCategoryInfo> matchingCategoryInfoList){
+        return dao.saveAll(matchingCategoryInfoList);
+    }
 
     public MatchingCategoryInfo update(MatchingCategoryInfo matchingCategoryInfo) { return dao.save(matchingCategoryInfo); }
 

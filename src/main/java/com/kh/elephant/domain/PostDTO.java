@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,11 @@ public class PostDTO {
     private int boardSeq;
 
     private List<Integer> categoryList;
+
+//    private List<Integer>categoryList;
+
     private List<Integer> categoryTypeList;
 
     private List<String> attachmentList;
+
 }
