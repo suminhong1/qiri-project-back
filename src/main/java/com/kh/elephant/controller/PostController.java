@@ -110,41 +110,6 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-//    public ResponseEntity<PostDTO> show(@PathVariable int id) {
-//        try {
-//            log.info("post 호출 컨트롤러 진입;");
-//            Post result = postService.show(id);
-//            log.info(".POST@@@@@@@@@ :   " + result.toString());
-//
-//             List<PostAttachments> postAttachments = paService.findByPostSeq(id);
-//             List<MatchingCategoryInfo>matchingCategoryInfoList = mciService.findByPostSEQ(id);
-//
-//             List<String> attList = new ArrayList<>();
-//             List<Category> matchList = new ArrayList<>();
-//
-//             for(PostAttachments item :  postAttachments){
-//
-//                 attList.add(item.getAttachmentURL());
-//             }
-//             for(MatchingCategoryInfo item : matchingCategoryInfoList)
-//             {
-//                 matchList.add(item.getCategory());
-//             }
-//
-//             PostDTO responseDTO = PostDTO.builder()
-//                     .attList(attList)
-//                     .matchList(matchList)
-//                     .build();
-//
-//
-//            return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-
-
-
 
 
     @PostMapping("/post")
