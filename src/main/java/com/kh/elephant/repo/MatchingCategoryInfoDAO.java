@@ -16,6 +16,8 @@ public interface MatchingCategoryInfoDAO extends JpaRepository<MatchingCategoryI
     @Query(value = "INSERT INTO matching_category_info (post_seq, category_seq) VALUES (:post_seq, :category_seq)", nativeQuery = true)
     void createPostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq);
 
+    @Query(value = "SELECT * FROM MATCHING_CATEGORY_INFO JOIN CATEGORY USING(CATEGORY_SEQ) WHERE CT_SEQ = :code", nativeQuery = true)
+    List<MatchingCategoryInfo> findByCTSEQ(@Param("code") int code);
 
 //    @Query(value = "INSERT INTO matching_category_info (post_seq, category_seq, ct_seq) VALUES (:post_seq, :category_seq, :ct_seq)", nativeQuery = true)
 //    void createPostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq, @Param("ct_seq") int ct_seq);

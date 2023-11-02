@@ -38,4 +38,8 @@ public class CategoryService {
         dao.delete(data);
         return data;
     }
+
+    public List<Category> findByCTSEQ(int code) {
+        return dao.findByCTSEQ(code);
+    }
 }

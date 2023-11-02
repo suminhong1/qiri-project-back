@@ -24,7 +24,7 @@ public class QMatchingCategoryInfo extends EntityPathBase<MatchingCategoryInfo> 
 
     public final QCategory category;
 
-    public final NumberPath<Integer> matchingCategorySeq = createNumber("matchingCategorySeq", Integer.class);
+    public final NumberPath<Integer> matchingCategorySEQ = createNumber("matchingCategorySEQ", Integer.class);
 
     public final QPost post;
 

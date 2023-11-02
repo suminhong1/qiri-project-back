@@ -47,4 +47,8 @@ public class MatchingCategoryInfoService {
         dao.delete(data);
         return data;
     }
+
+    public List<MatchingCategoryInfo> findByCTSEQ(int code) {
+        return dao.findByCTSEQ(code);
+    }
 }

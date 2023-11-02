@@ -24,7 +24,7 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final StringPath placeName = createString("placeName");
 
-    public final NumberPath<Integer> placeSeq = createNumber("placeSeq", Integer.class);
+    public final NumberPath<Integer> placeSEQ = createNumber("placeSEQ", Integer.class);
 
     public final QPlaceType placeType;
 

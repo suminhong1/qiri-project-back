@@ -19,8 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -284,6 +284,29 @@ public class PostController {
             return ResponseEntity.ok().body("삭제된 게시물 입니다.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
+        }
+    }
+
+    //카테고리타입SEQ받아서 해당하는 POST가져오기
+    @GetMapping("/post/categoryType/{code}")
+    public ResponseEntity<List<Post>> getPostsByCategoryType(@PathVariable int code) {
+        try {
+            List<MatchingCategoryInfo> matchingCategoryInfoList = mciService.findByCTSEQ(code);
+
+            // 겹치지 않는 post 객체만 저장할 Set 생성
+            Set<Post> uniquePosts = new HashSet<>();
+
+            for (MatchingCategoryInfo mci : matchingCategoryInfoList) {
+                Post post = mci.getPost();
+                if (!uniquePosts.contains(post)) {
+                    uniquePosts.add(post);
+                }
+            }
+            // Set을 다시 List로 변환
+            List<Post> postList = new ArrayList<>(uniquePosts);
+            return ResponseEntity.status(HttpStatus.OK).body(postList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

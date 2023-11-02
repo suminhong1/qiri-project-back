@@ -35,6 +35,7 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/matchingCategoryInfo/{id}")
     public ResponseEntity<MatchingCategoryInfo> show(@PathVariable int id){
@@ -111,4 +112,5 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     }
