@@ -56,6 +56,10 @@ public class UserCategoryInfoController {
     // 유저 관심사 카테고리 정보 등록
     @PostMapping("/userCategoryInfo")
     public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody SignUpDTO dto) {
+
+        String userId = dto.getUserInfoDTO().getId();
+        categoryInfoService.deleteByUserId(userId);
+
         List<UserCategoryInfo> list = new ArrayList<>();
         for(int i=0; i<dto.getUserCategories().size(); i++) {
 
@@ -88,8 +92,12 @@ public class UserCategoryInfoController {
     @PutMapping("/userCategoryInfo/editProfile")
     public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody UserCategoryInfoDTO dto) {
 
-        //log.info(dto.getUserInfoDTO().getUserId());
+        log.info(dto.getUserInfoDTO().getUserId());
         // log.info(dto.getUserCategories().)
+
+        // 기존 아이디 카테고리 정보 삭제
+        String userId = dto.getUserInfoDTO().getUserId();
+        categoryInfoService.deleteByUserId(userId);
 
         List<UserCategoryInfo> list = new ArrayList<>();
         for (int i = 0; i < dto.getUserCategories().size(); i++) {
@@ -106,10 +114,6 @@ public class UserCategoryInfoController {
             info.setCategory(category);
             list.add(info);
         }
-
-        // 기존 아이디 카테고리 정보 삭제
-        String userId = dto.getUserInfoDTO().getUserId();
-        categoryInfoService.deleteByUserId(userId);
 
         try {
             categoryInfoService.createAll(list);
