@@ -91,9 +91,10 @@ public class UserCategoryInfoController {
         // log.info(dto.getUserCategories().)
 
         try {
-            String userId = dto.getId();
+            String userId = dto.getUserInfoDTO().getUserId();
             categoryInfoService.deleteByUserId(userId);
-            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(cdto);
+
+            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll();
 
             if (updatedCategories != null && !updatedCategories.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).build();
