@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -98,7 +100,7 @@ public class PostController {
 
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/public/post/{id}")
-    public ResponseEntity<Post> show(@PathVariable int id) {
+    public ResponseEntity<Post> show (@PathVariable int id){
         try {
             log.info("post 호출 컨트롤러 진입;");
             Post result = postService.show(id);
@@ -108,6 +110,38 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+//    public ResponseEntity<PostDTO> show(@PathVariable int id) {
+//        try {
+//            log.info("post 호출 컨트롤러 진입;");
+//            Post result = postService.show(id);
+//            log.info(".POST@@@@@@@@@ :   " + result.toString());
+//
+//             List<PostAttachments> postAttachments = paService.findByPostSeq(id);
+//             List<MatchingCategoryInfo>matchingCategoryInfoList = mciService.findByPostSEQ(id);
+//
+//             List<String> attList = new ArrayList<>();
+//             List<Category> matchList = new ArrayList<>();
+//
+//             for(PostAttachments item :  postAttachments){
+//
+//                 attList.add(item.getAttachmentURL());
+//             }
+//             for(MatchingCategoryInfo item : matchingCategoryInfoList)
+//             {
+//                 matchList.add(item.getCategory());
+//             }
+//
+//             PostDTO responseDTO = PostDTO.builder()
+//                     .attList(attList)
+//                     .matchList(matchList)
+//                     .build();
+//
+//
+//            return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
 
     // 리뷰 DB 저장
@@ -137,8 +171,6 @@ public class PostController {
         UserInfo userinfo = userInfoService.show(userId);
         Place place = plService.show(dto.getPlaceSEQ());
 
-
-
         Post post = Post.builder()
                 .postSEQ(dto.getPostSEQ())  // 여기서 ID를 설정해야 합니다.
                 .postTitle(dto.getPostTitle())
@@ -161,7 +193,6 @@ public class PostController {
     }
 
 
-
 // 리뷰 삭제 (update사용)
     @PutMapping("/reviewDelete/{postSEQ}")
     public ResponseEntity<String> reviewDelete(@PathVariable int postSEQ) {
@@ -178,14 +209,6 @@ public class PostController {
             return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
         }
     }
-
-
-
-
-
-
-
-
 
     @PostMapping("/post")
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto) {
@@ -290,29 +313,4 @@ public class PostController {
 }
 
 
-   //  검색
-//    @GetMapping("/public/post/search/{keyword}")
 
-//    public ResponseEntity<Page<Post>> search(@PathVariable String keyword,@PageableDefault(size = 20, sort = "postSEQ")Pageable pageable){
-//        Page<Post> searchResult=postService.searchPost(keyword,pageable);
-//        return ResponseEntity.status(HttpStatus.OK).body(searchResult);
-//
-//    public ResponseEntity<Page<Post>>search(@PathVariable String keyword,Pageable pageable){
-//
-//        Page<Post> list=null;
-//
-//        if(keyword==null){
-//        pageable=PageRequest.of(0,20,Sort.by("postSEQ"));
-//        list=postService.showAll(pageable); // 기존 리스트들 보여줌 얘왜 서비스에 showAll 안에 pageable 못불러오냐
-//        }else{
-//        list=postService.searchPost(keyword,pageable); // 검색리스트 반환
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(list);
-//        }
-//        }
-        /*Page<Post>result = postService.search(keyword,pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(result);*/
-
-
-
-//        return null;

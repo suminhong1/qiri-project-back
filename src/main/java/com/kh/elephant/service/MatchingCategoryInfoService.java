@@ -47,4 +47,5 @@ public class MatchingCategoryInfoService {
         dao.delete(data);
         return data;
     }
+    public List<MatchingCategoryInfo> findByPostSEQ(int id){ return dao.findByPostSeq(id);}
 }
