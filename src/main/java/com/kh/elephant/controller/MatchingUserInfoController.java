@@ -113,6 +113,17 @@ public class MatchingUserInfoController {
         }
     }
 
+    //매칭 승락
+    @PutMapping("/matchingAccept")
+    public ResponseEntity<MatchingUserInfo> matchingAccept(@RequestBody ChatDTO dto){
+        try {
+            int result = muiService.matchingAccept(dto.getPostSEQ(), dto.getApplicantId());
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
 
 
 

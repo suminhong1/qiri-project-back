@@ -1,5 +1,6 @@
 package com.kh.elephant.repo;
 
+import com.kh.elephant.domain.MatchingUserInfo;
 import com.kh.elephant.domain.UserChatRoomInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -38,4 +39,7 @@ public interface UserChatRoomInfoDAO extends JpaRepository<UserChatRoomInfo, Int
 
     @Query(value = "SELECT * FROM USER_CHATROOM_INFO WHERE LEAVE = 'N' AND CHATROOM_SEQ = :code AND USER_ID = :id", nativeQuery = true)
     UserChatRoomInfo findByIdAndChatRoomSEQ(@Param("code") int code, @Param("id") String id);
+
+    @Query(value = "SELECT * FROM USER_CHATROOM_INFO JOIN CHATROOM USING(CHATROOM_SEQ) WHERE POST_SEQ=:code AND USER_ID=:id", nativeQuery = true)
+    UserChatRoomInfo findBypostSEQAndId(@Param("code") int code, @Param("id") String id);
 }

@@ -1,5 +1,6 @@
 package com.kh.elephant.service;
 
+import com.kh.elephant.domain.MatchingUserInfo;
 import com.kh.elephant.domain.UserChatRoomInfo;
 import com.kh.elephant.repo.UserChatRoomInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,9 @@ public class UserChatRoomInfoService {
 
     public int joinMessage(String id, int code) {
         return dao.joinMessage(id, code);
+    }
+
+    public UserChatRoomInfo findByPostSEQAndId(int code, String id) {
+        return dao.findBypostSEQAndId(code, id);
     }
 }

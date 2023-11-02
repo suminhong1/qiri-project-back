@@ -85,34 +85,6 @@ public class ChatController {
     }
 
 
-    // 채팅방 생성
-    @PostMapping("/chatroom/create")
-    public ResponseEntity<ChatRoom> createChatRoom(@RequestBody ChatDTO dto) {
-        try {
-            ChatRoom chatRoom = ChatRoom.builder()
-                    .post(postService.show(dto.getPostSEQ()))
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(crService.create(chatRoom));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-
-    //매칭신청시 저장될 정보
-    @PostMapping("/matching/{postSEQ}")
-    public ResponseEntity<MatchingUserInfo> create(@PathVariable int postSEQ, @RequestBody String id) {
-        try {
-            MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
-                    .userInfo(uiService.show(id))
-                    .post(postService.show(postSEQ))
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
-        } catch (Exception e) {
-            log.info("delete error");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-
     //채팅방 나가기와 채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제
     @PutMapping("/chatroom/leave")
     public ResponseEntity<UserChatRoomInfo> chatRoomLeave(@RequestBody ChatDTO dto) {
@@ -145,18 +117,87 @@ public class ChatController {
     @PutMapping("/chatroom/user/join")
     public ResponseEntity<UserChatRoomInfo> joinMessage(@RequestBody ChatDTO dto) {
         try {
-            log.info("아이디" + dto.getId());
-            log.info("seq" + dto.getChatRoomSEQ());
             int result = ucriService.joinMessage(dto.getId(), dto.getChatRoomSEQ());
-            log.info("참여메세지" + result);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
+    //내가 참여하는 채팅방 생성(매칭 신청시 생성됨)
+    @PostMapping("/chatroom/join")
+    public ResponseEntity<UserChatRoomInfo> joinChatRoom(@RequestBody ChatDTO dto) {
+        try {
+            // 채팅방 생성
+            ChatRoom chatRoom = ChatRoom.builder()
+                    .post(postService.show(dto.getPostSEQ()))
+                    .build();
+            ChatRoom result = crService.create(chatRoom);
+
+            // 생성한 채팅방 seq 이용해여 유저채팅정보 생성(어느 채팅방에 접속해 있는지)
+            UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
+                    .chatRoom(crService.show(result.getChatRoomSEQ()))
+                    .userInfo(uiService.show(dto.getId()))
+                    .build();
 
 
+            return ResponseEntity.status(HttpStatus.OK).body(ucriService.create(userChatRoomInfo));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    // 매칭신청자의 채팅방 접속
+    @PostMapping("/chatroom/enter")
+    public ResponseEntity<UserChatRoomInfo> enterChatRoom(@RequestBody ChatDTO dto) {
+        try {
+            // 신청자의 아이디와 신청한 매칭글 정보를 통해 채팅방 검색
+            UserChatRoomInfo result = ucriService.findByPostSEQAndId(dto.getPostSEQ(), dto.getApplicantId());
+
+            // 해당 채팅방에 접속(db에 저장)
+            UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
+                    .userInfo(uiService.show(dto.getId()))
+                    .chatRoom(result.getChatRoom())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(ucriService.create(userChatRoomInfo));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    // 매칭 승락한사람이 모두 접속한 채팅방 생성
+    @PostMapping("/groupChat")
+    public ResponseEntity<ChatRoom> createGroupChat(@RequestBody ChatDTO dto) {
+        try {
+            // 채팅방 생성
+            ChatRoom chatRoom = ChatRoom.builder()
+                    .post(postService.show(dto.getPostSEQ()))
+                    .build();
+            ChatRoom result = crService.create(chatRoom);
+            
+            // 채팅방 접속
+            UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
+                    .chatRoom(crService.show(result.getChatRoomSEQ()))
+                    .userInfo(uiService.show(dto.getId()))
+                    .build();
+            ucriService.create(userChatRoomInfo);
+            
+            // 승락한 사람들 채팅방초대
+            for(String id : dto.getIdList()) {
+                // 생성한 채팅방 seq 이용해여 유저채팅정보 생성(어느 채팅방에 접속해 있는지)
+                userChatRoomInfo = UserChatRoomInfo.builder()
+                        .chatRoom(crService.show(result.getChatRoomSEQ()))
+                        .userInfo(uiService.show(id))
+                        .build();
+                        ucriService.create(userChatRoomInfo);
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
 

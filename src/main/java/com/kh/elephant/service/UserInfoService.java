@@ -40,10 +40,7 @@ public class UserInfoService {
         return dao.findByNickname(nickname);
     }
 
-    public UserInfo findByDTO(ChatDTO dto)
-    {
-        return dao.findByNickname(dto.getNickname());
-    }
+
 
     public UserInfo create(UserInfo vo){
         log.info("UserInfo : " + vo);

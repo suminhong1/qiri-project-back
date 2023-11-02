@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class ChatDTO {
 
     private String id;
+
+    private String applicantId;
 
     private String nickname;
 
@@ -22,4 +26,6 @@ public class ChatDTO {
     private int postSEQ;
 
     private String joinMessageSent;
+
+    private List<String> idList;
 }

@@ -40,6 +40,9 @@ public class MatchingUserInfoService {
         return dao.findByPost_PostSEQ(postSEQ);
     }
 
+    public int matchingAccept(int code, String id) {
+      return dao.matchingAccept(code, id);
+    }
 
 
 }
