@@ -35,6 +35,7 @@ public class UserCategoryInfoService {
 
     public List<UserCategoryInfo> findByUserId(String id) { return dao.findByUserId(id); }
 
+    @Transactional
     public void deleteByUserId(String id) {
         dao.deleteByUserId(id);
     }

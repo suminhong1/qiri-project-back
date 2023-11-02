@@ -1,9 +1,7 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.Category;
-import com.kh.elephant.domain.SignUpDTO;
-import com.kh.elephant.domain.UserCategoryInfo;
-import com.kh.elephant.domain.UserInfo;
+import com.kh.elephant.domain.*;
+import com.kh.elephant.domain.UserCategoryInfoDTO;
 import com.kh.elephant.service.UserCategoryInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,14 +84,13 @@ public class UserCategoryInfoController {
 
     // 관심사 카테고리 정보 수정
     @Transactional
-    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable String id, @RequestBody List<UserCategoryInfo> categories) { // <-- 파라미터 변경!
-
-        // 첫번째 테스트! 제 파라미터 정보 받아오는지!
-        // dto...
+    @PutMapping("/userCategoryInfo/editProfile")
+    public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody List<UserCategoryInfoDTO> cdto) {
 
         try {
-            categoryInfoService.deleteByUserId(id);
-            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(categories);
+
+            categoryInfoService.deleteByUserId(cdto.toString());
+            List<UserCategoryInfo> updatedCategories = categoryInfoService.update();
 
             if (updatedCategories != null && !updatedCategories.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).build();
