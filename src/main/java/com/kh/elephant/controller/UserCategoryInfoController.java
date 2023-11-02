@@ -94,10 +94,10 @@ public class UserCategoryInfoController {
         try {
             // 기존 아이디 관심사 카테고리 정보 삭제
             String userId = dto.getUserInfoDTO().getUserId();
-            categoryInfoService.deleteByUserId(userId);
+             categoryInfoService.deleteByUserId(userId);
 
             List<UserCategoryInfo> list = new ArrayList<>();
-            for(int i=0; i<dto.getUserCategories().size(); i++) {
+            for (int i = 0; i < dto.getUserCategories().size(); i++) {
 
                 UserCategoryInfo info = new UserCategoryInfo();
 
@@ -109,17 +109,13 @@ public class UserCategoryInfoController {
 
                 info.setUserInfo(user);
                 info.setCategory(category);
-                list.add(info);
+
             }
 
-            // 새로 만들기
-            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(list);
+            // 새로운 관심사 카테고리 정보 저장
+            categoryInfoService.createAll(list);
 
-            if (updatedCategories != null && !updatedCategories.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.OK).build();
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
