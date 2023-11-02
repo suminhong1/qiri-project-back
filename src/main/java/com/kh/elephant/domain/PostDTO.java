@@ -51,4 +51,10 @@ public class PostDTO {
 
     private String titleDropbox;
 
+    private Post post;
+    private List<String> attList;
+    List<Category> matchList;
+
+    private List<MatchingCategoryInfo> respMatchCategoryList;
+
 }

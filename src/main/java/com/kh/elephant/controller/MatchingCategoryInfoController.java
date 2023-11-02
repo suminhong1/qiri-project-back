@@ -35,12 +35,17 @@ public class MatchingCategoryInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-    // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
+    // 게시글seq로 게시글카테고리정보가져오기
     @GetMapping("/matchingCategoryInfo/{id}")
-    public ResponseEntity<MatchingCategoryInfo> show(@PathVariable int id){
+    public ResponseEntity<List<MatchingCategoryInfo>> getMatchingCategory(@PathVariable int id){
+        log.info("category :: " + id);
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+            if(service.findByPostSEQ(id) == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSEQ(id));
+            }
+
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -49,6 +54,9 @@ public class MatchingCategoryInfoController {
     // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/matchingCategoryInfo")
     public ResponseEntity<List<MatchingCategoryInfo>> insert(@RequestBody MatchingCategoryInfoDTO dto) {
+
+
+//        log.info("test ::: "+ dto.getPostSEQ());
     // 카테고리 선택은 5개까지 프론트에서 처리
         List<MatchingCategoryInfo> list = new ArrayList<>();
 

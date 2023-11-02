@@ -51,4 +51,5 @@ public class MatchingCategoryInfoService {
     public List<MatchingCategoryInfo> findByCTSEQ(int code) {
         return dao.findByCTSEQ(code);
     }
+    public List<MatchingCategoryInfo> findByPostSEQ(int id){ return dao.findByPostSeq(id);}
 }

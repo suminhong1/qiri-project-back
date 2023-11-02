@@ -6,13 +6,10 @@ import com.kh.elephant.security.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import com.kh.elephant.repo.PostDAO;
 import com.querydsl.core.BooleanBuilder;
-import org.apache.el.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
@@ -35,6 +32,11 @@ public class PostService {
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    private MatchingCategoryInfoService mciService;
+
+    @Autowired
+    private PostAttachmentsService attachmentsService;
 
 
     @Autowired UserInfoService userService;
@@ -90,10 +92,6 @@ public class PostService {
     }
 
 
-
-
-
-
     public List<Post> findByBoardCode(int code) {
 
         return dao.findByBoardCode(code);
@@ -107,4 +105,14 @@ public class PostService {
 
 
 
+    public List<MatchingCategoryInfo> getMci(int id){
+
+        return mciService.findByPostSEQ(id);
+//        attachmentsService.findByPostSeq(id);
+    }
+
+    public List<PostAttachments>getAttach(int id){
+
+        return attachmentsService.findByPostSeq(id);
+    }
 }
