@@ -1,6 +1,5 @@
 package com.kh.elephant.repo;
 
-import com.kh.elephant.domain.Comments;
 import com.kh.elephant.domain.UserCategoryInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,6 +14,6 @@ public interface UserCategoryInfoDAO extends JpaRepository<UserCategoryInfo, Int
 
     @Query(value = "DELETE FROM USER_CATEGORY_INFO WHERE USER_ID = :userId", nativeQuery = true)
     @Modifying
-    List<UserCategoryInfo> deleteByUserId(@Param("userId") String userId);
+    void deleteByUserId(@Param("userId") String userId);
 
 }

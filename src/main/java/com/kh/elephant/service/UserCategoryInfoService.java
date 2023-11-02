@@ -1,12 +1,12 @@
 package com.kh.elephant.service;
 
-import com.kh.elephant.domain.UserCategoryInfo;
-import com.kh.elephant.repo.UserCategoryInfoDAO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+        import com.kh.elephant.domain.UserCategoryInfo;
+        import com.kh.elephant.repo.UserCategoryInfoDAO;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+        import java.util.List;
 
 @Service
 public class UserCategoryInfoService {
@@ -35,5 +35,7 @@ public class UserCategoryInfoService {
 
     public List<UserCategoryInfo> findByUserId(String id) { return dao.findByUserId(id); }
 
-    public List<UserCategoryInfo> deleteByUserId(String id) { return dao.deleteByUserId(id); }
+    public void deleteByUserId(String id) {
+        dao.deleteByUserId(id);
+    }
 }

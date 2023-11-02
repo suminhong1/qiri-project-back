@@ -86,7 +86,11 @@ public class UserCategoryInfoController {
 
     // 관심사 카테고리 정보 수정
     @Transactional
-    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable String id, @RequestBody List<UserCategoryInfo> categories) {
+    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable String id, @RequestBody List<UserCategoryInfo> categories) { // <-- 파라미터 변경!
+
+        // 첫번째 테스트! 제 파라미터 정보 받아오는지!
+        // dto...
+
         try {
             categoryInfoService.deleteByUserId(id);
             List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(categories);
