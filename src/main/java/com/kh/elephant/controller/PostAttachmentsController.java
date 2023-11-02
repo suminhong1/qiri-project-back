@@ -77,27 +77,27 @@ public class PostAttachmentsController {
             log.info("나는 파일이얌 : " + files);
             log.info("나는 게시글이얌 : " + postId);
 
-        for (MultipartFile file : files) {
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
-            String uploadPath = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
+            for (MultipartFile file : files) {
+                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
+                String uploadPath = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
 
-            InputStream inputStream = file.getInputStream(); // 파일 데이터를 읽기 위해 필요함
-            Path filePath = Paths.get(uploadPath,fileName);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING); // 파일 중복으로 올라올 시 덮어쓰기
+                InputStream inputStream = file.getInputStream(); // 파일 데이터를 읽기 위해 필요함
+                Path filePath = Paths.get(uploadPath,fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING); // 파일 중복으로 올라올 시 덮어쓰기
 
-            log.info(fileName);
-            String imageUrl = "http://localhost:8080/qiri/public/upload/" + fileName;
+                log.info(fileName);
+                String imageUrl = "http://localhost:8080/qiri/public/upload/" + fileName;
 
-            ImageList.add(imageUrl);
+                ImageList.add(imageUrl);
 
-            // PostAttachments를 빌더를 이용해 for문 안에 있는 imageUrl을 attachmentURL 컬럼에 저장 하고
-            PostAttachments postAttachments = PostAttachments.builder()
-                    .post(postService.show(postId)) // @Autowired 불러온 postService를 이용해 show로 postID(시퀀스 임)을 찾아서
-                    .attachmentURL(imageUrl)
-                    .build();
-            log.info("첨부 파일 정보" + postAttachments);
-            service.create(postAttachments); // 서비스 create(save)를 사용 해서 db에 저장
-        }
+                // PostAttachments를 빌더를 이용해 for문 안에 있는 imageUrl을 attachmentURL 컬럼에 저장 하고
+                PostAttachments postAttachments = PostAttachments.builder()
+                        .post(postService.show(postId)) // @Autowired 불러온 postService를 이용해 show로 postID(시퀀스 임)을 찾아서
+                        .attachmentURL(imageUrl)
+                        .build();
+                log.info("첨부 파일 정보" + postAttachments);
+                service.create(postAttachments); // 서비스 create(save)를 사용 해서 db에 저장
+            }
             return ResponseEntity.status(HttpStatus.OK).body(null);
 
 //        }
