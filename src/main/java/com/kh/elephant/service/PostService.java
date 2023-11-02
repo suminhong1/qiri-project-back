@@ -99,4 +99,12 @@ public class PostService {
         return dao.findByBoardCode(code);
     }
 
+
+    public Post findByBoardSeqAndPostTitle(int boardSEQ, String postTitle) {
+        return dao.findByBoardSeqAndPostTitle(boardSEQ, postTitle)
+                .orElse(null);
+    }
+
+
+
 }

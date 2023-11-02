@@ -110,80 +110,6 @@ public class PostController {
     }
 
 
-    // 리뷰 DB 저장
-    @PostMapping("/reviewWrite")
-    public ResponseEntity<Post> reviewCreate(@RequestBody PostDTO dto) {
-        log.info("들어옴?");
-        Board board = boardService.show(dto.getBoardSEQ());
-        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
-        UserInfo userinfo = userInfoService.show(userId);
-
-        Post post = Post.builder()
-                .postTitle(dto.getPostTitle())
-                .postContent(dto.getPostContent())
-                .userInfo(userinfo)
-                .board(board)
-                .posTitleDropbox("Y")
-                .build();
-        return ResponseEntity.ok().body(postService.create(post));
-    }
-
-    // 리뷰 수정
-    @PutMapping("/reviewUpdate")
-    public ResponseEntity<Post> reviewUpdate(@RequestBody PostDTO dto) {
-
-        Board board = boardService.show(dto.getBoardSEQ());
-        String userId = tokenProvider.validateAndGetUserId(dto.getToken());
-        UserInfo userinfo = userInfoService.show(userId);
-        Place place = plService.show(dto.getPlaceSEQ());
-
-
-
-        Post post = Post.builder()
-                .postSEQ(dto.getPostSEQ())  // 여기서 ID를 설정해야 합니다.
-                .postTitle(dto.getPostTitle())
-                .postContent(dto.getPostContent())
-                .place(place)
-                .postDate(new Date())
-                .userInfo(userinfo)
-                .postDelete("N")
-                .matched("N")
-                .posTitleDropbox("Y")
-                .board(board)
-                .build();
-
-        Post updatedPost = postService.update(post);
-
-        log.info("수정된 정보확인용!"+ updatedPost);
-        if (updatedPost == null) {
-        }
-        return ResponseEntity.ok().body(updatedPost);
-    }
-
-
-
-// 리뷰 삭제 (update사용)
-    @PutMapping("/reviewDelete/{postSEQ}")
-    public ResponseEntity<String> reviewDelete(@PathVariable int postSEQ) {
-        try {
-            Post post = postService.show(postSEQ);
-            if (post == null) {
-                return ResponseEntity.badRequest().body("Post not found!");
-            }
-            post.setPostDelete("Y");
-            post.setPosTitleDropbox("N");
-            postService.update(post);
-            return ResponseEntity.ok().body("Post marked as deleted!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
-        }
-    }
-
-
-
-
-
-
 
 
 
@@ -253,7 +179,7 @@ public class PostController {
                     .postView(dto.getPostView())
                     .postDelete(dto.getPostDelete())
                     .matched(dto.getMatched())
-                    .posTitleDropbox(dto.getTitleDropbox())
+                    .postTitleDropbox(dto.getTitleDropbox())
                     .place(place)
                     .userInfo(userinfo)
                     .board(board)

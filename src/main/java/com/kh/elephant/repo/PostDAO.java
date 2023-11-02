@@ -5,12 +5,14 @@ import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 // 첫번째는 사용할 엔티티 두번째는 primary키의 데이터타입
 public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicateExecutor<Post> {
@@ -31,6 +33,15 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
     @Query(value = "update post SET postView = postView+1 WHERE  post_seq = :code", nativeQuery = true)
     List<Post>increaseCount(int code);
+
+
+    
+    // 리뷰 삭제시 드롭박스 다시 보이게하기
+
+
+    @Transactional
+    @Query(value = "SELECT * FROM post WHERE board_seq = :boardSEQ AND post_title = :postTitle", nativeQuery = true)
+    Optional<Post> findByBoardSeqAndPostTitle(@Param("boardSEQ") int boardSEQ, @Param("postTitle") String postTitle);
 
 
 
