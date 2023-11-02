@@ -87,6 +87,8 @@ public class UserInfoController {
                 loginUser.setMbti(dto.getUserInfoDTO().getMbti());
                 loginUser.setBirthday(dto.getUserInfoDTO().getBirthday());
                 loginUser.setPlaceType(dto.getUserInfoDTO().getPlaceType());
+                loginUser.setProfileImg(dto.getUserInfoDTO().getProfileImg());
+                loginUser.setProfileImg(url);
 
                 UserInfo updatedUser = userService.update(loginUser);
 

@@ -1,9 +1,7 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.Category;
-import com.kh.elephant.domain.SignUpDTO;
-import com.kh.elephant.domain.UserCategoryInfo;
-import com.kh.elephant.domain.UserInfo;
+import com.kh.elephant.domain.*;
+import com.kh.elephant.domain.UserCategoryInfoDTO;
 import com.kh.elephant.service.UserCategoryInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +58,7 @@ public class UserCategoryInfoController {
     public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody SignUpDTO dto) {
         List<UserCategoryInfo> list = new ArrayList<>();
         for(int i=0; i<dto.getUserCategories().size(); i++) {
+
             UserCategoryInfo info = new UserCategoryInfo();
 
             UserInfo user = new UserInfo();
@@ -86,10 +85,35 @@ public class UserCategoryInfoController {
 
     // 관심사 카테고리 정보 수정
     @Transactional
-    public ResponseEntity<UserCategoryInfo> updateCategory(@PathVariable String id, @RequestBody List<UserCategoryInfo> categories) {
+    @PutMapping("/userCategoryInfo/editProfile")
+    public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody UserCategoryInfoDTO dto) {
+
+        //log.info(dto.getUserInfoDTO().getUserId());
+        // log.info(dto.getUserCategories().)
+
         try {
-            categoryInfoService.deleteByUserId(id);
-            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(categories);
+            // 기존 아이디 관심사 카테고리 정보 삭제
+            String userId = dto.getUserInfoDTO().getUserId();
+            categoryInfoService.deleteByUserId(userId);
+
+            List<UserCategoryInfo> list = new ArrayList<>();
+            for(int i=0; i<dto.getUserCategories().size(); i++) {
+
+                UserCategoryInfo info = new UserCategoryInfo();
+
+                UserInfo user = new UserInfo();
+                user.setUserId(userId);
+
+                Category category = new Category();
+                category.setCategorySEQ(dto.getUserCategories().get(i).getCategorySEQ());
+
+                info.setUserInfo(user);
+                info.setCategory(category);
+                list.add(info);
+            }
+
+            // 새로 만들기
+            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(list);
 
             if (updatedCategories != null && !updatedCategories.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).build();
