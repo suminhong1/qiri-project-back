@@ -58,6 +58,7 @@ public class UserCategoryInfoController {
     public ResponseEntity<List<UserCategoryInfo>> createCategories(@RequestBody SignUpDTO dto) {
         List<UserCategoryInfo> list = new ArrayList<>();
         for(int i=0; i<dto.getUserCategories().size(); i++) {
+
             UserCategoryInfo info = new UserCategoryInfo();
 
             UserInfo user = new UserInfo();
@@ -87,14 +88,30 @@ public class UserCategoryInfoController {
     @PutMapping("/userCategoryInfo/editProfile")
     public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody UserCategoryInfoDTO dto) {
 
-        log.info(dto.getUserInfoDTO().getUserId());
+        //log.info(dto.getUserInfoDTO().getUserId());
         // log.info(dto.getUserCategories().)
 
         try {
             String userId = dto.getUserInfoDTO().getUserId();
             categoryInfoService.deleteByUserId(userId);
 
-            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll();
+            List<UserCategoryInfo> list = new ArrayList<>();
+            for(int i=0; i<dto.getUserCategories().size(); i++) {
+
+                UserCategoryInfo info = new UserCategoryInfo();
+
+                UserInfo user = new UserInfo();
+                user.setUserId(userId);
+
+                Category category = new Category();
+                category.setCategorySEQ(dto.getUserCategories().get(i).getCategorySEQ());
+
+                info.setUserInfo(user);
+                info.setCategory(category);
+                list.add(info);
+            }
+
+            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(list);
 
             if (updatedCategories != null && !updatedCategories.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).build();

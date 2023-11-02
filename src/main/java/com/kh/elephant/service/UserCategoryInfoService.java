@@ -39,4 +39,11 @@ public class UserCategoryInfoService {
     public void deleteByUserId(String id) {
         dao.deleteByUserId(id);
     }
+
+    @Transactional
+    public List<UserCategoryInfo> updateAll(List<UserCategoryInfo> userCategoryInfo) {
+        return dao.saveAll(userCategoryInfo);
+    }
+
+
 }
