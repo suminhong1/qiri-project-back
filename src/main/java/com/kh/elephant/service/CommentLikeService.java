@@ -39,10 +39,16 @@ public class CommentLikeService {
 //        return null;
 //    }
 
-    // 좋아요 삭제
+    // 좋아요 삭제 (comments_seq 받아서 삭제)
+    public CommentLike deleteCommentlike(int id) {
+        return dao.deleteCommentlike(id);
+    }
+
+    // 좋아요 삭제 (cl_seq 받아서 삭제)
     public CommentLike delete(int id) {
         CommentLike target = dao.findById(id).orElse(null);
         dao.delete(target);
         return target;
     }
+
 }
