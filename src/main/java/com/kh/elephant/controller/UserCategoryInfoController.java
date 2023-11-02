@@ -91,35 +91,34 @@ public class UserCategoryInfoController {
         //log.info(dto.getUserInfoDTO().getUserId());
         // log.info(dto.getUserCategories().)
 
+        List<UserCategoryInfo> list = new ArrayList<>();
+        for (int i = 0; i < dto.getUserCategories().size(); i++) {
+
+            UserCategoryInfo info = new UserCategoryInfo();
+
+            UserInfo user = new UserInfo();
+            user.setUserId(dto.getUserInfoDTO().getUserId());
+
+            Category category = new Category();
+            category.setCategorySEQ(dto.getUserCategories().get(i).getCategorySEQ());
+
+            info.setUserInfo(user);
+            info.setCategory(category);
+            list.add(info);
+        }
+
+        // 기존 아이디 카테고리 정보 삭제
+        String userId = dto.getUserInfoDTO().getUserId();
+        categoryInfoService.deleteByUserId(userId);
+
         try {
-            // 기존 아이디 관심사 카테고리 정보 삭제
-            String userId = dto.getUserInfoDTO().getUserId();
-             categoryInfoService.deleteByUserId(userId);
-
-            List<UserCategoryInfo> list = new ArrayList<>();
-            for (int i = 0; i < dto.getUserCategories().size(); i++) {
-
-                UserCategoryInfo info = new UserCategoryInfo();
-
-                UserInfo user = new UserInfo();
-                user.setUserId(userId);
-
-                Category category = new Category();
-                category.setCategorySEQ(dto.getUserCategories().get(i).getCategorySEQ());
-
-                info.setUserInfo(user);
-                info.setCategory(category);
-
-            }
-
-            // 새로운 관심사 카테고리 정보 저장
             categoryInfoService.createAll(list);
-
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
 
     // 관심사 카테고리 정보 삭제
     @DeleteMapping("/userCategoryInfo/{id}")
