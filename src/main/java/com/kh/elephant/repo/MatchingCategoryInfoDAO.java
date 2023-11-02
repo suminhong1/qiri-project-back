@@ -15,7 +15,7 @@ public interface MatchingCategoryInfoDAO extends JpaRepository<MatchingCategoryI
     @Query(value = "SELECT * FROM MATCHING_CATEGORY_INFO JOIN CATEGORY USING(CATEGORY_SEQ) WHERE CT_SEQ = :code", nativeQuery = true)
     List<MatchingCategoryInfo> findByCTSEQ(@Param("code") int code);
 
-}
+
     @Query(value = "SELECT * FROM matching_category_info WHERE post_seq = :id",nativeQuery = true)
     List<MatchingCategoryInfo> findByPostSeq(@Param("id") int id);
 }
