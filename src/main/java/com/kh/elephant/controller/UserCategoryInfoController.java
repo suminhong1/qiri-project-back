@@ -85,12 +85,15 @@ public class UserCategoryInfoController {
     // 관심사 카테고리 정보 수정
     @Transactional
     @PutMapping("/userCategoryInfo/editProfile")
-    public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody List<UserCategoryInfoDTO> cdto) {
+    public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody UserCategoryInfoDTO dto) {
+
+        log.info(dto.getUserInfoDTO().getUserId());
+        // log.info(dto.getUserCategories().)
 
         try {
-
-            categoryInfoService.deleteByUserId(cdto.toString());
-            List<UserCategoryInfo> updatedCategories = categoryInfoService.update();
+            String userId = dto.getId();
+            categoryInfoService.deleteByUserId(userId);
+            List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(cdto);
 
             if (updatedCategories != null && !updatedCategories.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.OK).build();
