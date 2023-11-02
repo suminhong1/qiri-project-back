@@ -92,6 +92,7 @@ public class UserCategoryInfoController {
         // log.info(dto.getUserCategories().)
 
         try {
+            // 기존 아이디 관심사 카테고리 정보 삭제
             String userId = dto.getUserInfoDTO().getUserId();
             categoryInfoService.deleteByUserId(userId);
 
@@ -111,6 +112,7 @@ public class UserCategoryInfoController {
                 list.add(info);
             }
 
+            // 새로 만들기
             List<UserCategoryInfo> updatedCategories = categoryInfoService.createAll(list);
 
             if (updatedCategories != null && !updatedCategories.isEmpty()) {

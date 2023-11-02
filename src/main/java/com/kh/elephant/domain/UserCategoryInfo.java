@@ -22,7 +22,7 @@ public class UserCategoryInfo {
     @JoinColumn(name="user_id")
     private UserInfo userInfo;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_seq")
     private Category category;
 }
