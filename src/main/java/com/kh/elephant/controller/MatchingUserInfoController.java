@@ -86,7 +86,7 @@ public class MatchingUserInfoController {
         MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
                 .post(post)
                 .userInfo(userinfo)
-                .matchingAccept(dto.getMatchingAccept())
+                .matchingAccept("N")
                 .build();
 
         return ResponseEntity.ok().body(muiService.create(matchingUserInfo));

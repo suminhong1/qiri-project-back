@@ -45,4 +45,7 @@ public class MatchingUserInfoService {
     }
 
 
+    public List<MatchingUserInfo> findAccept(int code) {
+        return dao.findAccept(code);
+    }
 }

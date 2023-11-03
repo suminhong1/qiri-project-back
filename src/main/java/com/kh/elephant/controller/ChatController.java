@@ -175,20 +175,23 @@ public class ChatController {
                     .post(postService.show(dto.getPostSEQ()))
                     .build();
             ChatRoom result = crService.create(chatRoom);
-            
+
             // 채팅방 접속
             UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
                     .chatRoom(crService.show(result.getChatRoomSEQ()))
                     .userInfo(uiService.show(dto.getId()))
                     .build();
             ucriService.create(userChatRoomInfo);
+
+            // 승락한 사람들 구하기
+            List<MatchingUserInfo> matchingUserInfoList = muiService.findAccept(dto.getPostSEQ());
             
-            // 승락한 사람들 채팅방초대
-            for(String id : dto.getIdList()) {
+            // 승락한 사람들 초대
+            for(MatchingUserInfo matchingUserInfo : matchingUserInfoList) {
                 // 생성한 채팅방 seq 이용해여 유저채팅정보 생성(어느 채팅방에 접속해 있는지)
                 userChatRoomInfo = UserChatRoomInfo.builder()
                         .chatRoom(crService.show(result.getChatRoomSEQ()))
-                        .userInfo(uiService.show(id))
+                        .userInfo(matchingUserInfo.getUserInfo())
                         .build();
                         ucriService.create(userChatRoomInfo);
             }
