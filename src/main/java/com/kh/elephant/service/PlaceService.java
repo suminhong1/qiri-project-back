@@ -17,8 +17,8 @@ public class PlaceService {
         return dao.findAll();
     }
 
-    public Place show(int code) {
-        return dao.findById(code).orElse(null);
+    public Place show(int id) {
+        return dao.findById(id).orElse(null);
     }
 
     public Place create(Place place) {
@@ -38,4 +38,6 @@ public class PlaceService {
         dao.delete(data);
         return data;
     }
+    public List<Place> findByPostSEQ(int id){return dao.findByPostSeq(id);}
 }
+

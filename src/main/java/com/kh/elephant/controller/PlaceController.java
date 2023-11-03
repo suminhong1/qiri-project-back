@@ -32,7 +32,7 @@ public class PlaceController {
         }
     }
 
-    @GetMapping("/place/{id}")
+    @GetMapping("/public/place/{id}")
     public ResponseEntity<Place> show(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
@@ -40,6 +40,11 @@ public class PlaceController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+//    @GetMapping("/public/place/{id}")
+//    public ResponseEntity<List<Place>> findByPostSeq(@PathVariable int id){
+//        return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSEQ(id));
+//    }
 
     @PostMapping("/place")
     public ResponseEntity<Place> create(@RequestBody Place vo) {
