@@ -1,5 +1,6 @@
 package com.kh.elephant.repo;
 
+import com.kh.elephant.domain.Comments;
 import com.kh.elephant.domain.Post;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,9 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
     @Query(value = "SELECT * FROM post WHERE board_seq = :code", nativeQuery = true)
     List<Post>findByBoardCode(int code);
+
+    @Query(value = "SELECT * FROM post WHERE USER_ID = :userId", nativeQuery = true)
+    List<Post> findPostByUserId(@Param("userId") String userId);
 
 
     @Query(value = "update post SET postView = postView+1 WHERE  post_seq = :code", nativeQuery = true)

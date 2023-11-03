@@ -186,21 +186,19 @@ public class PostController {
                     .build();
 
             log.info("수정 : " + post);
-
-
+//            Post updatedPost = postService.update(post);
+//
+//            log.info("되라고 씨발아" + updatedPost);
 
             return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-
-
     //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
     @PutMapping("/post/{postSeq}")
-    public ResponseEntity<String> delete(@PathVariable int postSeq) {
+    public ResponseEntity<String> hidePost(@PathVariable int postSeq) {
         try {
             Post post = postService.show(postSeq);
             if(post==null){
@@ -208,35 +206,19 @@ public class PostController {
             }
             post.setPostDelete("Y");
             postService.update(post);
+            log.info("삭제 ::: " + post);
             return ResponseEntity.ok().body("삭제된 게시물 입니다.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
         }
     }
 
+    @DeleteMapping("/post/{postSeq}")
+    public ResponseEntity<Post>delete(@PathVariable int id){
+        log.info("삭제 ::: "+ postService.delete(id));
+        return ResponseEntity.status(HttpStatus.OK).body(postService.delete(id));
 
-    @PutMapping("/post/matcheComplete/{postSeq}")
-    public ResponseEntity<String> matcheComplete(@PathVariable int postSeq) {
-        try {
-            Post post = postService.show(postSeq);
-            if(post==null){
-                return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다.");
-            }
-            post.setMatched("Y");
-            postService.update(post);
-
-            return ResponseEntity.ok().body("");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("게시물 수정에 실패했습니다.");
-        }
     }
-
-
-
-
-
-
-
 
     //카테고리타입SEQ받아서 해당하는 POST가져오기
     @GetMapping("/post/categoryType/{code}")
@@ -260,6 +242,19 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    // 내가 쓴 글 가지고 오기
+    @GetMapping("/post/get/{userId}")
+    public ResponseEntity<List<Post>> getUserComments(@PathVariable String userId) {
+        try {
+            List<Post> userPost = postService.findPostByUserId(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(userPost);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
 
 }
 
