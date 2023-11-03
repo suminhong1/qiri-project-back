@@ -67,6 +67,7 @@ public class CommentsController {
 //        }
 //    }
 
+    // 내가 쓴 댓글 가지고 오기
     @GetMapping("/comments/get/{userId}")
     public ResponseEntity<List<Comments>> getUserComments(@PathVariable String userId) {
         try {

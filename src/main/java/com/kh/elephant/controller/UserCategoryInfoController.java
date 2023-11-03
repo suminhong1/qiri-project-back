@@ -88,40 +88,40 @@ public class UserCategoryInfoController {
     }
 
     // 관심사 카테고리 정보 수정
-    @Transactional
-    @PutMapping("/userCategoryInfo/editProfile")
-    public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody UserCategoryInfoDTO dto) {
-
-        log.info(dto.getUserInfoDTO().getUserId());
-        // log.info(dto.getUserCategories().)
-
-        // 기존 아이디 카테고리 정보 삭제
-        String userId = dto.getUserInfoDTO().getUserId();
-        categoryInfoService.deleteByUserId(userId);
-
-        List<UserCategoryInfo> list = new ArrayList<>();
-        for (int i = 0; i < dto.getUserCategories().size(); i++) {
-
-            UserCategoryInfo info = new UserCategoryInfo();
-
-            UserInfo user = new UserInfo();
-            user.setUserId(dto.getUserInfoDTO().getUserId());
-
-            Category category = new Category();
-            category.setCategorySEQ(dto.getUserCategories().get(i).getCategorySEQ());
-
-            info.setUserInfo(user);
-            info.setCategory(category);
-            list.add(info);
-        }
-
-        try {
-            categoryInfoService.createAll(list);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+//    @Transactional
+//    @PutMapping("/userCategoryInfo/editProfile")
+//    public ResponseEntity<UserCategoryInfo> updateCategory(@RequestBody UserCategoryInfoDTO dto) {
+//
+//        log.info(dto.getUserInfoDTO().getUserId());
+//        // log.info(dto.getUserCategories().)
+//
+//        // 기존 아이디 카테고리 정보 삭제
+//        String userId = dto.getUserInfoDTO().getUserId();
+//        categoryInfoService.deleteByUserId(userId);
+//
+//        List<UserCategoryInfo> list = new ArrayList<>();
+//        for (int i = 0; i < dto.getUserCategories().size(); i++) {
+//
+//            UserCategoryInfo info = new UserCategoryInfo();
+//
+//            UserInfo user = new UserInfo();
+//            user.setUserId(dto.getUserInfoDTO().getUserId());
+//
+//            Category category = new Category();
+//            category.setCategorySEQ(dto.getUserCategories().get(i).getCategorySEQ());
+//
+//            info.setUserInfo(user);
+//            info.setCategory(category);
+//            list.add(info);
+//        }
+//
+//        try {
+//            categoryInfoService.createAll(list);
+//            return ResponseEntity.status(HttpStatus.OK).build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
 
     // 관심사 카테고리 정보 삭제

@@ -115,4 +115,7 @@ public class PostService {
 
         return attachmentsService.findByPostSeq(id);
     }
+
+    public List<Post> findPostByUserId(String userId) { return dao.findPostByUserId(userId); }
+
 }

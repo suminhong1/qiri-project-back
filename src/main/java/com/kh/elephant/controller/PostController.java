@@ -235,6 +235,19 @@ public class PostController {
         }
     }
 
+    // 내가 쓴 글 가지고 오기
+    @GetMapping("/post/get/{userId}")
+    public ResponseEntity<List<Post>> getUserComments(@PathVariable String userId) {
+        try {
+            List<Post> userPost = postService.findPostByUserId(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(userPost);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
+
 }
 
 
