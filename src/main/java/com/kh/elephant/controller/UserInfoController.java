@@ -55,16 +55,6 @@ public class UserInfoController {
         }
     }
 
-    // 유저 상세 조회 http://localhost:8080/qiri/userInfo/1 <--id
-//    @GetMapping("/userInfo/{id}")
-//    public ResponseEntity<UserInfo> showUser(@PathVariable String id) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(userService.show(id));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-
     // 유저 수정 http://localhost:8080/qiri/userInfo/1 <--id
     @PutMapping("/userInfo/editProfile")
     public ResponseEntity<UserInfoDTO> updateUserProfile(@RequestBody SignUpDTO dto) {
@@ -123,7 +113,6 @@ public class UserInfoController {
     // 회원가입
     @PostMapping("/userInfo/signup")
     public ResponseEntity<UserInfoDTO> register(@RequestBody SignUpDTO dto) {
-
         log.info("image : " + dto.getUserInfoDTO().getProfileImg());
 
         UserInfo user = UserInfo.builder()
@@ -147,11 +136,9 @@ public class UserInfoController {
                 .joinDate(new Date())
                 .build();
 
-        
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
-
             UserInfoDTO responseDTO = UserInfoDTO.builder()
                     .id(registeredUser.getUserId())
                     .nickname(registeredUser.getUserNickname())
@@ -212,17 +199,6 @@ public class UserInfoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    // 이메일로 아이디 찾기
-    @GetMapping("/userInfo/findIdByEmail")
-    public ResponseEntity<UserInfo> findIdByEmail(@RequestParam String email) {
-
-            return ResponseEntity.status(HttpStatus.OK).body(userService.findIdByEmail(email));
-
-    }
-
-
-
 
 
     // 토큰을 이용한 사용자 정보 조회

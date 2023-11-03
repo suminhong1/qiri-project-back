@@ -32,16 +32,6 @@ public class UserCategoryInfoController {
         }
     }
 
-    // 관심사 카테고리 상세 조회
-//    @GetMapping("/userCategoryInfo/{id}")
-//    public ResponseEntity<UserCategoryInfo> showCategory(@PathVariable int id) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(categoryInfoService.show(id));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-
     // 아이디에 해당하는 관심사 카테고리 상세 조회
     @GetMapping("/userCategoryInfo/{userId}")
     public ResponseEntity<List<UserCategoryInfo>> getUserCategories(@PathVariable String userId) {
