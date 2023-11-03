@@ -69,4 +69,7 @@ public class CommentsService {
     }
 
 
+    public List<Comments> findCommentsByUserId(String userId) { return dao.findCommentsByUserId(userId); }
+
+
 }

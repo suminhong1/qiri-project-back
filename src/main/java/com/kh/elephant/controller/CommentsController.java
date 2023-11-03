@@ -67,6 +67,17 @@ public class CommentsController {
 //        }
 //    }
 
+    @GetMapping("/comments/get/{userId}")
+    public ResponseEntity<List<Comments>> getUserComments(@PathVariable String userId) {
+        try {
+            List<Comments> userComments = comments.findCommentsByUserId(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(userComments);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
     // 댓글 추가 : POST - http://localhost:8080/qiri/post/comments
     @PostMapping("/post/comments")
     public ResponseEntity<Comments> create(@RequestBody Comments vo, @AuthenticationPrincipal String id) {

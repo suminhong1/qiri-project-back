@@ -13,4 +13,7 @@ public interface CommentsDAO extends JpaRepository<Comments, Integer> {
     @Query(value="SELECT * FROM comments WHERE post_seq = :id AND comments_delete = 'N'", nativeQuery = true)
     List<Comments> findByPostSeq(@Param("id") int id);
 
+    @Query(value = "SELECT * FROM comments WHERE USER_ID = :userId", nativeQuery = true)
+    List<Comments> findCommentsByUserId(@Param("userId") String userId);
+
 }
