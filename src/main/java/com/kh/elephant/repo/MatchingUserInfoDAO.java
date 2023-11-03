@@ -17,7 +17,6 @@ public interface MatchingUserInfoDAO extends JpaRepository<MatchingUserInfo, Int
     // 수락정보 포스트 공용SEQ 체킹용
     Optional<MatchingUserInfo> findByUserInfo_UserIdAndPost_PostSEQ(String userId, int postSEQ);
 
-    
 
 
     // 같은 포스트seq로 확인하기
@@ -28,6 +27,14 @@ public interface MatchingUserInfoDAO extends JpaRepository<MatchingUserInfo, Int
     @Modifying
     @Query(value = "UPDATE MATCHING_USER_INFO SET MATCHING_ACCEPT = 'Y' WHERE POST_SEQ = :code AND USER_ID = :id", nativeQuery = true)
     int matchingAccept(@Param("code") int code, @Param("id") String id);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE MATCHING_USER_INFO SET MATCHING_ACCEPT = 'H' WHERE POST_SEQ = :code AND USER_ID = :id", nativeQuery = true)
+    int hideMachingUser(@Param("code") int code, @Param("id") String id);
+
+
 
 
     //

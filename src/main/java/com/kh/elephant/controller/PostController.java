@@ -186,15 +186,17 @@ public class PostController {
                     .build();
 
             log.info("수정 : " + post);
-//            Post updatedPost = postService.update(post);
-//
-//            log.info("되라고 씨발아" + updatedPost);
+
+
 
             return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
+
     //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
     @PutMapping("/post/{postSeq}")
@@ -211,6 +213,30 @@ public class PostController {
             return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
         }
     }
+
+
+    @PutMapping("/post/matcheComplete/{postSeq}")
+    public ResponseEntity<String> matcheComplete(@PathVariable int postSeq) {
+        try {
+            Post post = postService.show(postSeq);
+            if(post==null){
+                return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다.");
+            }
+            post.setMatched("Y");
+            postService.update(post);
+
+            return ResponseEntity.ok().body("");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("게시물 수정에 실패했습니다.");
+        }
+    }
+
+
+
+
+
+
+
 
     //카테고리타입SEQ받아서 해당하는 POST가져오기
     @GetMapping("/post/categoryType/{code}")

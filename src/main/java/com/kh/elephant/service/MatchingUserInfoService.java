@@ -45,6 +45,14 @@ public class MatchingUserInfoService {
     }
 
 
+    public int hideMachingUser(int code, String id) {
+        return dao.hideMachingUser(code, id);
+    }
+
+
+
+
+
     public List<MatchingUserInfo> findAccept(int code) {
         return dao.findAccept(code);
     }
