@@ -186,9 +186,6 @@ public class PostController {
                     .build();
 
             log.info("수정 : " + post);
-//            Post updatedPost = postService.update(post);
-//
-//            log.info("되라고 씨발아" + updatedPost);
 
             return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
         } catch (Exception e) {

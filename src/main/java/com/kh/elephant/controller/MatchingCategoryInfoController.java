@@ -56,8 +56,6 @@ public class MatchingCategoryInfoController {
     public ResponseEntity<List<MatchingCategoryInfo>> insert(@RequestBody MatchingCategoryInfoDTO dto) {
 
 
-//        log.info("test ::: "+ dto.getPostSEQ());
-    // 카테고리 선택은 5개까지 프론트에서 처리
         List<MatchingCategoryInfo> list = new ArrayList<>();
 
         log.info("matching category list : " + dto.toString());
