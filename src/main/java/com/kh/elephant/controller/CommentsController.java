@@ -58,6 +58,40 @@ public class CommentsController {
     }
 
 
+    // 게시물 1개에 따른 댓글 개수 조회 : GET - http://localhost:8080/qiri/public/post/1/comments
+    @GetMapping("/public/post/{id}/comment")
+    public ResponseEntity<Integer> commentsize(@PathVariable int id) {
+        List<Comments> topList = comments.getAllTopLevelComments(id);
+        log.info("top : " + topList);
+
+        int total = 0;  // 댓글 개수 초기화
+
+        List<CommentsDTO> response = new ArrayList<>();
+
+        for(Comments item : topList) {
+            if ("N".equals(item.getCommentDelete())) { // N 인 경우에만 개수 증가
+                total++;
+            }
+            CommentsDTO dto = new CommentsDTO();
+            dto.setPost(item.getPost());
+            dto.setCommentsSEQ(item.getCommentsSEQ());
+            dto.setCommentDesc(item.getCommentDesc());
+            dto.setCommentDate(item.getCommentDate());
+            dto.setUserInfo(item.getUserInfo());
+            dto.setCommentDelete(item.getCommentDelete());
+            List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSEQ(), id);
+            dto.setReplies(result);
+            response.add(dto);
+        }
+
+        int responseSize = response.size();
+
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(total);
+
+    }
+
 //    @GetMapping("/comments/{id}")
 //    public ResponseEntity<Comments> show(@PathVariable int id) {
 //        try {
