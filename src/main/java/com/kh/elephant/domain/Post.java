@@ -58,9 +58,4 @@ public class Post {
     @Column(name = "post_delete")
     private String postDelete;
 
-    // 5개 추가.. 우리가 고르는 카테고리 타입 5개
-    // private int type1; .....
-
-
-
 }

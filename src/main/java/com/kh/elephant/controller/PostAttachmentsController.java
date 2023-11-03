@@ -86,7 +86,7 @@ public class PostAttachmentsController {
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING); // 파일 중복으로 올라올 시 덮어쓰기
 
                 log.info(fileName);
-                String imageUrl = "http://localhost:8080/qiri/public/upload/" + fileName;
+                String imageUrl =  fileName;
 
                 ImageList.add(imageUrl);
 
