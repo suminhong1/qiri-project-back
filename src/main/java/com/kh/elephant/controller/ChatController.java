@@ -139,9 +139,10 @@ public class ChatController {
                     .chatRoom(crService.show(result.getChatRoomSEQ()))
                     .userInfo(uiService.show(dto.getId()))
                     .build();
+            ucriService.create(userChatRoomInfo);
 
 
-            return ResponseEntity.status(HttpStatus.OK).body(ucriService.create(userChatRoomInfo));
+            return ResponseEntity.status(HttpStatus.OK).body(userChatRoomInfo);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
