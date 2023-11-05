@@ -54,7 +54,6 @@ public class UserCategoryInfoController {
         for(int i=0; i<dto.getUserCategories().size(); i++) {
 
             UserCategoryInfo info = new UserCategoryInfo();
-
             UserInfo user = new UserInfo();
             user.setUserId(dto.getUserInfoDTO().getId());
 
@@ -63,15 +62,10 @@ public class UserCategoryInfoController {
 
             info.setUserInfo(user);
             info.setCategory(category);
-
             list.add(info);
         }
-        log.info("info :: " + dto.getUserCategories());
-//        return ResponseEntity.status(HttpStatus.OK).build();
-
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(categoryInfoService.createAll(list));
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
