@@ -18,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDTO {
 
-    // post받을때 혹은 던질때... 유저 정보..
     private String token;
 
     // 게시글 작성 관련 필요 데이터
