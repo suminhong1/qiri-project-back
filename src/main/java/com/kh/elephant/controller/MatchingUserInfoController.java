@@ -1,10 +1,12 @@
 package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.*;
+import com.kh.elephant.repo.MatchingUserInfoDAO;
 import com.kh.elephant.security.TokenProvider;
 import com.kh.elephant.service.MatchingUserInfoService;
 import com.kh.elephant.service.PostService;
 import com.kh.elephant.service.UserInfoService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ public class MatchingUserInfoController {
     private PostService postService;
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private MatchingUserInfoDAO dao;
 
 
     @GetMapping("/matchingUserInfo")
@@ -100,11 +105,13 @@ public class MatchingUserInfoController {
             // DTO 변환 로직
             List<MatchingUserInfoDTO> result = new ArrayList<>();
             for (MatchingUserInfo item : list) {
-                MatchingUserInfoDTO dto = new MatchingUserInfoDTO();
-                dto.setId(item.getUserInfo().getUserId());
-                dto.setPostSEQ(postSEQ);
-                // 다른 필드들도 세팅
-                result.add(dto);
+                if (!item.getMatchingAccept().equals("H")) { // 'H'가 아닌 항목만 추가
+                    MatchingUserInfoDTO dto = new MatchingUserInfoDTO();
+                    dto.setId(item.getUserInfo().getUserId());
+                    dto.setPostSEQ(postSEQ);
+                    // 필요한 다른 필드들도 dto에 세팅
+                    result.add(dto);
+                }
             }
             log.info("저장된것 보기"+result);
             return ResponseEntity.ok(result);
@@ -123,6 +130,30 @@ public class MatchingUserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
+
+
+    // 매칭 유저 가리기
+    @PutMapping("/hideMachingUser")
+    public ResponseEntity<?> hideMachingUser(@RequestBody ChatDTO dto) {
+        try {
+            int result = muiService.hideMachingUser(dto.getPostSEQ(), dto.getApplicantId());
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 
