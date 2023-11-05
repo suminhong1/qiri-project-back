@@ -54,7 +54,7 @@ public class PostAttachmentsController {
 
     // 게시글 첨부 파일  추가 http://localhost:8080/qiri/post
     @PostMapping("/postAttachments")
-    public ResponseEntity<List<String>> uploadFiles(@RequestParam List<MultipartFile> files, @RequestParam int postId) throws IOException {
+    public ResponseEntity<List<String>> uploadFiles(@RequestParam(required = false)List<MultipartFile> files, @RequestParam int postId) throws IOException {
 
         try{
             List<String> ImageList = new ArrayList<>();
@@ -63,6 +63,12 @@ public class PostAttachmentsController {
 
             log.info("나는 파일이얌 : " + files);
             log.info("나는 게시글이얌 : " + postId);
+
+            if (files.isEmpty()) {
+                //  클라이언트가 사진을 첨부하지 않았다면 아무 동작을 하지 않음
+                return ResponseEntity.status(HttpStatus.OK).body(ImageList);
+            }
+
 
             for (MultipartFile file : files) {
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
