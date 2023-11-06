@@ -67,6 +67,7 @@ public class ReviewController {
                 .postContent(dto.getPostContent())
                 .userInfo(userinfo)
                 .board(board)
+
                 .postTitleDropbox("Y")
                 .build();
         return ResponseEntity.ok().body(postService.create(post));
@@ -80,9 +81,6 @@ public class ReviewController {
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
         UserInfo userinfo = userInfoService.show(userId);
         Place place = plService.show(dto.getPlaceSEQ());
-
-
-
         Post post = Post.builder()
                 .postSEQ(dto.getPostSEQ())  // 여기서 ID를 설정해야 합니다.
                 .postTitle(dto.getPostTitle())
@@ -95,11 +93,7 @@ public class ReviewController {
                 .postTitleDropbox("Y")
                 .board(board)
                 .build();
-
         Post updatedPost = postService.update(post);
-
-        log.info("수정된 정보확인용!"+ updatedPost);
-
         if (updatedPost == null) {
         }
         return ResponseEntity.ok().body(updatedPost);
@@ -113,27 +107,21 @@ public class ReviewController {
         try {
             Post reviewPost = postService.show(postSEQ);
             if (reviewPost == null) {
-                return ResponseEntity.badRequest().body("Post not found!");
+                return ResponseEntity.badRequest().body("찾았다");
             }
             reviewPost.setPostDelete("Y");
             postService.update(reviewPost);
-
-
             Post mainPost = postService.findByBoardSeqAndPostTitle(1, reviewPost.getPostTitle());
             if (mainPost != null) {
                 mainPost.setPostTitleDropbox("N");
                 postService.update(mainPost);
             }
-
-            return ResponseEntity.ok().body("Post marked as deleted!");
+            return ResponseEntity.ok().body("업데이트완료");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
+            return ResponseEntity.badRequest().body("업데이트완료실패");
         }
     }
-
-
-
 
     // 드롭박스 선택한 포스트 드롭박스 Y로 업데이트
     @PutMapping("/updatePostTitleDropbox/{postSEQ}")
@@ -141,16 +129,13 @@ public class ReviewController {
         try {
             Post post = postService.show(postSEQ);
             if (post == null) {
-                return ResponseEntity.badRequest().body("Post not found!");
+                return ResponseEntity.badRequest().body("Post not");
             }
-
             post.setPostTitleDropbox("Y");
             postService.update(post);
-            return ResponseEntity.ok().body("Post marked as deleted!");
+            return ResponseEntity.ok().body("Post deleted");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to mark post as deleted!");
+            return ResponseEntity.badRequest().body("Failed!");
         }
     }
-    }
-
-
+}

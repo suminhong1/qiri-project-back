@@ -72,7 +72,7 @@ public class PostAttachmentsController {
 
             for (MultipartFile file : files) {
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
-                String uploadPath = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
+                String uploadPath = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
 
                 InputStream inputStream = file.getInputStream(); // 파일 데이터를 읽기 위해 필요함
                 Path filePath = Paths.get(uploadPath,fileName);
