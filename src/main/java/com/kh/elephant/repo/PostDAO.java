@@ -20,14 +20,12 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
 
     @Transactional
+    // 게시물 등록을 할때 POST와 관련된 데이터들은 POST 테이블에 저장되고 선택한 CATEGORY의 CATEGORY_SEQ와 POST_SEQ는 MATCHING_CATEGORY_INFO 테이블에 저장되게함
     @Query(value = "INSERT INTO matching_category_info (post_seq, category_seq) VALUES (:post_seq, :category_seq)", nativeQuery = true)
     void savePostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq);
 
-//    @Query(value = "UPDATE matching_category_info (post_seq, category_seq) VALUES (:post_seq, :category_seq)", nativeQuery = true)
-//    void updatePostAndCategorySeq(@Param("post_seq") int post_seq, @Param("category_seq") int category_seq);
 
-
-
+    // SQL 쿼리문을 사용해서 BOARD를 POST 테이블에서 검색해서 결과를 반환함 :code는 이 쿼리문을 호출할때 POST_SEQ값으로 대체됨
     @Query(value = "SELECT * FROM post WHERE board_seq = :code", nativeQuery = true)
     List<Post>findByBoardCode(int code);
 
@@ -36,7 +34,7 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
 
     @Query(value = "update post SET postView = postView+1 WHERE  post_seq = :code", nativeQuery = true)
-    List<Post>increaseCount(int code);
+    List<Post>increaseCount(int code); // 게시물을 볼때마다 게시물 조회수가 1씩 올라가는 쿼리문
 
 
     

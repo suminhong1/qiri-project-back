@@ -20,7 +20,7 @@ public class PostDTO {
 
     private String token;
 
-    // 게시글 작성 관련 필요 데이터
+    // DTO 방식으로 처리하기 위한 게시글 작성 관련 필요 데이터
 
     private String postTitle;
 
@@ -51,9 +51,9 @@ public class PostDTO {
     private String titleDropbox;
 
     private Post post;
-    private List<String> attList;
-    List<Category> matchList;
+    private List<String> attList; // 첨부파일 관련
+    List<Category> matchList; // 카테고리 관련
 
-    private List<MatchingCategoryInfo> respMatchCategoryList;
+    private List<MatchingCategoryInfo> respMatchCategoryList; // 매칭카테고리 관련
 
 }
