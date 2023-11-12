@@ -31,36 +31,36 @@ import java.util.List;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PostController {
 
-    @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload")
+    @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload") // 첨부파일 업로드 경로
     private String uploadPath;
     @Autowired
-    private TokenProvider tokenProvider;
+    private TokenProvider tokenProvider; // token을 이용한 유저 정보
     @Autowired
-    private PostService postService;
+    private PostService postService; // post관련 서비스
     @Autowired
-    private UserInfoService userInfoService;
+    private UserInfoService userInfoService; // 유저 관련 서비스
     @Autowired
-    private CommentsService commService;
+    private CommentsService commService; // 댓글 관련 서비스
     @Autowired
-    private PlaceService plService;
+    private PlaceService plService; // 지역 관련 서비스
     @Autowired
-    private PlaceTypeService placeTypeService;
+    private PlaceTypeService placeTypeService; // 지역 관련 서비스
     @Autowired
     private PlaceTypeService pTypeService;
 
     @Autowired
-    private BoardService boardService;
+    private BoardService boardService; // 게시판 관련 서비스
     @Autowired
-    private CategoryService categoryService;
+    private CategoryService categoryService; // 카테고리 관련 서비스
     @Autowired
-    private PostAttachmentsService paService;
+    private PostAttachmentsService paService; // 첨부 파일 관련 서비스
 
     @Autowired
-    private MatchingCategoryInfoService mciService;
+    private MatchingCategoryInfoService mciService; // 선택한 카테고리를 MatchingCategoryInfo 테이블로 저장시키기 위한 서비스
 
     // 검색
     @Autowired
-    private SearchService searchService;
+    private SearchService searchService; // 검색 관련 서비스
 
     // 게시글 전체 보기 http://localhost:8080/qiri/post
     // OR
@@ -70,14 +70,23 @@ public class PostController {
                                                @RequestParam(name = "board", required = false) Integer board,
                                                @RequestParam(name = "keyword", required = false) String keyword) {
         log.info("post List 호출 컨트롤러 진입;");
-        Sort sort = Sort.by("postSEQ").descending();
+        Sort sort = Sort.by("postSEQ").descending(); // 게시글 최신 등록 순으로 보여줌
+
+        // 페이지 20페이지를 sort로 Pageable 객체를 생성 페이지별로 게시글을 검색하고 정렬하는 데 사용
         Pageable pageable = PageRequest.of(page - 1, 20, sort);
-        QPost qPost = QPost.post;
+
+
+        QPost qPost = QPost.post; // Querydsl을 사용하여 Post를 쿼리문으로 작성 하기 위해 QPost 클래스를 생성하고 qPost로 참조
+
+        // Querydsl 라이브러리에서 사용되는 표현식 Querydsl은 Java 언어를 사용하여 쿼리문을 작성하기 위한 도구
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (board != null) {
-            BooleanExpression expression = qPost.board.boardSEQ.eq(board);
-            builder.and(expression);
+        // postdelete가 'Y'가 아닌 게시물만 가져오도록 조건 추가
+        builder.and(qPost.postDelete.ne("Y"));
+
+        if (board != null) { // 게시판인 board가 null이 아닐때 아래 코드를 실행
+            BooleanExpression expression = qPost.board.boardSEQ.eq(board); //qPost를 사용하여 게시판 번호인 boardSEQ를 비교하여
+            builder.and(expression); // null이 아닐 경우 동적 쿼리 실행 board가 null일 경우는 실행안됨
         }
 
         Page<Post> result = null;
@@ -85,7 +94,7 @@ public class PostController {
         if (keyword == null) {
             // keyword가 없거나 비어있는 경우 전체 게시물을 가져옴
             result = postService.showAll(pageable, builder);
-        } else {
+        } else {// keyword가 있는 경우 해당 keyword로 검색한 게시물을 가져옴
             List<Post> searchResults = searchService.searchByKeyword(keyword);
             return ResponseEntity.status(HttpStatus.OK).body(searchResults);
         }
@@ -99,77 +108,70 @@ public class PostController {
 
 
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
-    @GetMapping("/public/post/{id}")
-    public ResponseEntity<Post> show (@PathVariable int id){
+    @GetMapping("/public/post/{id}") //GetMapping을 위한 mapping 메소드 경로 설정
+    public ResponseEntity<Post> show (@PathVariable int id){ // id를 경로 변수로 받고, 해당 id를 사용하여 게시물 정보를 조회
         try {
             log.info("post 호출 컨트롤러 진입;");
-            Post result = postService.show(id);
+            Post result = postService.show(id); // 상세 보기와 조회수 증가 postService를 호출해서 result에 담음
+            // 게시물 상세보기를 위한 게시글 SEQ값을 검색해 정보 조회를 위한 컨트롤러
             log.info(".POST@@@@@@@@@ :   " + result.toString());
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+            return ResponseEntity.status(HttpStatus.OK).body(result); // 게시물 정보를 body에 담아서 클라이언트에 전송해서 클라이언트에서 볼 수 있게함
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 응답
         }
     }
 
 
-    @PostMapping("/post")
+    @PostMapping("/post") //PostMapping을 위한 메소드 경로 설정
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto) {
-        // 지금 dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
-
-//        log.info(dto.toString());
-
-//        log.info("카테고리리스트"+dto.getCategoryList().toString());
+        // dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
         try {
             // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
             Place place = plService.show(dto.getPlaceSEQ()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
 
             PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ()); //place 안에 placeType가 join 돼있어도 선언해야함
 
-            place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌
-            // 걍 place에 placeType을 합친거임
+            place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌 그냥 place와 placeType을 합친것
+           
 
-            Board board = boardService.show(dto.getBoardSEQ());
+            Board board = boardService.show(dto.getBoardSEQ()); // board에 저장된 정보를 조회하기 위해 boardService에 있는 show 메소드로 정보 조회
 
-            String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+            String userId = tokenProvider.validateAndGetUserId(dto.getToken()); // 토큰을 추출해 토큰에서 추출한 ID를 userId에 저장
             log.info(userId);
-            UserInfo userInfo = userInfoService.show(userId);
+            UserInfo userInfo = userInfoService.show(userId); // userInfo의 userId 데이터를 조회하기 위해 userInfoService의 show 메소드로 정보 조회
 
-            // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서씀
+            // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서 생성 
             Post post = Post.builder()
                     .postTitle(dto.getPostTitle())
                     .postContent(dto.getPostContent())
                     .postView(dto.getPostView())
-                    .place(place) // 위에서 선언한 place를 여기다 담아줌 여기가 ㄹㅇ로 저장 받고 다시 보내는 곳
+                    .place(place) // 위에서 선언한 place를 여기다 담아줌 여기가 place를 저장 받고 다시 보내는 곳
                     .userInfo(userInfo)
                     .board(board)
                     .build();
             log.info("나와라이~ 나와라이~" + post);
-            return ResponseEntity.ok().body(postService.create(post));// create, save도 post랑 유사한 역할
+            return ResponseEntity.ok().body(postService.create(post));// service에 있는 create 메소드를 사용해 post 생성
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
         }
     }
 
 
     //   매칭 게시글 수정 http://localhost:8080/qiri/post
-    @PutMapping("/post")
+    @PutMapping("/post") //PutMapping을 위한 메소드 경로 설정
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
         try {
             log.info("dto : " + dto.toString());
 
-            Place place = plService.show(dto.getPlaceSEQ());
-            log.info("여긴 오냐?");
+            Place place = plService.show(dto.getPlaceSEQ()); // Place의 대한 정보를 조회하기 위해 Place Service의 show 메소드로 정보 조회
 
-            String userId = tokenProvider.validateAndGetUserId(dto.getToken());
+            String userId = tokenProvider.validateAndGetUserId(dto.getToken()); // 토큰을 추출해 토큰에서 추출한 ID를 userId에 저장
 
-            UserInfo userinfo = userInfoService.show(userId); // 서비스에서 찾은 Id와 같다면
+            UserInfo userinfo = userInfoService.show(userId); // userInfoService의 show 메소드를 사용하여 userId 정보 조회
 
-            Board board = boardService.show(dto.getBoardSEQ());
+            Board board = boardService.show(dto.getBoardSEQ()); // board에 저장된 정보를 조회하기 위해 boardService에 있는 show 메소드로 정보 조회
 
-//            if (updatePost.getUserInfo().getUserId().equals(userId)) {// userInfo에 들어있는 userId와
-            log.info("유저 ID : " + userId);
-            log.info("유저 : " + userinfo);
-
+            // post 안에 있는 수정할 정보들
             Post post = Post.builder()
                     .postSEQ(dto.getPostSEQ())
                     .postTitle(dto.getPostTitle())
@@ -182,42 +184,38 @@ public class PostController {
                     .place(place)
                     .userInfo(userinfo)
                     .board(board)
-
                     .build();
 
             log.info("수정 : " + post);
-//            Post updatedPost = postService.update(post);
-//
-//            log.info("되라고 씨발아" + updatedPost);
-
-            return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
+            
+            return ResponseEntity.status(HttpStatus.OK).body(postService.update(post)); // postService의 update메소드를 사용하여 post 수정
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
         }
     }
     //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
-    // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
-    @PutMapping("/post/{postSeq}")
+
+    @PutMapping("/post/{postSeq}")   // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
     public ResponseEntity<String> hidePost(@PathVariable int postSeq) {
         try {
-            Post post = postService.show(postSeq);
-            if(post==null){
-                return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다.");
+            Post post = postService.show(postSeq); // postSEQ로 게시물 정보를 조회함
+            if(post==null){ // post가 null일 경우
+                return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다."); // 문자열 반환
             }
-            post.setPostDelete("Y");
-            postService.update(post);
+            post.setPostDelete("Y"); // postDelete를 Y로 설정 후 db에 저장
+            postService.update(post); // 삭제지만 update 형식으로 클라이언트 쪽에서만 안보이게 처리함
             log.info("삭제 ::: " + post);
-            return ResponseEntity.ok().body("삭제된 게시물 입니다.");
+            return ResponseEntity.ok().body("삭제된 게시물 입니다."); // 삭제 후 문자열 전송
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
+            return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다."); // 예외가 발생 했을때 String문자열을 클라이언트에 전송
         }
     }
 
-    @DeleteMapping("/post/{postSeq}")
-    public ResponseEntity<Post>delete(@PathVariable int id){
+    @DeleteMapping("/post/{postSeq}") // DELETEMapping을 위한 메소드 경로 설정
+    public ResponseEntity<Post>delete(@PathVariable int id){ // postSeq를 @PathVariable로 id라는 변수 명칭으로 사용
         log.info("삭제 ::: "+ postService.delete(id));
         return ResponseEntity.status(HttpStatus.OK).body(postService.delete(id));
-
+        // postService에 Spring Data JPA에서 제공하는 delete로 일치하는 id를 찾아서 삭제
     }
 
     //카테고리타입SEQ받아서 해당하는 POST가져오기

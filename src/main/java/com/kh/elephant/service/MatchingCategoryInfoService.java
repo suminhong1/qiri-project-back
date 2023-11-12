@@ -52,4 +52,5 @@ public class MatchingCategoryInfoService {
         return dao.findByCTSEQ(code);
     }
     public List<MatchingCategoryInfo> findByPostSEQ(int id){ return dao.findByPostSeq(id);}
+    // post_seq를 MatchingCategoryInfo 테이블에서 검색하는 DAO를 사용해 Post_SEQ를 찾는 서비스
 }
