@@ -59,8 +59,6 @@ public class UserInfoController {
     @PutMapping("/userInfo/editProfile")
     public ResponseEntity<UserInfoDTO> updateUserProfile(@RequestBody SignUpDTO dto) {
         try {
-            log.info(dto.toString());
-
             UserInfo loginUser = userService.show(dto.getUserInfoDTO().getId());
 
             if (loginUser != null) {
@@ -113,7 +111,6 @@ public class UserInfoController {
     // 회원가입
     @PostMapping("/userInfo/signup")
     public ResponseEntity<UserInfoDTO> register(@RequestBody SignUpDTO dto) {
-        log.info("image : " + dto.getUserInfoDTO().getProfileImg());
 
         UserInfo user = UserInfo.builder()
                 .userId(dto.getUserInfoDTO().getId())
@@ -135,7 +132,6 @@ public class UserInfoController {
                 .isDeleted("N")
                 .joinDate(new Date())
                 .build();
-
         UserInfo registeredUser = userService.create(user); // 회원 정보 저장
 
         if (registeredUser != null) {
@@ -176,19 +172,18 @@ public class UserInfoController {
     // 프로필 사진 업로드
     @PostMapping("/uploadProfilePicture")
     public ResponseEntity<String> uploadProfilePicture(@RequestParam("profileImg") MultipartFile file) {
+        // MultipartFile : 업로드된 파일을 포함하는 Spring의 객체 (import 해야함)
         try {
             // 프로필 사진을 업로드할 디렉토리 경로 설정
             String uploadDir = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\uploadprofile";
 
             // 프로필 사진 파일 이름을 생성(고유)
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            // UUID.randomUUID().toString() : 고유한 식별자 생성 -> 파일앞에 붙여서 중복 방지
 
             // 프로필 사진을 디렉토리에 저장
-            Path filePath = Paths.get(uploadDir, fileName);
+            Path filePath = Paths.get(uploadDir, fileName); // 파일 경로
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            log.info(fileName);
-
             url = fileName;
 
             // 클라이언트에게 이미지 URL 전송
