@@ -167,7 +167,7 @@ public class ChatController {
         }
     }
 
-    // 매칭 승락한사람이 모두 접속한 채팅방 생성
+    // 매칭 승락한 사람이 모두 접속한 채팅방 생성
     @PostMapping("/groupChat")
     public ResponseEntity<ChatRoom> createGroupChat(@RequestBody ChatDTO dto) {
         try {

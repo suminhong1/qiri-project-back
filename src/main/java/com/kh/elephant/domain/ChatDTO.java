@@ -27,5 +27,4 @@ public class ChatDTO {
 
     private String joinMessageSent;
 
-    private List<String> idList;
 }
