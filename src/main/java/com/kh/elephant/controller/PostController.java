@@ -81,6 +81,9 @@ public class PostController {
         // Querydsl 라이브러리에서 사용되는 표현식 Querydsl은 Java 언어를 사용하여 쿼리문을 작성하기 위한 도구
         BooleanBuilder builder = new BooleanBuilder();
 
+        // postdelete가 'Y'가 아닌 게시물만 가져오도록 조건 추가
+        builder.and(qPost.postDelete.ne("Y"));
+
         if (board != null) { // 게시판인 board가 null이 아닐때 아래 코드를 실행
             BooleanExpression expression = qPost.board.boardSEQ.eq(board); //qPost를 사용하여 게시판 번호인 boardSEQ를 비교하여
             builder.and(expression); // null이 아닐 경우 동적 쿼리 실행 board가 null일 경우는 실행안됨
