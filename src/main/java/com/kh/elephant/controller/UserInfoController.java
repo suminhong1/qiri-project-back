@@ -175,7 +175,7 @@ public class UserInfoController {
         // MultipartFile : 업로드된 파일을 포함하는 Spring의 객체 (import 해야함)
         try {
             // 프로필 사진을 업로드할 디렉토리 경로 설정
-            String uploadDir = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\uploadprofile";
+            String uploadDir = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\uploadprofile";
 
             // 프로필 사진 파일 이름을 생성(고유)
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();

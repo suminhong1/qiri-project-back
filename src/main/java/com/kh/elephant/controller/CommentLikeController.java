@@ -101,9 +101,6 @@ public class CommentLikeController {
     @DeleteMapping("/commentLike/{id}")
     public ResponseEntity deleteLike(@PathVariable int id) {
         try {
-//            log.info("id : " + id);
-//            CommentLike like = commentLike.deleteCommentlike(id); // 좋아요 삭제 메서드 호출
-//            log.info("like : " + like);
             commentLike.delete(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {

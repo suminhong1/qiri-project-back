@@ -122,6 +122,7 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
     }
 
+
     // 댓글 수정 : PUT - http://localhost:8080/qiri/post/comments
     @PutMapping("/post/comments")
     public ResponseEntity<Comments> update(@RequestBody Comments vo, @AuthenticationPrincipal String id){
@@ -134,6 +135,8 @@ public class CommentsController {
         return ResponseEntity.status(HttpStatus.OK).body(comments.update(vo));
     }
 
+
+    // 댓글 삭제  : DELETE - http://localhost:8080/qiri/post/comments/delete
     @PutMapping("/post/comments/delete")
     public ResponseEntity<Comments> delete(@RequestBody Comments vo, @AuthenticationPrincipal String id){
         vo.setCommentDesc(vo.getCommentDesc());
@@ -144,6 +147,7 @@ public class CommentsController {
         vo.setSecretComment(vo.getSecretComment());
         return ResponseEntity.status(HttpStatus.OK).body(comments.delete(vo));
     }
+
 
     // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
 //    @DeleteMapping("/post/comments/{id}")
