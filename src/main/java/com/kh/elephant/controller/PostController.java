@@ -31,7 +31,7 @@ import java.util.List;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PostController {
 
-    @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload") // 첨부파일 업로드 경로
+    @Value("C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload") // 첨부파일 업로드 경로
     private String uploadPath;
     @Autowired
     private TokenProvider tokenProvider; // token을 이용한 유저 정보
@@ -70,31 +70,23 @@ public class PostController {
                                                @RequestParam(name = "board", required = false) Integer board,
                                                @RequestParam(name = "keyword", required = false) String keyword) {
         log.info("post List 호출 컨트롤러 진입;");
-        Sort sort = Sort.by("postSEQ").descending(); // 게시글 최신 등록 순으로 보여줌
-
-        // 페이지 20페이지를 sort로 Pageable 객체를 생성 페이지별로 게시글을 검색하고 정렬하는 데 사용
+        Sort sort = Sort.by("postSEQ").descending();
         Pageable pageable = PageRequest.of(page - 1, 20, sort);
-
-
-        QPost qPost = QPost.post; // Querydsl을 사용하여 Post를 쿼리문으로 작성 하기 위해 QPost 클래스를 생성하고 qPost로 참조
-
-        // Querydsl 라이브러리에서 사용되는 표현식 Querydsl은 Java 언어를 사용하여 쿼리문을 작성하기 위한 도구
+        QPost qPost = QPost.post;
         BooleanBuilder builder = new BooleanBuilder();
 
         // postdelete가 'Y'가 아닌 게시물만 가져오도록 조건 추가
         builder.and(qPost.postDelete.ne("Y"));
 
-        if (board != null) { // 게시판인 board가 null이 아닐때 아래 코드를 실행
-            BooleanExpression expression = qPost.board.boardSEQ.eq(board); //qPost를 사용하여 게시판 번호인 boardSEQ를 비교하여
-            builder.and(expression); // null이 아닐 경우 동적 쿼리 실행 board가 null일 경우는 실행안됨
+        if (board != null) {
+            BooleanExpression expression = qPost.board.boardSEQ.eq(board);
+            builder.and(expression);
         }
-
         Page<Post> result = null;
-
         if (keyword == null) {
-            // keyword가 없거나 비어있는 경우 전체 게시물을 가져옴
+            // 키워드가 없거나 비어있는 경우 전체 게시물을 가져옴
             result = postService.showAll(pageable, builder);
-        } else {// keyword가 있는 경우 해당 keyword로 검색한 게시물을 가져옴
+        } else {
             List<Post> searchResults = searchService.searchByKeyword(keyword);
             return ResponseEntity.status(HttpStatus.OK).body(searchResults);
         }
@@ -104,7 +96,6 @@ public class PostController {
         // Page 객체에서 목록을 추출하여 반환
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
-
 
 
     // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id

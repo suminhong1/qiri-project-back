@@ -69,7 +69,6 @@ public class PostAttachmentsController {
                 return ResponseEntity.status(HttpStatus.OK).body(ImageList);
             }
 
-
             for (MultipartFile file : files) { // 첨부파일이 여러개 일수 있으니 for문 사용
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
                 String uploadPath = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
