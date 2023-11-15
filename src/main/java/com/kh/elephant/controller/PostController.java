@@ -123,7 +123,6 @@ public class PostController {
             PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ()); //place 안에 placeType가 join 돼있어도 선언해야함
 
             place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌 그냥 place와 placeType을 합친것
-           
 
             Board board = boardService.show(dto.getBoardSEQ()); // board에 저장된 정보를 조회하기 위해 boardService에 있는 show 메소드로 정보 조회
 
@@ -140,7 +139,7 @@ public class PostController {
                     .userInfo(userInfo)
                     .board(board)
                     .build();
-            log.info("나와라이~ 나와라이~" + post);
+            log.info("update dto : " + dto.toString());
             return ResponseEntity.ok().body(postService.create(post));// service에 있는 create 메소드를 사용해 post 생성
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
@@ -152,8 +151,6 @@ public class PostController {
     @PutMapping("/post") //PutMapping을 위한 메소드 경로 설정
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
         try {
-            log.info("dto : " + dto.toString());
-
             Place place = plService.show(dto.getPlaceSEQ()); // Place의 대한 정보를 조회하기 위해 Place Service의 show 메소드로 정보 조회
 
             String userId = tokenProvider.validateAndGetUserId(dto.getToken()); // 토큰을 추출해 토큰에서 추출한 ID를 userId에 저장
@@ -178,7 +175,7 @@ public class PostController {
                     .build();
 
             log.info("수정 : " + post);
-            
+            log.info("dto : " + dto.toString());
             return ResponseEntity.status(HttpStatus.OK).body(postService.update(post)); // postService의 update메소드를 사용하여 post 수정
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
