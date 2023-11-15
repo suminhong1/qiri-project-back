@@ -126,7 +126,7 @@ public class ChatController {
 
     //내가 참여하는 채팅방 생성(매칭 신청시 생성됨)
     @PostMapping("/chatroom/join")
-    public ResponseEntity<UserChatRoomInfo> joinChatRoom(@RequestBody ChatDTO dto) {
+    public ResponseEntity<ChatRoom> joinChatRoom(@RequestBody ChatDTO dto) {
         try {
             // 채팅방 생성
             ChatRoom chatRoom = ChatRoom.builder()
@@ -141,8 +141,7 @@ public class ChatController {
                     .build();
             ucriService.create(userChatRoomInfo);
 
-
-            return ResponseEntity.status(HttpStatus.OK).body(userChatRoomInfo);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
