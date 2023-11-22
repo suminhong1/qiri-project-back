@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionManager;
@@ -38,7 +39,9 @@ public class ChatController {
     @Autowired
     private MatchingUserInfoService muiService;
     @Autowired
-    private PlatformTransactionManager transactionManager;
+    private NotificationMessageService nmService;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
 
 
@@ -139,6 +142,7 @@ public class ChatController {
                     .chatRoom(crService.show(result.getChatRoomSEQ()))
                     .userInfo(uiService.show(dto.getId()))
                     .build();
+
             ucriService.create(userChatRoomInfo);
 
             return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -160,7 +164,9 @@ public class ChatController {
                     .chatRoom(result.getChatRoom())
                     .build();
 
-            return ResponseEntity.status(HttpStatus.OK).body(ucriService.create(userChatRoomInfo));
+            ucriService.create(userChatRoomInfo);
+
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -170,16 +176,19 @@ public class ChatController {
     @PostMapping("/groupChat")
     public ResponseEntity<ChatRoom> createGroupChat(@RequestBody ChatDTO dto) {
         try {
+            UserInfo userInfo = uiService.show(dto.getId());
+            Post post = postService.show(dto.getPostSEQ());
+
             // 채팅방 생성
             ChatRoom chatRoom = ChatRoom.builder()
-                    .post(postService.show(dto.getPostSEQ()))
+                    .post(post)
                     .build();
             ChatRoom result = crService.create(chatRoom);
 
             // 채팅방 접속
             UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
                     .chatRoom(crService.show(result.getChatRoomSEQ()))
-                    .userInfo(uiService.show(dto.getId()))
+                    .userInfo(userInfo)
                     .build();
             ucriService.create(userChatRoomInfo);
 
@@ -194,9 +203,19 @@ public class ChatController {
                         .userInfo(matchingUserInfo.getUserInfo())
                         .build();
                         ucriService.create(userChatRoomInfo);
+                
+                        //알림 db 저장
+                        NotificationMessage notificationMessage = NotificationMessage.builder()
+                                .userInfo(matchingUserInfo.getUserInfo())
+                                .message("게시글 " + post.getPostTitle() + "의 그룹채팅방에 초대되었습니다.")
+                                .build();
+                        nmService.create(notificationMessage);
+
+                        // 웹소켓으로 알림 전송
+                messagingTemplate.convertAndSend("/sub/notification" + matchingUserInfo.getUserInfo().getUserId() , notificationMessage);
             }
 
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

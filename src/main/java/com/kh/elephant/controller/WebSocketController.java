@@ -1,22 +1,21 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.ChatDTO;
+import com.kh.elephant.domain.*;
 
-import com.kh.elephant.domain.ChatMessage;
-import com.kh.elephant.domain.ChatRoom;
-import com.kh.elephant.domain.UserInfo;
-import com.kh.elephant.service.ChatMessageService;
-import com.kh.elephant.service.ChatRoomService;
-import com.kh.elephant.service.UserInfoService;
+import com.kh.elephant.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -32,7 +31,12 @@ public class WebSocketController {
     private UserInfoService uiService;
     @Autowired
     private ChatRoomService crService;
+    @Autowired
+    private UserChatRoomInfoService ucriService;
+    @Autowired
+    private NotificationMessageService nmService;
 
+    // 채팅 전송 및 db저장, 알림 처리
     @Transactional
     @MessageMapping("/chat/message")
     public void message(ChatDTO dto) {
@@ -49,5 +53,30 @@ public class WebSocketController {
         } catch (Exception e) {
             log.info("메세지 db저장 오류");
         }
+
+        List<UserChatRoomInfo> userChatRoomInfoList = ucriService.findByUserId(userInfo.getUserId());
+
+        // 채팅 알림처리
+        for(UserChatRoomInfo user : userChatRoomInfoList) {
+            try {
+                NotificationMessage notificationMessage = NotificationMessage.builder()
+                        .userInfo(user.getUserInfo())
+                        .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
+                        .build();
+                nmService.create(notificationMessage);
+
+                messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
+            } catch (Exception e) {
+                log.info("채팅메시지 db저장 오류");
+            }
+        }
+
+
     }
+    
+    @MessageMapping("/{userId}")
+    public void message(@DestinationVariable("userId") String userId) {
+
+    }
+
 }
