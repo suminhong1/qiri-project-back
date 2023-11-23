@@ -205,6 +205,7 @@ public class ChatController {
                         ucriService.create(userChatRoomInfo);
                 
                         //알림 db 저장
+                if(!dto.getId().equals(matchingUserInfo.getUserInfo().getUserId())) {
                         NotificationMessage notificationMessage = NotificationMessage.builder()
                                 .userInfo(matchingUserInfo.getUserInfo())
                                 .message("게시글 " + post.getPostTitle() + "의 그룹채팅방에 초대되었습니다.")
@@ -212,8 +213,9 @@ public class ChatController {
                         nmService.create(notificationMessage);
 
                         // 웹소켓으로 알림 전송
-                messagingTemplate.convertAndSend("/sub/notification" + matchingUserInfo.getUserInfo().getUserId() , notificationMessage);
-            }
+                    messagingTemplate.convertAndSend("/sub/notification/" + matchingUserInfo.getUserInfo().getUserId(), notificationMessage);
+                }
+                }
 
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {

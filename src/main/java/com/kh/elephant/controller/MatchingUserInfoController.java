@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,9 +32,10 @@ public class MatchingUserInfoController {
     private PostService postService;
     @Autowired
     private TokenProvider tokenProvider;
-
     @Autowired
     private MatchingUserInfoDAO dao;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
 
     @GetMapping("/matchingUserInfo")
@@ -125,6 +127,13 @@ public class MatchingUserInfoController {
     public ResponseEntity<MatchingUserInfo> matchingAccept(@RequestBody ChatDTO dto){
         try {
             int result = muiService.matchingAccept(dto.getPostSEQ(), dto.getApplicantId());
+
+            NotificationMessage notificationMessage = NotificationMessage.builder()
+                    .userInfo(uiService.show(dto.getApplicantId()))
+                    .message("신청한 " + postService.show(dto.getPostSEQ()).getPostTitle() + " 끼리가 승락되었습니다.")
+                    .build();
+            //알림 발송
+            messagingTemplate.convertAndSend("/sub/notification/" + dto.getApplicantId(), notificationMessage);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

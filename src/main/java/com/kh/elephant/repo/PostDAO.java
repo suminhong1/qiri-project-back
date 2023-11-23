@@ -35,8 +35,6 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
     @Query(value = "update post SET postView = postView+1 WHERE  post_seq = :code", nativeQuery = true)
     List<Post>increaseCount(int code); // 게시물을 볼때마다 게시물 조회수가 1씩 올라가는 쿼리문
-
-
     
     // 리뷰 삭제시 드롭박스 다시 보이게하기
 

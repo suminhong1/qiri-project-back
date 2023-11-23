@@ -51,7 +51,7 @@ public class WebSocketController {
                     .build();
             cmService.create(chatMessage);
         } catch (Exception e) {
-            log.info("메세지 db저장 오류");
+            log.error("메세지 db저장 오류");
         }
 
         List<UserChatRoomInfo> userChatRoomInfoList = ucriService.findByUserId(userInfo.getUserId());
@@ -59,15 +59,17 @@ public class WebSocketController {
         // 채팅 알림처리
         for(UserChatRoomInfo user : userChatRoomInfoList) {
             try {
+                if(!user.getUserInfo().getUserId().equals(userInfo.getUserId())) {
                 NotificationMessage notificationMessage = NotificationMessage.builder()
                         .userInfo(user.getUserInfo())
                         .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
                         .build();
                 nmService.create(notificationMessage);
 
-                messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
+                    messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
+                }
             } catch (Exception e) {
-                log.info("채팅메시지 db저장 오류");
+                log.error("채팅메시지 db저장 오류");
             }
         }
 

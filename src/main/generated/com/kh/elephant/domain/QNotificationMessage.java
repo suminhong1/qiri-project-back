@@ -28,7 +28,7 @@ public class QNotificationMessage extends EntityPathBase<NotificationMessage> {
 
     public final NumberPath<Integer> notificationMessageSEQ = createNumber("notificationMessageSEQ", Integer.class);
 
-    public final QPost post;
+    public final StringPath notifyURL = createString("notifyURL");
 
     public final DateTimePath<java.util.Date> sentTime = createDateTime("sentTime", java.util.Date.class);
 
@@ -52,7 +52,6 @@ public class QNotificationMessage extends EntityPathBase<NotificationMessage> {
 
     public QNotificationMessage(Class<? extends NotificationMessage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.post = inits.isInitialized("post") ? new QPost(forProperty("post"), inits.get("post")) : null;
         this.userInfo = inits.isInitialized("userInfo") ? new QUserInfo(forProperty("userInfo"), inits.get("userInfo")) : null;
     }
 

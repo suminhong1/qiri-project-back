@@ -37,7 +37,6 @@ public class NotificationMessage {
     @Column(name = "is_read")
     private String isRead;
 
-
     @Column(name = "notify_url")
     private String notifyURL;
 }

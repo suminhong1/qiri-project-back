@@ -116,4 +116,5 @@ public class PostService {
 
     public List<Post> findPostByUserId(String userId) { return dao.findPostByUserId(userId); }
 
+
 }

@@ -1,13 +1,13 @@
 package com.kh.elephant.controller;
 
-import com.kh.elephant.domain.Comments;
-import com.kh.elephant.domain.CommentsDTO;
-import com.kh.elephant.domain.UserInfo;
+import com.kh.elephant.domain.*;
 import com.kh.elephant.service.CommentsService;
+import com.kh.elephant.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +23,10 @@ public class CommentsController {
 
     @Autowired
     private CommentsService comments;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private PostService postService;
 
 //    @GetMapping("/comments")
 //    public ResponseEntity<List<Comments>> showAll() {
@@ -86,8 +90,6 @@ public class CommentsController {
 
         int responseSize = response.size();
 
-
-
         return ResponseEntity.status(HttpStatus.OK).body(total);
 
     }
@@ -119,6 +121,17 @@ public class CommentsController {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(id);
         vo.setUserInfo(userInfo);
+
+        Post post = postService.show(comments.show(vo.getCommentsSEQ()).getPost());
+        
+        //댓글 추가 알림 db 저장 및 웹소켓 알림 발송
+        NotificationMessage notificationMessage = NotificationMessage.builder()
+                .userInfo(post.getUserInfo())
+                .message(post.getPostTitle() + "에 댓글이 작성되었습니다.")
+                .build();
+
+        messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+
         return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
     }
 
