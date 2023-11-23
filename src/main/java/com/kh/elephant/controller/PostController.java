@@ -71,7 +71,7 @@ public class PostController {
                                                @RequestParam(name = "keyword", required = false) String keyword) {
         log.info("post List 호출 컨트롤러 진입;");
         Sort sort = Sort.by("postSEQ").descending();
-        Pageable pageable = PageRequest.of(page - 1, 20, sort);
+        Pageable pageable = PageRequest.of(page - 1, 15, sort);
         QPost qPost = QPost.post;
         BooleanBuilder builder = new BooleanBuilder();
 
