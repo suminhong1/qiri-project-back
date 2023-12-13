@@ -2,6 +2,7 @@ package com.kh.elephant.controller;
 
 import com.kh.elephant.domain.*;
 import com.kh.elephant.service.CommentsService;
+import com.kh.elephant.service.NotificationMessageService;
 import com.kh.elephant.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class CommentsController {
     private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private PostService postService;
+    @Autowired
+    private NotificationMessageService notifyService;
 
 //    @GetMapping("/comments")
 //    public ResponseEntity<List<Comments>> showAll() {
@@ -121,16 +124,31 @@ public class CommentsController {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(id);
         vo.setUserInfo(userInfo);
+        vo.setSecretComment("N"); // 새로 작성된 댓글은 기본적으로 비밀댓글이 아님
 
-        Post post = postService.show(comments.show(vo.getCommentsSEQ()).getPost());
-        
-        //댓글 추가 알림 db 저장 및 웹소켓 알림 발송
-        NotificationMessage notificationMessage = NotificationMessage.builder()
-                .userInfo(post.getUserInfo())
-                .message(post.getPostTitle() + "에 댓글이 작성되었습니다.")
-                .build();
+        Post post = postService.show(vo.getPost());
 
-        messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+        // 댓글 추가 알림 db 저장 및 웹소켓 알림 발송
+        // 일반댓글 처리
+        if(vo.getCommentsParentSeq() == null) {
+            NotificationMessage notificationMessage = NotificationMessage.builder()
+                    .userInfo(post.getUserInfo())
+                    .message(post.getPostTitle() + "에 댓글이 작성되었습니다.")
+                    .build();
+
+            notifyService.create(notificationMessage);
+            messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+        } 
+        // 대댓글 처리
+        else {
+            NotificationMessage notificationMessage = NotificationMessage.builder()
+                    .userInfo(comments.show(vo.getCommentsParentSeq()).getUserInfo())
+                    .message(post.getPostTitle() + "에 작성한 댓글에 대댓글이 작성되었습니다.")
+                    .build();
+
+            notifyService.create(notificationMessage);
+            messagingTemplate.convertAndSend("/sub/notification/" + notificationMessage.getUserInfo().getUserId(), notificationMessage);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
     }
