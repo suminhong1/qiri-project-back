@@ -112,10 +112,11 @@ public class MatchingCategoryInfoController {
 
                 list.add(info);
             }
-
+            log.info("matching category list : " + dto.toString());
             try {
                 return ResponseEntity.status(HttpStatus.CREATED).body(service.updateAll(list));
             } catch (Exception e) {
+                log.info("matching category list : " + dto.toString());
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         }
