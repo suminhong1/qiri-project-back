@@ -4,6 +4,7 @@ import com.kh.elephant.domain.*;
 import com.kh.elephant.repo.MatchingUserInfoDAO;
 import com.kh.elephant.security.TokenProvider;
 import com.kh.elephant.service.MatchingUserInfoService;
+import com.kh.elephant.service.NotificationMessageService;
 import com.kh.elephant.service.PostService;
 import com.kh.elephant.service.UserInfoService;
 import jakarta.persistence.EntityNotFoundException;
@@ -35,7 +36,10 @@ public class MatchingUserInfoController {
     @Autowired
     private MatchingUserInfoDAO dao;
     @Autowired
+    private NotificationMessageService notifyService;
+    @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
 
 
     @GetMapping("/matchingUserInfo")
@@ -60,10 +64,21 @@ public class MatchingUserInfoController {
     @PostMapping("/MatchingUserInfo")
     public ResponseEntity<MatchingUserInfo> create(@RequestBody MatchingUserInfoDTO dto) {
         try {
+            UserInfo userInfo = uiService.show(dto.getId());
+            Post post = postService.show(dto.getPostSEQ());
+            
             MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
-                    .userInfo(uiService.show(dto.getId()))
-                    .post(postService.show(dto.getPostSEQ()))
+                    .userInfo(userInfo)
+                    .post(post)
                     .build();
+            // 매칭 신청 DB 저장
+            NotificationMessage notificationMessage = NotificationMessage.builder()
+                    .userInfo(post.getUserInfo())
+                    .post(post)
+                    .message(post.getPostTitle() + "에서의 끼리 신청이 있습니다.")
+                    .build();
+            // 매칭 신청 알림처리
+            messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
             return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -127,11 +142,14 @@ public class MatchingUserInfoController {
     public ResponseEntity<MatchingUserInfo> matchingAccept(@RequestBody ChatDTO dto){
         try {
             int result = muiService.matchingAccept(dto.getPostSEQ(), dto.getApplicantId());
-
+            Post post = postService.show(dto.getPostSEQ());
             NotificationMessage notificationMessage = NotificationMessage.builder()
                     .userInfo(uiService.show(dto.getApplicantId()))
-                    .message("신청한 " + postService.show(dto.getPostSEQ()).getPostTitle() + " 끼리가 승락되었습니다.")
+                    .message("신청한 " + post.getPostTitle() + " 끼리가 승락되었습니다.")
+                    .post(post)
                     .build();
+            // 매칭승락 알림 DB 저장
+            notifyService.create(notificationMessage);
             //알림 발송
             messagingTemplate.convertAndSend("/sub/notification/" + dto.getApplicantId(), notificationMessage);
             return ResponseEntity.status(HttpStatus.OK).body(null);

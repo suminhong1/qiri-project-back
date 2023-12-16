@@ -63,6 +63,8 @@ public class WebSocketController {
                 NotificationMessage notificationMessage = NotificationMessage.builder()
                         .userInfo(user.getUserInfo())
                         .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
+                        .chatRoom(user.getChatRoom())
+                        .post(user.getChatRoom().getPost())
                         .build();
                 nmService.create(notificationMessage);
 
@@ -75,10 +77,6 @@ public class WebSocketController {
 
 
     }
-    
-    @MessageMapping("/{userId}")
-    public void message(@DestinationVariable("userId") String userId) {
 
-    }
 
 }

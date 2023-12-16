@@ -4,6 +4,7 @@ import com.kh.elephant.domain.NotificationMessage;
 import com.kh.elephant.repo.NotificationMessageDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,7 +14,6 @@ public class NotificationMessageService {
     @Autowired
     private NotificationMessageDAO dao;
 
-    //전체 차단 정보
     public List<NotificationMessage> showAll() {
         return dao.findAll();
     }
@@ -39,5 +39,10 @@ public class NotificationMessageService {
         NotificationMessage data = dao.findById(code).orElse(null);
         dao.delete(data);
         return data;
+    }
+
+    @Transactional
+    public void deleteByRoomSEQAndUserId(int chatroomSEQ, String userId) {
+        dao.deleteByRoomSEQAndUserId(chatroomSEQ, userId);
     }
 }

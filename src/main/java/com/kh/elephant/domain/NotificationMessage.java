@@ -37,6 +37,13 @@ public class NotificationMessage {
     @Column(name = "is_read")
     private String isRead;
 
-    @Column(name = "notify_url")
-    private String notifyURL;
+    @ManyToOne
+    @JoinColumn(name="post_seq")
+    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name="chatroom_seq")
+    private ChatRoom chatRoom;
+
+
 }

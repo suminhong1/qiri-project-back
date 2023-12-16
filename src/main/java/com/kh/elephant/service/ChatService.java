@@ -34,7 +34,9 @@ public class ChatService {
 
         // 모든 유저의 LEAVE 값이 'Y'인지 확인(SELECT 쿼리문)
         int result = userChatRoomInfoDAO.allUsersLeft(chatroomSeq);
+        // 모든 유저의 LEAVE값이 Y라면(채팅방에 남아있는 유저가 없다면)
         if (result == 0) {
+            // 채팅메세지, 유저채팅방정보, 채팅방 DB삭제
             deleteChatMessages(chatroomSeq);
             deleteUserChatRoomInfo(chatroomSeq);
             deleteChatRoom(chatroomSeq);

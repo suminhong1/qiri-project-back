@@ -23,9 +23,7 @@ public class ChatMessageService {
         return dao.findById(code).orElse(null);
     }
 
-    public int deleteByRoomSEQ(int code) {
-        return dao.deleteByRoomSEQ(code);
-    }
+
 
     public ChatMessage create(ChatMessage chatMessage) {
         return dao.save(chatMessage);

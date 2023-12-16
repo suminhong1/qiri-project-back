@@ -95,6 +95,8 @@ public class ChatController {
         try {
             // 채팅방 나가기(UPDATE쿼리문)
             int result = ucriService.chatRoomLeave(userInfo.getUserId(), dto.getChatRoomSEQ());
+            // 해당 채팅방 관련 알림 db 삭제
+            nmService.deleteByRoomSEQAndUserId(dto.getChatRoomSEQ(), dto.getId());
             //채팅방에 아무도 남아있지 않다면 해당 채팅방 관련 데이터 삭제(SELECT쿼리문, DELETE쿼리문)
             if(result > 0) {
                 chatService.leaveChatRoom(dto.getChatRoomSEQ());
@@ -116,7 +118,7 @@ public class ChatController {
         }
     }
 
-    //참여메세지 관련
+    //참여메세지 최초 접속시에만 발송 조건 처리
     @PutMapping("/chatroom/user/join")
     public ResponseEntity<UserChatRoomInfo> joinMessage(@RequestBody ChatDTO dto) {
         try {
@@ -209,6 +211,8 @@ public class ChatController {
                         NotificationMessage notificationMessage = NotificationMessage.builder()
                                 .userInfo(matchingUserInfo.getUserInfo())
                                 .message("게시글 " + post.getPostTitle() + "의 그룹채팅방에 초대되었습니다.")
+                                .post(post)
+                                .chatRoom(chatRoom)
                                 .build();
                         nmService.create(notificationMessage);
 
