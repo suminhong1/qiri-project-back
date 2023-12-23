@@ -109,14 +109,14 @@ public class MatchingCategoryInfoController {
                 Category category = new Category();
                 category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
                 info.setCategory(category);
-
+                log.info("matching category list : {}", dto);
                 list.add(info);
             }
-            log.info("matching category list : " + dto.toString());
+
             try {
                 return ResponseEntity.status(HttpStatus.CREATED).body(service.updateAll(list));
             } catch (Exception e) {
-                log.info("matching category list : " + dto.toString());
+                log.info("matching category list : {}", dto);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         }

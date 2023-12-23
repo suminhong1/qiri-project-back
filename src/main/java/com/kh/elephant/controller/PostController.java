@@ -139,13 +139,12 @@ public class PostController {
                     .userInfo(userInfo)
                     .board(board)
                     .build();
-            log.info("update dto : " + dto.toString());
+            log.info("create dto : " + dto.toString());
             return ResponseEntity.ok().body(postService.create(post));// service에 있는 create 메소드를 사용해 post 생성
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
         }
     }
-
 
     //   매칭 게시글 수정 http://localhost:8080/qiri/post
     @PutMapping("/post") //PutMapping을 위한 메소드 경로 설정
@@ -173,12 +172,11 @@ public class PostController {
                     .userInfo(userinfo)
                     .board(board)
                     .build();
-
             log.info("수정 : " + post);
-            log.info("dto : " + dto.toString());
-            return ResponseEntity.status(HttpStatus.OK).body(postService.update(post)); // postService의 update메소드를 사용하여 post 수정
+            log.info("dto : " + dto);
+            return ResponseEntity.status(HttpStatus.OK).body(postService.update(post));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
     //  매칭 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
