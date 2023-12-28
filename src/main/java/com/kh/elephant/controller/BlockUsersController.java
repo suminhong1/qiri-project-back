@@ -28,13 +28,18 @@ public class BlockUsersController {
     }
 
 
+//    @GetMapping("/blockUsers/{id}")
+//    public ResponseEntity<BlockUsers> show(@PathVariable int id) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
+
     @GetMapping("/blockUsers/{id}")
-    public ResponseEntity<BlockUsers> show(@PathVariable int id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<List<BlockUsers>> showBlocUsers(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.showBlockUser(id));
     }
 
     // 유저간 블록 유저 추가

@@ -4,6 +4,7 @@ import com.kh.elephant.domain.Comments;
 import com.kh.elephant.domain.CommentsDTO;
 import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.service.CommentsService;
+import com.kh.elephant.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,9 @@ public class CommentsController {
     @Autowired
     private CommentsService comments;
 
+    @Autowired
+    private PostService post;
+
 //    @GetMapping("/comments")
 //    public ResponseEntity<List<Comments>> showAll() {
 //        try {
@@ -41,6 +45,11 @@ public class CommentsController {
         List<CommentsDTO> response = new ArrayList<>();
 
         for(Comments item : topList) {
+            // 비밀댓글인 경우에만 권한을 확인
+            if ("Y".equals(item.getSecretComment()) && !item.getUserInfo().getUserId().equals(item.getUserInfo().getUserId())) {
+                // 비밀댓글이면서 현재 로그인한 사용자가 댓글 작성자가 아닌 경우, 해당 댓글을 응답에 포함하지 않음
+                continue;
+            }
             CommentsDTO dto = new CommentsDTO();
             dto.setPost(item.getPost());
             dto.setCommentsSEQ(item.getCommentsSEQ());
@@ -119,6 +128,7 @@ public class CommentsController {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(id);
         vo.setUserInfo(userInfo);
+        vo.setSecretComment("N"); // 새로 작성된 댓글은 기본적으로 비밀댓글이 아님
         return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
     }
 

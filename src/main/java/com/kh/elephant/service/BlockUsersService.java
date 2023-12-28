@@ -22,6 +22,8 @@ public class BlockUsersService {
         return dao.findById(code).orElse(null);
     }
 
+    public List<BlockUsers> showBlockUser(String id) {return dao.findByUserId(id);}
+
     public BlockUsers create(BlockUsers blockUsers) {
         return dao.save(blockUsers);
     }
