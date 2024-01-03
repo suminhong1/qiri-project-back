@@ -59,23 +59,28 @@ public class WebSocketController {
         // 채팅 알림처리
         for(UserChatRoomInfo user : userChatRoomInfoList) {
             try {
+                // 발송자는 해당 채팅에 대한 알림 제외 처리
                 if(!user.getUserInfo().getUserId().equals(userInfo.getUserId())) {
-                NotificationMessage notificationMessage = NotificationMessage.builder()
-                        .userInfo(user.getUserInfo())
-                        .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
-                        .chatRoom(user.getChatRoom())
-                        .post(user.getChatRoom().getPost())
-                        .build();
-                nmService.create(notificationMessage);
-
-                    messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
+                    
+                    // 한 채팅방에 대한 알림은 확인전까지 한번만
+                    boolean isDuplicated = nmService.checkDuplicateNotify(user.getUserInfo().getUserId(), user.getChatRoom().getChatRoomSEQ());
+                    if (!isDuplicated) {
+                        NotificationMessage notificationMessage = NotificationMessage.builder()
+                                .userInfo(user.getUserInfo())
+                                .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
+                                .chatRoom(user.getChatRoom())
+                                .post(user.getChatRoom().getPost())
+                                .build();
+                        // 채팅알림 db저장
+                        nmService.create(notificationMessage);
+                        // 채팅알림 웹소켓 전송
+                        messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
+                    }
                 }
             } catch (Exception e) {
                 log.error("채팅메시지 db저장 오류");
             }
         }
-
-
     }
 
 

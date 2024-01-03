@@ -45,4 +45,25 @@ public class NotificationMessageService {
     public void deleteByRoomSEQAndUserId(int chatroomSEQ, String userId) {
         dao.deleteByRoomSEQAndUserId(chatroomSEQ, userId);
     }
+
+    public List<NotificationMessage> findByUserId(String userId) {
+        return dao.findByUserId(userId);
+    }
+
+    public int unreadNotify(String userId) {
+        return dao.unreadNotify(userId);
+    }
+
+    public void deleteNotify(String userId) {
+        dao.deleteNotify(userId);
+    }
+
+    @Transactional
+    public void notifyCheck(String id) {
+        dao.notifyCheck(id);
+    }
+
+    public boolean checkDuplicateNotify(String userId, int chatRoomSEQ) {
+        return dao.checkDuplicateNotify(userId, chatRoomSEQ);
+    }
 }
