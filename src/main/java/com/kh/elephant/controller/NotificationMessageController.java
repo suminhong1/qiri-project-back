@@ -23,6 +23,7 @@ public class NotificationMessageController {
     @GetMapping("/public/notify/{id}")
     public ResponseEntity<List<NotificationMessage>> findByUserId(@PathVariable String id) {
         try {
+            log.info(nmService.findByUserId(id).toString());
             return ResponseEntity.status(HttpStatus.OK).body(nmService.findByUserId(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
