@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -23,8 +25,11 @@ public class NotificationMessageController {
     @GetMapping("/public/notify/{id}")
     public ResponseEntity<List<NotificationMessage>> findByUserId(@PathVariable String id) {
         try {
-            log.info(nmService.findByUserId(id).toString());
-            return ResponseEntity.status(HttpStatus.OK).body(nmService.findByUserId(id));
+            List<NotificationMessage> notificationMessages = nmService.findByUserId(id);
+
+            // 시간을 기준으로 내림차순 정렬
+            Collections.sort(notificationMessages, Comparator.comparing(NotificationMessage::getSentTime).reversed());
+            return ResponseEntity.status(HttpStatus.OK).body(notificationMessages);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

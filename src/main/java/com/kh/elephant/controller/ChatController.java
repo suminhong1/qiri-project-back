@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -112,7 +115,14 @@ public class ChatController {
     @GetMapping("/chatroom/userlist/{code}")
     public ResponseEntity<List<UserChatRoomInfo>> findByChatRoomSEQ(@PathVariable int code) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserChatRoomSEQ(code));
+            List<UserChatRoomInfo> userChatRoomInfos = ucriService.findByUserChatRoomSEQ(code);
+
+            // 가나다순으로 정렬
+            Collections.sort(userChatRoomInfos, Comparator.comparing(
+                    ucri -> ucri.getUserInfo().getUserNickname() // 수정된 부분
+            ));
+
+            return ResponseEntity.status(HttpStatus.OK).body(userChatRoomInfos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
