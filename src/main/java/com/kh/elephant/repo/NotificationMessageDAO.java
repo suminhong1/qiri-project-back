@@ -30,7 +30,7 @@ public interface NotificationMessageDAO extends JpaRepository<NotificationMessag
     @Query(value = "UPDATE NOTIFICATION_MESSAGE SET IS_READ = 'Y' WHERE USER_ID = :id", nativeQuery = true)
     void notifyCheck(@Param("id") String id);
 
-    @Query(value = "SELECT COUNT(*) > 0 FROM NOTIFICATION_MESSAGE WHERE USER_ID = :id AND CHATROOM_SEQ = :roomSEQ AND IS_READ = 'N'", nativeQuery = true)
-    boolean checkDuplicateNotify(@Param("id") String id, @Param("roomSEQ") int roomSEQ);
+    @Query(value = "SELECT COUNT(*) FROM NOTIFICATION_MESSAGE WHERE USER_ID = :id AND CHATROOM_SEQ = :roomSEQ AND IS_READ = 'N'", nativeQuery = true)
+    int checkDuplicateNotify(@Param("id") String id, @Param("roomSEQ") int roomSEQ);
 
 }

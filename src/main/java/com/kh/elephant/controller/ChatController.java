@@ -58,7 +58,7 @@ public class ChatController {
         }
     }
 
-    // 참여중인 채팅방의 내 참여정보 가져오기
+    // 참여중인 채팅방의 내 참여정보 가져오기(참여메세지 발송여부 확인)
     @Transactional
     @GetMapping("/public/chatRoomInfo/{userId}/{code}")
     public ResponseEntity<UserChatRoomInfo> findByUserId(@PathVariable String userId, @PathVariable int code) {

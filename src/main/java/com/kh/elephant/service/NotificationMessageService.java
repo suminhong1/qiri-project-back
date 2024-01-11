@@ -63,7 +63,7 @@ public class NotificationMessageService {
         dao.notifyCheck(id);
     }
 
-    public boolean checkDuplicateNotify(String userId, int chatRoomSEQ) {
+    public int checkDuplicateNotify(String userId, int chatRoomSEQ) {
         return dao.checkDuplicateNotify(userId, chatRoomSEQ);
     }
 }

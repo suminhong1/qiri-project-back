@@ -60,58 +60,44 @@ public class MatchingUserInfoController {
         }
     }
 
-    //매칭 신청자 정보 생성
-    @PostMapping("/MatchingUserInfo")
-    public ResponseEntity<MatchingUserInfo> create(@RequestBody MatchingUserInfoDTO dto) {
+    // 매칭신청
+    @PostMapping("/matching_apply")
+    public ResponseEntity<MatchingUserInfo> applyCreate(@RequestBody MatchingUserInfoDTO dto) {
+
         try {
-            UserInfo userInfo = uiService.show(dto.getId());
-            Post post = postService.show(dto.getPostSEQ());
-            
-            MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
-                    .userInfo(userInfo)
-                    .post(post)
-                    .build();
-            // 매칭 신청 DB 저장
-            NotificationMessage notificationMessage = NotificationMessage.builder()
-                    .userInfo(post.getUserInfo())
-                    .post(post)
-                    .message(post.getPostTitle() + "에서의 끼리 신청이 있습니다.")
-                    .build();
-            // 매칭 신청 알림처리
-            messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
-            return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
-
-    // 매칭유저 DB 저장
-    @PostMapping("/ApplyUserInfo")
-    public ResponseEntity<?> applyCreate(@RequestBody MatchingUserInfoDTO dto) {
-        log.info("넘어는옴?");
-
         // 토큰에서 사용자 ID 추출
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
-        UserInfo userinfo = uiService.show(userId);
+        UserInfo userInfo = uiService.show(userId);
         Post post = postService.show(dto.getPostSEQ());
-
-        log.info("포스트"+post);
-        log.info("아이디"+userinfo);
 
         // 기존에 동일한 정보가 있는지 확인
         Optional<MatchingUserInfo> existingData = muiService.findByUserIdAndPostSEQ(userId, dto.getPostSEQ());
         if (existingData.isPresent()) {
             // 이미 존재하는 정보가 있다면, 해당 정보를 알리는 응답 반환
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("중복.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
+        // 없다면 작동할 매서드
+        // 매칭 신청 알림 DB 저장
+        NotificationMessage notificationMessage = NotificationMessage.builder()
+                .userInfo(post.getUserInfo())
                 .post(post)
-                .userInfo(userinfo)
+                .message(post.getPostTitle() + "에서의 끼리 신청이 있습니다.")
+                .build();
+        notifyService.create(notificationMessage);
+        // 매칭 신청 알림 웹소켓 전송
+        messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+
+        // 매칭 신청정보 DB 저장
+        MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
+                .userInfo(userInfo)
+                .post(post)
                 .matchingAccept("N")
                 .build();
-
-        return ResponseEntity.ok().body(muiService.create(matchingUserInfo));
+        return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     // 매칭유저 리스트보기

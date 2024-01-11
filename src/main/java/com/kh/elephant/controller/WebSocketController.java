@@ -40,7 +40,9 @@ public class WebSocketController {
     @Transactional
     @MessageMapping("/chat/message")
     public void message(ChatDTO dto) {
+        // 채팅메세지 웹소켓으로 전송
         messagingTemplate.convertAndSend("/sub/chat/room/" + dto.getChatRoomSEQ(), dto);
+
         UserInfo userInfo = uiService.findByNickname(dto.getNickname());
         ChatRoom chatRoom = crService.show(dto.getChatRoomSEQ());
         try {
@@ -49,36 +51,36 @@ public class WebSocketController {
                     .chatRoom(chatRoom)
                     .message(dto.getMessage())
                     .build();
+            // 채팅메세지 db저장
             cmService.create(chatMessage);
         } catch (Exception e) {
             log.error("메세지 db저장 오류");
         }
 
-        List<UserChatRoomInfo> userChatRoomInfoList = ucriService.findByUserId(userInfo.getUserId());
-
         // 채팅 알림처리
+        List<UserChatRoomInfo> userChatRoomInfoList = ucriService.findByUserChatRoomSEQ(dto.getChatRoomSEQ());
         for(UserChatRoomInfo user : userChatRoomInfoList) {
             try {
                 // 발송자는 해당 채팅에 대한 알림 제외 처리
                 if(!user.getUserInfo().getUserId().equals(userInfo.getUserId())) {
-                    
+
                     // 한 채팅방에 대한 알림은 확인전까지 한번만
-                    boolean isDuplicated = nmService.checkDuplicateNotify(user.getUserInfo().getUserId(), user.getChatRoom().getChatRoomSEQ());
-                    if (!isDuplicated) {
+                    int isDuplicated = nmService.checkDuplicateNotify(user.getUserInfo().getUserId(), user.getChatRoom().getChatRoomSEQ());
+                    if (isDuplicated == 0) {
+                        // 채팅알림 db저장
                         NotificationMessage notificationMessage = NotificationMessage.builder()
                                 .userInfo(user.getUserInfo())
                                 .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
                                 .chatRoom(user.getChatRoom())
                                 .post(user.getChatRoom().getPost())
                                 .build();
-                        // 채팅알림 db저장
                         nmService.create(notificationMessage);
                         // 채팅알림 웹소켓 전송
                         messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
                     }
                 }
             } catch (Exception e) {
-                log.error("채팅메시지 db저장 오류");
+                log.error("채팅메시지알림 db저장 오류");
             }
         }
     }
