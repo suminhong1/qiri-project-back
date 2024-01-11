@@ -31,14 +31,7 @@ public class CommentsController {
     @Autowired
     private NotificationMessageService notifyService;
 
-//    @GetMapping("/comments")
-//    public ResponseEntity<List<Comments>> showAll() {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(comments.showAll());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
+
     // 게시물 1개에 따른 댓글 전체 조회 : GET - http://localhost:8080/qiri/public/post/1/comments
     @GetMapping("/public/post/{id}/comments")
     public ResponseEntity<List<CommentsDTO>> commentList(@PathVariable int id) {
@@ -97,15 +90,6 @@ public class CommentsController {
 
     }
 
-//    @GetMapping("/comments/{id}")
-//    public ResponseEntity<Comments> show(@PathVariable int id) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(comments.show(id));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-
     // 내가 쓴 댓글 가지고 오기
     @GetMapping("/comments/get/{userId}")
     public ResponseEntity<List<Comments>> getUserComments(@PathVariable String userId) {
@@ -127,32 +111,43 @@ public class CommentsController {
         vo.setSecretComment("N"); // 새로 작성된 댓글은 기본적으로 비밀댓글이 아님
 
         Post post = postService.show(vo.getPost());
+        Comments comm = new Comments();
+
+        if(vo.getCommentsParentSeq() != null) {
+            comm = comments.show(vo.getCommentsParentSeq());
+        }
 
         // 댓글 추가 알림 db 저장 및 웹소켓 알림 발송
         // 일반댓글 처리
-        if(vo.getCommentsParentSeq() == null) {
-            NotificationMessage notificationMessage = NotificationMessage.builder()
-                    .userInfo(post.getUserInfo())
-                    .message(post.getPostTitle() + "에 댓글이 작성되었습니다.")
-                    .build();
-
-            notifyService.create(notificationMessage);
-            messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
-        } 
-        // 대댓글 처리
-        else {
-            NotificationMessage notificationMessage = NotificationMessage.builder()
-                    .userInfo(comments.show(vo.getCommentsParentSeq()).getUserInfo())
-                    .message(post.getPostTitle() + "에 작성한 댓글에 대댓글이 작성되었습니다.")
-                    .build();
-
-            notifyService.create(notificationMessage);
-            messagingTemplate.convertAndSend("/sub/notification/" + notificationMessage.getUserInfo().getUserId(), notificationMessage);
+        // 게시글 작성자와 댓글 작성자가 같지 않을때(본인이 작성한 게시글이 아닐때) 에만 알림처리
+        if(!post.getUserInfo().getUserId().equals(id)) {
+            // 부모댓글 여부를 통해 대댓글인지 일반댓글인지 확인
+            if (vo.getCommentsParentSeq() == null) {
+                // 일반댓글이라면 게시글 작성자에게 알림처리
+                NotificationMessage notificationMessage = NotificationMessage.builder()
+                        .userInfo(post.getUserInfo())
+                        .message(post.getPostTitle() + "에 댓글이 작성되었습니다.")
+                        .post(post)
+                        .build();
+                notifyService.create(notificationMessage);
+                messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+            }
+            // 대댓글 이라면
+            else {
+                // 대댓글의 작성자와 댓글 작성자가 같지 않을때(본인이 작성한 댓글이 아닐때) 에만 알림처리
+                if(!comm.getUserInfo().getUserId().equals(id)) {
+                    NotificationMessage notificationMessage = NotificationMessage.builder()
+                            .userInfo(comments.show(vo.getCommentsParentSeq()).getUserInfo())
+                            .message(post.getPostTitle() + "에 작성한 댓글에 대댓글이 작성되었습니다.")
+                            .post(post)
+                            .build();
+                    notifyService.create(notificationMessage);
+                    messagingTemplate.convertAndSend("/sub/notification/" + notificationMessage.getUserInfo().getUserId(), notificationMessage);
+                }
+            }
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(comments.create(vo));
     }
-
 
     // 댓글 수정 : PUT - http://localhost:8080/qiri/post/comments
     @PutMapping("/post/comments")
