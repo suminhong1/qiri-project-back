@@ -49,7 +49,11 @@ public class PostAttachmentsController {
     // 게시글seq로 참부파일정보 가져오기
     @GetMapping("/postAttachments/{id}")
     public ResponseEntity<List<PostAttachments>> findByPostSeq(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSeq(id));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSeq(id));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     // 게시글 첨부 파일  추가 http://localhost:8080/qiri/post
@@ -99,15 +103,7 @@ public class PostAttachmentsController {
         }
     }
 
-    // 게시글 수정 http://localhost:8080/qiri/post
-//    @PutMapping("/postAttachments")
-//    public ResponseEntity<List<String>> updateFiles(@RequestParam List<MultipartFile> files, @RequestParam int postId) throws IOException{
-//        try{
-//            return ResponseEntity.status(HttpStatus.OK).body(service.updateAll(postAttachments));
-//        }catch (Exception e){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
+
     // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/postAttachments/{id}")
     public ResponseEntity<PostAttachments> delete(@PathVariable int id){

@@ -35,26 +35,30 @@ public class CommentsController {
     // 게시물 1개에 따른 댓글 전체 조회 : GET - http://localhost:8080/qiri/public/post/1/comments
     @GetMapping("/public/post/{id}/comments")
     public ResponseEntity<List<CommentsDTO>> commentList(@PathVariable int id) {
-        List<Comments> topList = comments.getAllTopLevelComments(id);
-        log.info("top : " + topList);
+        try {
+            List<Comments> topList = comments.getAllTopLevelComments(id);
+            log.info("top : " + topList);
 
-        List<CommentsDTO> response = new ArrayList<>();
+            List<CommentsDTO> response = new ArrayList<>();
 
-        for(Comments item : topList) {
-            CommentsDTO dto = new CommentsDTO();
-            dto.setPost(item.getPost());
-            dto.setCommentsSEQ(item.getCommentsSEQ());
-            dto.setCommentDesc(item.getCommentDesc());
-            dto.setCommentDate(item.getCommentDate());
-            dto.setUserInfo(item.getUserInfo());
-            dto.setCommentDelete(item.getCommentDelete());
-            List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSEQ(), id);
-            dto.setReplies(result);
-            response.add(dto);
+            for (Comments item : topList) {
+                CommentsDTO dto = new CommentsDTO();
+                dto.setPost(item.getPost());
+                dto.setCommentsSEQ(item.getCommentsSEQ());
+                dto.setCommentDesc(item.getCommentDesc());
+                dto.setCommentDate(item.getCommentDate());
+                dto.setUserInfo(item.getUserInfo());
+                dto.setCommentDelete(item.getCommentDelete());
+                List<Comments> result = comments.getRepliesByCommentId(item.getCommentsSEQ(), id);
+                dto.setReplies(result);
+                response.add(dto);
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-
+        catch (Exception e) {
+            return null;
+        }
     }
 
 

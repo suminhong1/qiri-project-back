@@ -117,7 +117,7 @@ public class PostController {
             log.info(".POST@@@@@@@@@ :   " + result.toString());
             return ResponseEntity.status(HttpStatus.OK).body(result); // 게시물 정보를 body에 담아서 클라이언트에 전송해서 클라이언트에서 볼 수 있게함
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 응답
+            return null; // 예외가 발생했을때 Bad Request를 클라이언트에 응답
         }
     }
 
