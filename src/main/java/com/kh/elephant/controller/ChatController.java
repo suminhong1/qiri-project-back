@@ -44,7 +44,7 @@ public class ChatController {
     @Autowired
     private NotificationMessageService nmService;
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private NotificationMessageController notifyController;
 
 
 
@@ -84,6 +84,8 @@ public class ChatController {
     @GetMapping("/chat/room/message/{id}")
     public ResponseEntity<List<ChatMessage>> messageFindByChatroomSEQ(@PathVariable int id) {
         try {
+//            List<ChatMessage> messages = cmService.messageFindByChatroomSEQ(id);
+//            messages.sort(Comparator.comparing(ChatMessage::getChatMessageSEQ)); // SEQ 기준으로 정렬
             return ResponseEntity.status(HttpStatus.OK).body(cmService.messageFindByChatroomSEQ(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -191,18 +193,9 @@ public class ChatController {
                         .build();
                         ucriService.create(userChatRoomInfo);
                 
-                        //알림 db 저장
+                        //알림처리
                 if(!dto.getId().equals(matchingUserInfo.getUserInfo().getUserId())) {
-                        NotificationMessage notificationMessage = NotificationMessage.builder()
-                                .userInfo(matchingUserInfo.getUserInfo())
-                                .message("게시글 " + post.getPostTitle() + "의 그룹채팅방에 초대되었습니다.")
-                                .post(post)
-                                .chatRoom(chatRoom)
-                                .build();
-                        nmService.create(notificationMessage);
-
-                        // 웹소켓으로 알림 전송
-                    messagingTemplate.convertAndSend("/sub/notification/" + matchingUserInfo.getUserInfo().getUserId(), notificationMessage);
+                    notifyController.notifyProcessing(matchingUserInfo.getUserInfo(), "게시글 " + post.getPostTitle() + "의 그룹채팅방에 초대되었습니다.", post, chatRoom);
                 }
                 }
 

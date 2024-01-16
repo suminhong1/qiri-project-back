@@ -25,11 +25,9 @@ public class CommentsController {
     @Autowired
     private CommentsService comments;
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-    @Autowired
     private PostService postService;
     @Autowired
-    private NotificationMessageService notifyService;
+    private NotificationMessageController notifyController;
 
 
     // 게시물 1개에 따른 댓글 전체 조회 : GET - http://localhost:8080/qiri/public/post/1/comments
@@ -128,25 +126,13 @@ public class CommentsController {
             // 부모댓글 여부를 통해 대댓글인지 일반댓글인지 확인
             if (vo.getCommentsParentSeq() == null) {
                 // 일반댓글이라면 게시글 작성자에게 알림처리
-                NotificationMessage notificationMessage = NotificationMessage.builder()
-                        .userInfo(post.getUserInfo())
-                        .message(post.getPostTitle() + "에 댓글이 작성되었습니다.")
-                        .post(post)
-                        .build();
-                notifyService.create(notificationMessage);
-                messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+                notifyController.notifyProcessing(post.getUserInfo(), post.getPostTitle() + "에 댓글이 작성되었습니다.", post, null);
             }
             // 대댓글 이라면
             else {
                 // 대댓글의 작성자와 댓글 작성자가 같지 않을때(본인이 작성한 댓글이 아닐때) 에만 알림처리
                 if(!comm.getUserInfo().getUserId().equals(id)) {
-                    NotificationMessage notificationMessage = NotificationMessage.builder()
-                            .userInfo(comments.show(vo.getCommentsParentSeq()).getUserInfo())
-                            .message(post.getPostTitle() + "에 작성한 댓글에 대댓글이 작성되었습니다.")
-                            .post(post)
-                            .build();
-                    notifyService.create(notificationMessage);
-                    messagingTemplate.convertAndSend("/sub/notification/" + notificationMessage.getUserInfo().getUserId(), notificationMessage);
+                    notifyController.notifyProcessing(comments.show(vo.getCommentsParentSeq()).getUserInfo(), post.getPostTitle() + "에 작성한 댓글에 대댓글이 작성되었습니다.", post, null);
                 }
             }
         }

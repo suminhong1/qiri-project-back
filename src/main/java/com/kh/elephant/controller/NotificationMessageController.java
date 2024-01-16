@@ -1,11 +1,15 @@
 package com.kh.elephant.controller;
 
+import com.kh.elephant.domain.ChatRoom;
 import com.kh.elephant.domain.NotificationMessage;
+import com.kh.elephant.domain.Post;
+import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.service.NotificationMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -20,6 +24,9 @@ public class NotificationMessageController {
 
     @Autowired
     NotificationMessageService nmService;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
 
     // 나의 모든 알림목록 가져오기
     @GetMapping("/public/notify/{id}")
@@ -67,4 +74,20 @@ public class NotificationMessageController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    // 알림 저장, 웹소켓 전송
+    public void notifyProcessing(UserInfo userInfo, String message, Post post, ChatRoom chatRoom) {
+            // 알림 DB저장
+            NotificationMessage notificationMessage = NotificationMessage.builder()
+                    .userInfo(userInfo)
+                    .message(message)
+                    .isRead("N")
+                    .post(post)
+                    .chatRoom(chatRoom)
+                    .build();
+            nmService.create(notificationMessage);
+            // 웹소켓으로 알림 전송
+            messagingTemplate.convertAndSend("/sub/notification/" + userInfo.getUserId(), notificationMessage);
+    }
+
 }

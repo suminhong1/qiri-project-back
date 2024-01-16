@@ -35,6 +35,8 @@ public class WebSocketController {
     private UserChatRoomInfoService ucriService;
     @Autowired
     private NotificationMessageService nmService;
+    @Autowired
+    private NotificationMessageController notifyController;
 
     // 채팅 전송 및 db저장, 알림 처리
     @Transactional
@@ -67,16 +69,8 @@ public class WebSocketController {
                     // 한 채팅방에 대한 알림은 확인전까지 한번만
                     int isDuplicated = nmService.checkDuplicateNotify(user.getUserInfo().getUserId(), user.getChatRoom().getChatRoomSEQ());
                     if (isDuplicated == 0) {
-                        // 채팅알림 db저장
-                        NotificationMessage notificationMessage = NotificationMessage.builder()
-                                .userInfo(user.getUserInfo())
-                                .message(user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.")
-                                .chatRoom(user.getChatRoom())
-                                .post(user.getChatRoom().getPost())
-                                .build();
-                        nmService.create(notificationMessage);
-                        // 채팅알림 웹소켓 전송
-                        messagingTemplate.convertAndSend("/sub/notification/" + user.getUserInfo().getUserId(), notificationMessage);
+                        // 채팅알림처리
+                        notifyController.notifyProcessing(user.getUserInfo(), user.getChatRoom().getPost().getPostTitle() + "의 채팅방에서 새 메세지가 도착했습니다.", user.getChatRoom().getPost(), user.getChatRoom());
                     }
                 }
             } catch (Exception e) {

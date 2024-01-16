@@ -34,11 +34,8 @@ public class MatchingUserInfoController {
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
-    private MatchingUserInfoDAO dao;
-    @Autowired
-    private NotificationMessageService notifyService;
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private NotificationMessageController notifyController;
+
 
 
 
@@ -78,15 +75,8 @@ public class MatchingUserInfoController {
         }
 
         // 없다면 작동할 매서드
-        // 매칭 신청 알림 DB 저장
-        NotificationMessage notificationMessage = NotificationMessage.builder()
-                .userInfo(post.getUserInfo())
-                .post(post)
-                .message(post.getPostTitle() + "에서의 끼리 신청이 있습니다.")
-                .build();
-        notifyService.create(notificationMessage);
-        // 매칭 신청 알림 웹소켓 전송
-        messagingTemplate.convertAndSend("/sub/notification/" + post.getUserInfo().getUserId(), notificationMessage);
+        // 매칭 신청 알림처리
+        notifyController.notifyProcessing(post.getUserInfo(), post.getPostTitle() + "에서의 끼리 신청이 있습니다.", post, null);
 
         // 매칭 신청정보 DB 저장
         MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
@@ -127,17 +117,12 @@ public class MatchingUserInfoController {
     @PutMapping("/matchingAccept")
     public ResponseEntity<MatchingUserInfo> matchingAccept(@RequestBody ChatDTO dto){
         try {
+            //매칭 승락처리(Accept 컬럼값 변경)
             int result = muiService.matchingAccept(dto.getPostSEQ(), dto.getApplicantId());
             Post post = postService.show(dto.getPostSEQ());
-            NotificationMessage notificationMessage = NotificationMessage.builder()
-                    .userInfo(uiService.show(dto.getApplicantId()))
-                    .message("신청한 " + post.getPostTitle() + " 끼리가 승락되었습니다.")
-                    .post(post)
-                    .build();
-            // 매칭승락 알림 DB 저장
-            notifyService.create(notificationMessage);
-            //알림 발송
-            messagingTemplate.convertAndSend("/sub/notification/" + dto.getApplicantId(), notificationMessage);
+            // 알림처리
+            notifyController.notifyProcessing(uiService.show(dto.getApplicantId()), "신청한 " + post.getPostTitle() + " 끼리가 승락되었습니다.", post, null);
+
             return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
