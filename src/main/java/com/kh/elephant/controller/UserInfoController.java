@@ -41,7 +41,7 @@ public class UserInfoController {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    private static final String UPLOAD_DIR = "D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
+    private static final String UPLOAD_DIR = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
 
     private String url;
 

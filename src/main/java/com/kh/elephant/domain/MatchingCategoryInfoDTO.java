@@ -16,4 +16,6 @@ public class MatchingCategoryInfoDTO {
     private int postSEQ; // post시퀀스 값을 int로 받아서 저장하기 위한 필드 변수
 
     private List<Category> categories; // 선택한 카테고리를 List로 받기 위한 필드 변수
+
+    private List<Integer> categoriesSeq; // 왜 얘를 쓸라하면 서버에서 오류가 나버리냐 그냥
 }

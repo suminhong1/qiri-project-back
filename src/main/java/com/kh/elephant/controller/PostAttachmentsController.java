@@ -73,7 +73,6 @@ public class PostAttachmentsController {
                 return ResponseEntity.status(HttpStatus.OK).body(ImageList);
             }
 
-
             for (MultipartFile file : files) { // 첨부파일이 여러개 일수 있으니 for문 사용
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
                 String uploadPath = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
@@ -103,7 +102,52 @@ public class PostAttachmentsController {
         }
     }
 
+    // 게시글 수정 http://localhost:8080/qiri/post
+    @PutMapping("/postAttachments")
+    public ResponseEntity<List<String>> updateFiles(@RequestParam(required = false) List<MultipartFile> files, @RequestParam int postId) throws IOException {
+        try {
+            List<String> updatedImageList = new ArrayList<>();
 
+            log.info("files : " + files); // 디버깅을 위해 파일 로그
+
+            // 파일이 제공되었는지 확인
+            if (files == null || files.isEmpty()) {
+                // 업데이트할 파일이 없음
+                return ResponseEntity.status(HttpStatus.OK).body(updatedImageList);
+            }
+
+            // 첨부 파일 재생성 전 기존 첨부파일 삭제
+            service.deleteByPostSeq(postId);
+            
+            // 새 파일을 반복하고 첨부 파일 업데이트 또는 추가
+            for (MultipartFile file : files) {
+                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                String uploadPath = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload";
+
+                InputStream inputStream = file.getInputStream();
+                Path filePath = Paths.get(uploadPath, fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                String imageUrl = fileName;
+
+                updatedImageList.add(imageUrl);
+
+                PostAttachments postAttachments = PostAttachments.builder()
+                        .post(postService.show(postId))
+                        .attachmentURL(imageUrl)
+                        .build();
+                log.info("첨부 파일 정보" + postAttachments);
+
+                service.create(postAttachments);
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(updatedImageList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/postAttachments/{id}")
     public ResponseEntity<PostAttachments> delete(@PathVariable int id){

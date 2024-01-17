@@ -32,4 +32,7 @@ public class PostAttachmentsService {
         dao.delete(data);
         return data;
     }
+    public int deleteByPostSeq (int id){
+        return dao.deleteByPostSeq(id);
+    }
 }
