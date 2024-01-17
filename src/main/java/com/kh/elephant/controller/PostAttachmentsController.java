@@ -106,15 +106,15 @@ public class PostAttachmentsController {
 
             log.info("files : " + files); // 디버깅을 위해 파일 로그
 
-            log.info("나는 파일이얌 : " + files);
-            log.info("나는 게시글이얌 : " + postId);
-
             // 파일이 제공되었는지 확인
             if (files == null || files.isEmpty()) {
                 // 업데이트할 파일이 없음
                 return ResponseEntity.status(HttpStatus.OK).body(updatedImageList);
             }
 
+            // 첨부 파일 재생성 전 기존 첨부파일 삭제
+            service.deleteByPostSeq(postId);
+            
             // 새 파일을 반복하고 첨부 파일 업데이트 또는 추가
             for (MultipartFile file : files) {
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
@@ -124,20 +124,17 @@ public class PostAttachmentsController {
                 Path filePath = Paths.get(uploadPath, fileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 
-                log.info(fileName);
                 String imageUrl = fileName;
 
                 updatedImageList.add(imageUrl);
 
-                // 게시물에 대한 첨부 파일 업데이트 또는 추가
                 PostAttachments postAttachments = PostAttachments.builder()
                         .post(postService.show(postId))
                         .attachmentURL(imageUrl)
                         .build();
                 log.info("첨부 파일 정보" + postAttachments);
 
-                // 업데이트 메소드를 사용하여 기존 레코드 업데이트 또는 새로운 레코드 추가
-                service.update(postAttachments);
+                service.create(postAttachments);
             }
 
             return ResponseEntity.status(HttpStatus.OK).body(updatedImageList);
