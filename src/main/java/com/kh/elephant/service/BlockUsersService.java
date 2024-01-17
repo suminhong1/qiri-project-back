@@ -2,6 +2,7 @@ package com.kh.elephant.service;
 
 import com.kh.elephant.domain.BlockUsers;
 import com.kh.elephant.repo.BlockUsersDAO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,12 @@ public class BlockUsersService {
     }
 
     public List<BlockUsers> showBlockUser(String id) {return dao.findByUserId(id);}
+
+    @Transactional
+    public void updateBlockUser(String id) {
+        dao.updateByUnblock(id);
+    }
+
 
     public BlockUsers create(BlockUsers blockUsers) {
         return dao.save(blockUsers);
