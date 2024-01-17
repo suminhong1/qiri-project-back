@@ -165,20 +165,3 @@ public class CommentsController {
     }
 
 
-    // 댓글 삭제 : DELETE - http://localhost:8080/qiri/post/comments/1
-//    @DeleteMapping("/post/comments/{id}")
-//    public ResponseEntity<Comments> delete(@PathVariable int id) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(comments.delete(id));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-    // 댓글 좋아요 추가
-    
-    // 댓글 좋아요 취소
-    
-    // 좋아요한 유저 보기
-
-    //
-}

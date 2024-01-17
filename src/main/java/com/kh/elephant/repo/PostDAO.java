@@ -26,7 +26,7 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
 
 
     // SQL 쿼리문을 사용해서 BOARD를 POST 테이블에서 검색해서 결과를 반환함 :code는 이 쿼리문을 호출할때 POST_SEQ값으로 대체됨
-    @Query(value = "SELECT * FROM post WHERE board_seq = :code", nativeQuery = true)
+    @Query(value = "SELECT * FROM post WHERE board_seq = :code ORDER BY post_date DESC", nativeQuery = true)
     List<Post>findByBoardCode(int code);
 
     @Query(value = "SELECT * FROM post WHERE USER_ID = :userId", nativeQuery = true)

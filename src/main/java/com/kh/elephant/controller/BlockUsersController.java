@@ -28,13 +28,18 @@ public class BlockUsersController {
     }
 
 
+//    @GetMapping("/blockUsers/{id}")
+//    public ResponseEntity<BlockUsers> show(@PathVariable int id) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
+
     @GetMapping("/blockUsers/{id}")
-    public ResponseEntity<BlockUsers> show(@PathVariable int id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<List<BlockUsers>> showBlocUsers(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.showBlockUser(id));
     }
 
     // 유저간 블록 유저 추가
@@ -47,15 +52,22 @@ public class BlockUsersController {
         }
     }
 
-    // 유저간 블록 정보 수정
-    @PutMapping("/blockUsers")
-    public ResponseEntity<BlockUsers> update(@RequestBody BlockUsers vo) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @PutMapping("/blockUsers/{id}")
+    public ResponseEntity<Void> updateBlockUser(@PathVariable String id) {
+        service.updateBlockUser(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+
+//    // 유저간 블록 정보 수정
+//    @PutMapping("/blockUsers")
+//    public ResponseEntity<BlockUsers> update(@RequestBody BlockUsers vo) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
     @DeleteMapping("/blockUsers/{id}")
     public ResponseEntity<BlockUsers> delete(@PathVariable int id) {

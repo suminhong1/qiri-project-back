@@ -50,6 +50,7 @@ public class Post {
     private Board board; // JoinColumn으로 연결된 Board
 
     @Column(name = "matched")
+
     private String matched; // 매치가 성사 됐는지 안됐는지
 
     @Column(name="post_title_dropbox")
