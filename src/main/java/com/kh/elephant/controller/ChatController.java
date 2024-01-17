@@ -143,19 +143,14 @@ public class ChatController {
     @PostMapping("/chatroom/join")
     public ResponseEntity<ChatRoom> joinChatRoom(@RequestBody ChatDTO dto) {
         try {
-            Post post = postService.show(dto.getPostSEQ());
-
             // 채팅방 생성
-            ChatRoom chatRoom = ChatRoom.builder()
-                    .post(post)
-                    .build();
-            ChatRoom result = crService.create(chatRoom);
+            ChatRoom chatRoom = CreateChatRoom(dto.getPostSEQ());
 
             // 채팅방 접속
-            JoinChatRoom(result, dto.getId());
-            JoinChatRoom(result, post.getUserInfo().getUserId());
+            JoinChatRoom(chatRoom.getChatRoomSEQ(), dto.getId());
+            JoinChatRoom(chatRoom.getChatRoomSEQ(), chatRoom.getPost().getUserInfo().getUserId());
 
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+            return ResponseEntity.status(HttpStatus.OK).body(chatRoom);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -165,21 +160,11 @@ public class ChatController {
     @PostMapping("/groupChat")
     public ResponseEntity<ChatRoom> createGroupChat(@RequestBody ChatDTO dto) {
         try {
-            UserInfo userInfo = uiService.show(dto.getId());
-            Post post = postService.show(dto.getPostSEQ());
-
             // 채팅방 생성
-            ChatRoom chatRoom = ChatRoom.builder()
-                    .post(post)
-                    .build();
-            ChatRoom result = crService.create(chatRoom);
+            ChatRoom chatRoom = CreateChatRoom(dto.getPostSEQ());
 
             // 채팅방 접속
-            UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
-                    .chatRoom(crService.show(result.getChatRoomSEQ()))
-                    .userInfo(userInfo)
-                    .build();
-            ucriService.create(userChatRoomInfo);
+            JoinChatRoom(chatRoom.getChatRoomSEQ(), dto.getId());
 
             // 승락한 사람들 구하기
             List<MatchingUserInfo> matchingUserInfoList = muiService.findAccept(dto.getPostSEQ());
@@ -187,31 +172,37 @@ public class ChatController {
             // 승락한 사람들 초대
             for(MatchingUserInfo matchingUserInfo : matchingUserInfoList) {
                 // 생성한 채팅방 seq 이용해여 유저채팅정보 생성(어느 채팅방에 접속해 있는지)
-                userChatRoomInfo = UserChatRoomInfo.builder()
-                        .chatRoom(crService.show(result.getChatRoomSEQ()))
-                        .userInfo(matchingUserInfo.getUserInfo())
-                        .build();
-                        ucriService.create(userChatRoomInfo);
+                JoinChatRoom(chatRoom.getChatRoomSEQ(), matchingUserInfo.getUserInfo().getUserId());
                 
-                        //알림처리
+                //알림처리
                 if(!dto.getId().equals(matchingUserInfo.getUserInfo().getUserId())) {
-                    notifyController.notifyProcessing(matchingUserInfo.getUserInfo(), "게시글 " + post.getPostTitle() + "의 그룹채팅방에 초대되었습니다.", post, chatRoom);
+                    notifyController.notifyProcessing(matchingUserInfo.getUserInfo(), "게시글 " + chatRoom.getPost().getPostTitle() + "의 그룹채팅방에 초대되었습니다.", chatRoom.getPost(), chatRoom);
                 }
-                }
+            }
 
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+            return ResponseEntity.status(HttpStatus.OK).body(chatRoom);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     // 공통 메서드 - 채팅방 접속
-    private void JoinChatRoom(ChatRoom chatRoom, String userId) {
+    private UserChatRoomInfo JoinChatRoom(int chatRoomSEQ, String userId) {
         UserChatRoomInfo userChatRoomInfo = UserChatRoomInfo.builder()
-                .chatRoom(chatRoom)
+                .chatRoom(crService.show(chatRoomSEQ))
                 .userInfo(uiService.show(userId))
                 .build();
-        ucriService.create(userChatRoomInfo);
+        UserChatRoomInfo result = ucriService.create(userChatRoomInfo);
+        return result;
+    }
+
+    // 공통 메서드 - 채팅방 생성
+    private ChatRoom CreateChatRoom(int postSEQ) {
+        ChatRoom chatRoom = ChatRoom.builder()
+                .post(postService.show(postSEQ))
+                .build();
+        ChatRoom result = crService.create(chatRoom);
+        return result;
     }
 
 
