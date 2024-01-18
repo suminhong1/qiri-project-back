@@ -57,7 +57,7 @@ public class NotificationMessageController {
     @DeleteMapping("/public/delete_notify/{id}")
     public ResponseEntity deleteNotify(@PathVariable String id) {
         try{
-            nmService.deleteNotify(id);
+            nmService.deleteMyNotify(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

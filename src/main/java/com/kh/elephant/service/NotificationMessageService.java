@@ -54,8 +54,8 @@ public class NotificationMessageService {
         return dao.unreadNotify(userId);
     }
 
-    public void deleteNotify(String userId) {
-        dao.deleteNotify(userId);
+    public void deleteMyNotify(String userId) {
+        dao.deleteMyNotify(userId);
     }
 
     @Transactional

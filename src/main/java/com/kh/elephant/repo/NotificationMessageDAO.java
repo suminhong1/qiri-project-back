@@ -23,7 +23,7 @@ public interface NotificationMessageDAO extends JpaRepository<NotificationMessag
     int unreadNotify(@Param("id") String id);
 
     @Query(value = "DELETE FROM NOTIFICATION_MESSAGE WHERE USER_ID = :id", nativeQuery = true)
-    void deleteNotify(@Param("id") String id);
+    void deleteMyNotify(@Param("id") String id);
 
     @Modifying
     @Transactional
