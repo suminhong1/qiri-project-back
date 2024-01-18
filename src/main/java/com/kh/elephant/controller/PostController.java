@@ -160,7 +160,7 @@ public class PostController {
 
             // post 안에 있는 수정할 정보들
             Post post = Post.builder()
-                    .postSEQ(dto.getPostSEQ())
+                    .postSEQ(dto.getPostSEQ()) // 수정 시에는 SEQ로 조회해서 찾아야 하니 들어감
                     .postTitle(dto.getPostTitle())
                     .postContent(dto.getPostContent())
                     .postDate(new Date())

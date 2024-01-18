@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -14,8 +15,10 @@ import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
+@Jacksonized
 @AllArgsConstructor
+@NoArgsConstructor
+
 public class PostDTO {
 
     private String token;

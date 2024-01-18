@@ -6,9 +6,11 @@ import com.kh.elephant.service.MatchingCategoryInfoService;
 import com.kh.elephant.service.PostAttachmentsService;
 import com.kh.elephant.service.PostService;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -67,12 +69,11 @@ public class MatchingCategoryInfoController {
 
         // 카테고리를 여러개 선택할수 있으니 for문을 돌려서
         for(int i=0; i<dto.getCategories().size(); i++) {
-//            for(int i=0; i<dto.getCategoriesSeq().size(); i++) {
             // dto에서 카테고리 정보들을 조회하며 MatchingCategoryInfo  객체를 생성 후 추가
 
             MatchingCategoryInfo info = new MatchingCategoryInfo();
 
-//            MatchingCategoryInfo의 새 인스턴스를 생성
+            // MatchingCategoryInfo의 새 인스턴스를 생성
 
             Post post = new Post();
             // Post의 새 인스턴스를 생성
@@ -84,7 +85,6 @@ public class MatchingCategoryInfoController {
             // Category의 새 인스턴스를 생성
 
             category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
-//            category.setCategorySEQ(dto.getCategoriesSeq().get(i));
 
             // 새로 생성한 category에 CategorySEQ를 담음
             info.setCategory(category); // set을 사용해서 변수명을 info로 설정한 MatchingCategoryInfo에 categorySEQ값을 설정
@@ -102,57 +102,96 @@ public class MatchingCategoryInfoController {
         // 게시글 수정 http://localhost:8080/qiri/post
         @PutMapping("/matchingCategoryInfo")
         public ResponseEntity<List<MatchingCategoryInfo>> update(@RequestBody MatchingCategoryInfoDTO dto) {
-
-        log.info("카테고리정보"+dto.toString());
-//            log.info("dto : ", dto);
+//            try {
+//                service.deleteByPostSeq(dto.getPostSEQ());
 //
+//                List<MatchingCategoryInfo> list = new ArrayList<>();
+//
+//                log.info("matching category list : " + dto.toString());
+//
+//                for(int i=0; i<dto.getCategories().size(); i++) {
+//                    MatchingCategoryInfo matchingCategoryInfo = MatchingCategoryInfo.builder()
+//                            .post(postService.show(dto.getPostSEQ()))
+//                            .category(categoryService.show(dto.getCategoriesSeq().get(i)))
+//                            .build();
+//                    log.info("여기 안오지?", matchingCategoryInfo);
+//                    list.add(matchingCategoryInfo);
+//                    log.info(list.toString());
+//
+//
+//                }
+//                service.createAll(list);
+//                return ResponseEntity.status(HttpStatus.OK).body(null);
+//
+//            } catch (Exception e) {
+//                log.info("여기까지 오냐?", dto);
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
+//        }
+
+
+
 //            List<MatchingCategoryInfo> list = new ArrayList<>();
 //
-//            log.info("matching category list : " + dto.toString());
+//            log.info("matching category list: " + dto.toString());
 //
-////            for(int i=0; i<dto.getCategories().size(); i++) {
-//            for(int i=0; i<dto.getCategoriesSeq().size(); i++) {
+//            // 기존 데이터 삭제
+//            service.deleteByPostSeq(dto.getPostSEQ());
+//
+//            for (int i = 0; i < dto.getCategories().size(); i++) {
 //                MatchingCategoryInfo info = new MatchingCategoryInfo();
 //
-//                Post post = postService.show(dto.getPostSEQ());
-//                log.info("post : ", dto);
+////               postService.show(dto.getPostSEQ());
+//                Post post = new Post();
+//                post.setPostSEQ(dto.getPostSEQ());
+//                info.setPost(post);
 //
-//                Category category = categoryService.show(dto.getCategoriesSeq().get(i));
-////                category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
-////                category.setCategorySEQ(dto.getCategoriesSeq().get(i)); // 이 새끼 건드려보셈
+//                Category category = new Category();
+//                category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
 //                info.setCategory(category);
-//                log.info("category list : ", dto);
 //
 //                list.add(info);
-//                log.info("matching category list : {}", dto);
 //            }
-
-            try {
-
-//                List<MatchingCategoryInfo> matchingCategoryInfoList = service.findByPostSEQ(dto.getPostSEQ());
+//            log.info("카테고리정보"+dto.toString());
+//            try {
+//                // 새로운 데이터 추가
+//                return ResponseEntity.status(HttpStatus.CREATED).body(service.createAll(list));
+//            } catch (Exception e) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
 //
-//                for(int i=0; i<dto.getCategoriesSeq().size(); i++) {
-//                    matchingCategoryInfoList
-//                }
-                service.deleteByPostSeq(dto.getPostSEQ());
+//        }
 
-                log.info("matching category list : " + dto.toString());
+            log.info("카테고리정보"+dto.toString());
+            try {
+                // 지금 트랜잭션 어노테이션으로 묶어놔서 삭제나 생성 둘중 하나라도 안되면 안됨
+//                service.deleteByPostSeq(dto.getPostSEQ());
+//                log.info("게시물 삭제 완료");
+//
+//                // 삭제 후 조회
+//                Post deletedPost = postService.show(dto.getPostSEQ());
+//                log.info("삭제 후 조회 결과: " + deletedPost);
+
+//                log.info("matching category list : " + dto.toString());
 
                 for(int i=0; i<dto.getCategories().size(); i++) {
                     MatchingCategoryInfo matchingCategoryInfo = MatchingCategoryInfo.builder()
-                            .category(categoryService.show(dto.getCategoriesSeq().get(i)))
                             .post(postService.show(dto.getPostSEQ()))
+                            .category(categoryService.show(dto.getCategoriesSeq().get(i)))
                             .build();
+                    log.info("여기 안오지?", matchingCategoryInfo);
                 service.create(matchingCategoryInfo);
+
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(null);
+
             } catch (Exception e) {
-                log.info("matching category list : {}", dto);
+                log.info("여기까지 오냐?", dto);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
-//            return ResponseEntity.status(200).build();
         }
-    // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
+
+            // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
     @DeleteMapping("/matchingCategoryInfo/{id}")
     public ResponseEntity<MatchingCategoryInfo> delete ( @PathVariable int id){
         try {
@@ -162,4 +201,20 @@ public class MatchingCategoryInfoController {
         }
     }
 
+    @DeleteMapping("/matchingCategoryInfo/deleteAll/{id}")
+    public ResponseEntity<MatchingCategoryInfo> deleteAll(@PathVariable int id) {
+        try {
+            int deletedCount = service.deleteByPostSeq(id);
+            if (deletedCount > 0) {
+                log.info("매칭 카테고리 정보 삭제 성공 - 삭제된 개수: {}", deletedCount);
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+            } else {
+                log.info("매칭 카테고리 정보가 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            log.error("매칭 카테고리 정보 삭제 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
+}
