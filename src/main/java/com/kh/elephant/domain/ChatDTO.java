@@ -27,4 +27,6 @@ public class ChatDTO {
 
     private String joinMessageSent;
 
+    private String token;
+
 }

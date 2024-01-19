@@ -98,7 +98,7 @@ public class PostController {
     }
 
 
-    // 게시글 골라 보기 http://localhost:8080/qiri/post/1 <--id
+    // 게시글 상세 보기 http://localhost:8080/qiri/post/1 <--id
     @GetMapping("/public/post/{id}") //GetMapping을 위한 mapping 메소드 경로 설정
     public ResponseEntity<Post> show (@PathVariable int id){ // id를 경로 변수로 받고, 해당 id를 사용하여 게시물 정보를 조회
         try {
@@ -227,12 +227,11 @@ public class PostController {
         }
     }
 
-    // 내가 쓴 글 가지고 오기
+    // 내가 매칭글 가지고 오기
     @GetMapping("/post/get/{userId}")
     public ResponseEntity<List<Post>> getUserComments(@PathVariable String userId) {
         try {
-            List<Post> userPost = postService.findPostByUserId(userId);
-            return ResponseEntity.status(HttpStatus.OK).body(userPost);
+            return ResponseEntity.status(HttpStatus.OK).body(postService.findPostByUserId(userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

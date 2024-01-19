@@ -29,7 +29,7 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
     @Query(value = "SELECT * FROM post WHERE board_seq = :code ORDER BY post_date DESC", nativeQuery = true)
     List<Post>findByBoardCode(int code);
 
-    @Query(value = "SELECT * FROM post WHERE USER_ID = :userId", nativeQuery = true)
+    @Query(value = "SELECT * FROM post WHERE USER_ID = :userId AND BOARD_SEQ = 1 AND POST_DELETE = 'N'", nativeQuery = true)
     List<Post> findPostByUserId(@Param("userId") String userId);
 
 
