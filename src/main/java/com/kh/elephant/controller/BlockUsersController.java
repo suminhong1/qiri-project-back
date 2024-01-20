@@ -27,62 +27,36 @@ public class BlockUsersController {
         }
     }
 
-
-//    @GetMapping("/blockUsers/{id}")
-//    public ResponseEntity<BlockUsers> show(@PathVariable int id) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(service.show(id));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-
+    // 내가 차단한 유저 전체 보기
     @GetMapping("/blockUsers/{id}")
     public ResponseEntity<List<BlockUsers>> showBlocUsers(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.showBlockUser(id));
     }
 
-    // 유저간 블록 유저 추가
+    // 유저 차단하기
     @PostMapping("/blockUsers")
-    public ResponseEntity<BlockUsers> create(@RequestBody BlockUsers vo) {
+    public ResponseEntity<BlockUsers> create(@RequestBody BlockUsers blockUsers) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.create(vo));
+            return ResponseEntity.status(HttpStatus.OK).body(service.create(blockUsers.getUserInfo().getUserId(), blockUsers.getBlockInfo().getUserId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @PutMapping("/blockUsers/{id}")
+    // 다시 차단 (unblock "Y"으로 변경)
+    @PutMapping("/blockUsers/update/{id}")
     public ResponseEntity<Void> updateBlockUser(@PathVariable String id) {
         service.updateBlockUser(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 
-//    // 유저간 블록 정보 수정
-//    @PutMapping("/blockUsers")
-//    public ResponseEntity<BlockUsers> update(@RequestBody BlockUsers vo) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(service.update(vo));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-
-    @DeleteMapping("/blockUsers/{id}")
-    public ResponseEntity<BlockUsers> delete(@PathVariable int id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    // 차단 해제 (unblock "N"으로 변경)
+    @PutMapping("/blockUsers/delete/{id}")
+    public ResponseEntity<Void> deleteBlockUser(@PathVariable String id) {
+        service.deleteBlockUser(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
-    // 차단 해제
-
-    // 유저 본인이 차단 유저 전체 조회
-
-    // 유저 본인이 차단한 유저 한명 조회
-
 
 }
 

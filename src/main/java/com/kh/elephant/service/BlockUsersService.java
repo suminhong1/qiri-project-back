@@ -1,6 +1,7 @@
 package com.kh.elephant.service;
 
 import com.kh.elephant.domain.BlockUsers;
+import com.kh.elephant.domain.UserInfo;
 import com.kh.elephant.repo.BlockUsersDAO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +31,25 @@ public class BlockUsersService {
         dao.updateByUnblock(id);
     }
 
+    @Transactional
+    public void deleteBlockUser(String id) {
+        dao.deleteByUnblock(id);
+    }
 
-    public BlockUsers create(BlockUsers blockUsers) {
+
+    public BlockUsers create(String id, String blockId) {
+        BlockUsers blockUsers = new BlockUsers();
+
+        // UserInfo 및 BlockInfo 초기화
+        blockUsers.setUserInfo(new UserInfo());
+        blockUsers.setBlockInfo(new UserInfo());
+
+        blockUsers.getUserInfo().setUserId(id);
+        blockUsers.getBlockInfo().setUserId(blockId);
+
+        // 기타 필요한 값을 설정
+
         return dao.save(blockUsers);
     }
 
-
-    public BlockUsers update(BlockUsers blockUsers) {
-        BlockUsers target = dao.findById(blockUsers.getBlockUserSeq()).orElse(null);
-        if(target!=null) {
-            return dao.save(blockUsers);
-        }
-        return null;
-    }
-
-    public BlockUsers delete(int code) {
-        BlockUsers data = dao.findById(code).orElse(null);
-        dao.delete(data);
-        return data;
-    }
 }
