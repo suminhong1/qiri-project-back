@@ -227,11 +227,25 @@ public class PostController {
         }
     }
 
-    // 내가 매칭글 가지고 오기
+    // 내가쓴 매칭글 가지고 오기
     @GetMapping("/post/get/{userId}")
-    public ResponseEntity<List<Post>> getUserComments(@PathVariable String userId) {
+    public ResponseEntity<List<Post>> findPostByUserId(@PathVariable String userId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(postService.findPostByUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    // 내가쓴 매칭글 중 매칭진행중인 글만 가지고 오기
+    @GetMapping("/post_not_matched/{userId}")
+    public ResponseEntity<List<Post>> findNotMatchedPostByUserId(@PathVariable String userId) {
+        try {
+            List<Post> postList = postService.findNotMatchedPostByUserId(userId);
+            // 최신순 정렬
+            postList.sort(Comparator.comparingInt(Post::getPostSEQ).reversed());
+
+            return ResponseEntity.status(HttpStatus.OK).body(postList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

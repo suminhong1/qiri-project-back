@@ -116,5 +116,5 @@ public class PostService {
 
     public List<Post> findPostByUserId(String userId) { return dao.findPostByUserId(userId); }
 
-
+    public List<Post> findNotMatchedPostByUserId(String userId) { return dao.findNotMatchedPostByUserId(userId); }
 }
