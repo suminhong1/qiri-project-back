@@ -60,7 +60,6 @@ public class MatchingUserInfoController {
     // 매칭신청
     @PostMapping("/matching_apply")
     public ResponseEntity<MatchingUserInfo> applyCreate(@RequestBody MatchingUserInfoDTO dto) {
-
         try {
         // 토큰에서 사용자 ID 추출
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
@@ -83,6 +82,7 @@ public class MatchingUserInfoController {
                 .userInfo(userInfo)
                 .post(post)
                 .matchingAccept("N")
+                .postReview("N")
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
         } catch (Exception e){
@@ -130,8 +130,6 @@ public class MatchingUserInfoController {
     }
 
 
-
-
     // 매칭 유저 가리기
     @PutMapping("/hideMachingUser")
     public ResponseEntity<?> hideMachingUser(@RequestBody ChatDTO dto) {
@@ -142,19 +140,6 @@ public class MatchingUserInfoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @PutMapping("/MatchingUserInfo")

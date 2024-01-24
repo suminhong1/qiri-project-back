@@ -8,12 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.Date;
-
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -22,8 +26,6 @@ import java.util.Date;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class ReviewController {
 
-    @Value("D:\\ClassQ_team4_frontend\\qoqiri\\public\\upload")
-    private String uploadPath;
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
@@ -31,45 +33,58 @@ public class ReviewController {
     @Autowired
     private UserInfoService userInfoService;
     @Autowired
-    private CommentsService commService;
-    @Autowired
     private PlaceService plService;
-    @Autowired
-    private PlaceTypeService placeTypeService;
-    @Autowired
-    private PlaceTypeService pTypeService;
-
     @Autowired
     private BoardService boardService;
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private PostAttachmentsService paService;
-
-    @Autowired
-    private MatchingCategoryInfoService mciService;
-
-    // 검색
-    @Autowired
     private SearchService searchService;
+    @Autowired
+    private MatchingUserInfoService muiService;
 
+    // 리뷰글 전체 가져오기
+    @GetMapping("/review")
+    public ResponseEntity<List<Post>> getAllReview() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.getAllReview());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    // 리뷰글을 작성할 참여한 매칭 가져오기
+    @GetMapping("/my_matching/{id}")
+    public ResponseEntity<List<MatchingUserInfo>> getMyReview(@PathVariable String id) {
+        try {
+            // 내 아이디로 승락되었고 아직 리뷰글을 작성하지 않은 매칭정보 가져오기
+            List<MatchingUserInfo> matchingUserInfoList = muiService.findByUserIdForPostReview(id);
+            log.info("리뷰" + matchingUserInfoList.toString());
+            // 매칭정보중 매칭이 완료처리된 것만 걸러내기
+            List<MatchingUserInfo> filteredList = matchingUserInfoList.stream()
+                    .filter(matchingUserInfo -> "Y".equals(matchingUserInfo.getPost().getMatched()))
+                    .sorted(Comparator.comparingInt(MatchingUserInfo::getMatchingUserInfoSeq))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.status(HttpStatus.OK).body(filteredList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
     // 리뷰 DB 저장
     @PostMapping("/reviewWrite")
     public ResponseEntity<Post> reviewCreate(@RequestBody PostDTO dto) {
-        log.info("들어옴?");
-        Board board = boardService.show(dto.getBoardSEQ());
+
         String userId = tokenProvider.validateAndGetUserId(dto.getToken());
-        UserInfo userinfo = userInfoService.show(userId);
 
         Post post = Post.builder()
                 .postTitle(dto.getPostTitle())
                 .postContent(dto.getPostContent())
-                .userInfo(userinfo)
-                .board(board)
-
-                .postTitleDropbox("Y")
+                .userInfo(userInfoService.show(userId))
+                .board(boardService.show(dto.getBoardSEQ()))
                 .build();
+
+        muiService.postReview(dto.getPostSEQ());
+
         return ResponseEntity.ok().body(postService.create(post));
     }
 
@@ -90,7 +105,6 @@ public class ReviewController {
                 .userInfo(userinfo)
                 .postDelete("N")
                 .matched("N")
-                .postTitleDropbox("Y")
                 .board(board)
                 .build();
         Post updatedPost = postService.update(post);
@@ -101,41 +115,4 @@ public class ReviewController {
 
 
 
-    // 리뷰 삭제 (update사용)
-    @PutMapping("/reviewDelete/{postSEQ}")
-    public ResponseEntity<String> reviewDelete(@PathVariable int postSEQ) {
-        try {
-            Post reviewPost = postService.show(postSEQ);
-            if (reviewPost == null) {
-                return ResponseEntity.badRequest().body("찾았다");
-            }
-            reviewPost.setPostDelete("Y");
-            postService.update(reviewPost);
-            Post mainPost = postService.findByBoardSeqAndPostTitle(1, reviewPost.getPostTitle());
-            if (mainPost != null) {
-                mainPost.setPostTitleDropbox("N");
-                postService.update(mainPost);
-            }
-            return ResponseEntity.ok().body("업데이트완료");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("업데이트완료실패");
-        }
-    }
-
-    // 드롭박스 선택한 포스트 드롭박스 Y로 업데이트
-    @PutMapping("/updatePostTitleDropbox/{postSEQ}")
-    public ResponseEntity<String> updatePostTitleDropbox(@PathVariable int postSEQ) {
-        try {
-            Post post = postService.show(postSEQ);
-            if (post == null) {
-                return ResponseEntity.badRequest().body("Post not");
-            }
-            post.setPostTitleDropbox("Y");
-            postService.update(post);
-            return ResponseEntity.ok().body("Post deleted");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed!");
-        }
-    }
 }

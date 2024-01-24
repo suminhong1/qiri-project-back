@@ -35,17 +35,15 @@ public interface PostDAO extends JpaRepository<Post, Integer>, QuerydslPredicate
     @Query(value = "SELECT * FROM post WHERE USER_ID = :userId AND BOARD_SEQ = 1 AND POST_DELETE = 'N' AND MATCHED = 'N'" , nativeQuery = true)
     List<Post> findNotMatchedPostByUserId(@Param("userId") String userId);
 
-
     @Query(value = "update post SET postView = postView+1 WHERE  post_seq = :code", nativeQuery = true)
-    List<Post>increaseCount(int code); // 게시물을 볼때마다 게시물 조회수가 1씩 올라가는 쿼리문
-    
-    // 리뷰 삭제시 드롭박스 다시 보이게하기
+    List<Post> increaseCount(int code); // 게시물을 볼때마다 게시물 조회수가 1씩 올라가는 쿼리문
 
 
-    @Transactional
-    @Query(value = "SELECT * FROM post WHERE board_seq = :boardSEQ AND post_title = :postTitle", nativeQuery = true)
-    Optional<Post> findByBoardSeqAndPostTitle(@Param("boardSEQ") int boardSEQ, @Param("postTitle") String postTitle);
+    @Query(value = "SELECT * FROM post WHERE BOARD_SEQ = 2 AND POST_DELETE = 'N'" , nativeQuery = true)
+    List<Post> getAllReview();
 
+    @Query(value = "UPDATE POST SET MATCHED = 'Y' WHERE POST_SEQ =:postSEQ", nativeQuery = true)
+    int MatchedPost(@Param("postSEQ") int postSEQ);
 
 
 

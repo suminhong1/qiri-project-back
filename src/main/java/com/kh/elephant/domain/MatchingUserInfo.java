@@ -34,4 +34,7 @@ public class MatchingUserInfo {
     @Column(name = "MATCHING_ACCEPT")
     private String matchingAccept;
 
+    @Column(name = "POST_REVIEW")
+    private String postReview;
+
 }

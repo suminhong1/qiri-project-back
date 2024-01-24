@@ -84,8 +84,8 @@ public class ChatController {
     @GetMapping("/chat/room/message/{id}")
     public ResponseEntity<List<ChatMessage>> messageFindByChatroomSEQ(@PathVariable int id) {
         try {
-//            List<ChatMessage> messages = cmService.messageFindByChatroomSEQ(id);
-//            messages.sort(Comparator.comparing(ChatMessage::getChatMessageSEQ)); // SEQ 기준으로 정렬
+            List<ChatMessage> messages = cmService.messageFindByChatroomSEQ(id);
+            messages.sort(Comparator.comparing(ChatMessage::getChatMessageSEQ)); // SEQ 기준으로 정렬
             return ResponseEntity.status(HttpStatus.OK).body(cmService.messageFindByChatroomSEQ(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

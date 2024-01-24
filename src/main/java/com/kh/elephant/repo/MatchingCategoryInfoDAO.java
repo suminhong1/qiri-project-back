@@ -22,4 +22,5 @@ public interface MatchingCategoryInfoDAO extends JpaRepository<MatchingCategoryI
     @Query(value = "DELETE  FROM matching_category_info WHERE post_seq = :id",nativeQuery = true)
     int deleteByPostSeq(@Param("id") int id);
 
+
 }

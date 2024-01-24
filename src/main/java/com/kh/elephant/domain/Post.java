@@ -50,11 +50,7 @@ public class Post {
     private Board board; // JoinColumn으로 연결된 Board
 
     @Column(name = "matched")
-
     private String matched; // 매치가 성사 됐는지 안됐는지
-
-    @Column(name="post_title_dropbox")
-    private String postTitleDropbox; // 리뷰 페이지 쪽 title 드롭 박스
 
     @Column(name = "post_delete")
     private String postDelete; // Delete 컨트롤러로 삭제가 아니라 db에 자료는 남기고 클라이언트에서 안보이게만 하기 위한 필드 변수

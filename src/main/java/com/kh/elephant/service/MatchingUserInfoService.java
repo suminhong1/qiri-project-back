@@ -4,6 +4,7 @@ import com.kh.elephant.domain.MatchingUserInfo;
 import com.kh.elephant.repo.MatchingUserInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,10 +51,14 @@ public class MatchingUserInfoService {
     }
 
 
-
-
-
     public List<MatchingUserInfo> findAccept(int code) {
         return dao.findAccept(code);
+    }
+
+    public List<MatchingUserInfo> findByUserIdForPostReview(String id) { return dao.findByUserIdForPostReview(id);}
+
+    @Transactional
+    public int postReview(int postSEQ) {
+        return dao.postReview(postSEQ);
     }
 }

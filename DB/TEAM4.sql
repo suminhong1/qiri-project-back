@@ -94,7 +94,6 @@ CREATE TABLE POST (
     PLACE_SEQ NUMBER DEFAULT 0,                      -- 지역 SEQ(FK)        (매칭글만 필요 이외에는 0)
     BOARD_SEQ NUMBER DEFAULT 0,                      -- 게시판 SEQ(매칭글인지, 리뷰글인지, 커뮤니티글인지 구분) (FK)
     MATCHED VARCHAR2(1) DEFAULT 'N' CHECK(MATCHED IN ('Y', 'N')), -- 매칭완료 여부
-    POST_TITLE_DROPBOX VARCHAR2(1) DEFAULT 'N' CHECK(POST_TITLE_DROPBOX IN ('Y', 'N')), -- 드롭박스 사용 여부
     POST_DELETE VARCHAR2(1) DEFAULT 'N' NOT NULL CHECK(POST_DELETE IN ('Y', 'N')) -- 글 삭제 여부
 );
 
@@ -113,13 +112,14 @@ CREATE TABLE BOARD(
 );
 
 
--- 매칭 신청자 유저 정보
+-- 매칭 참여자 유저 정보
 CREATE TABLE MATCHING_USER_INFO (
     MATCHING_USER_INFO_SEQ NUMBER PRIMARY KEY, -- 매칭 신청자 유저 정보 SEQ(PK)
     POST_SEQ NUMBER,                    -- 매칭 SEQ(FK)
     USER_ID VARCHAR(50) NOT NULL,           -- 매칭 신청자 아이디(FK)
     SCORE NUMBER DEFAULT 0 CHECK(SCORE IN (0, 1, 2, 3)), -- 받은 평점 (1~3점만 줄 수 있음 0점은 불가)
-    MATCHING_ACCEPT VARCHAR2(5) DEFAULT 'N' NOT NULL CHECK(MATCHING_ACCEPT IN ('Y', 'N','H')) -- 매칭 승락 여부
+    MATCHING_ACCEPT VARCHAR2(5) DEFAULT 'N' NOT NULL CHECK(MATCHING_ACCEPT IN ('Y', 'N','H')), -- 매칭 승락 여부
+    POST_REVIEW VARCHAR2(5) DEFAULT 'N' NOT NULL CHECK(POST_REVIEW IN ('Y', 'N')) -- 리뷰 작성 여부
 );
 
 

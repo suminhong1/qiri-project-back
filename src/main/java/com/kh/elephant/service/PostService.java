@@ -97,13 +97,6 @@ public class PostService {
     }
 
 
-    public Post findByBoardSeqAndPostTitle(int boardSEQ, String postTitle) {
-        return dao.findByBoardSeqAndPostTitle(boardSEQ, postTitle)
-                .orElse(null);
-    }
-
-
-
     public List<MatchingCategoryInfo> getMci(int id){
     // MatchingCategoryInfo Service에 있는 게시물의 카테고리 정보 조회를 하는 findByPostSEQ 메소드를 호출함
         return mciService.findByPostSEQ(id);
@@ -117,4 +110,10 @@ public class PostService {
     public List<Post> findPostByUserId(String userId) { return dao.findPostByUserId(userId); }
 
     public List<Post> findNotMatchedPostByUserId(String userId) { return dao.findNotMatchedPostByUserId(userId); }
+
+    public List<Post> getAllReview() {
+        return dao.getAllReview();
+    }
+
+    public int MatchedPost(int postSEQ) { return dao.MatchedPost(postSEQ); }
 }

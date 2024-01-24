@@ -167,7 +167,6 @@ public class PostController {
                     .postView(dto.getPostView())
                     .postDelete(dto.getPostDelete())
                     .matched(dto.getMatched())
-                    .postTitleDropbox(dto.getTitleDropbox())
                     .place(place)
                     .userInfo(userinfo)
                     .board(board)
@@ -246,6 +245,16 @@ public class PostController {
             postList.sort(Comparator.comparingInt(Post::getPostSEQ).reversed());
 
             return ResponseEntity.status(HttpStatus.OK).body(postList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    // 매칭글 매칭완료 처리
+    @PutMapping("/matched_post/{postSEQ}")
+    public ResponseEntity<Integer> MatchedPost(@PathVariable int postSEQ) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.MatchedPost(postSEQ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
