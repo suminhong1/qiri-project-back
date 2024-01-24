@@ -102,91 +102,16 @@ public class MatchingCategoryInfoController {
         // 게시글 수정 http://localhost:8080/qiri/post
         @PutMapping("/matchingCategoryInfo")
         public ResponseEntity<List<MatchingCategoryInfo>> update(@RequestBody MatchingCategoryInfoDTO dto) {
-//            try {
-//                service.deleteByPostSeq(dto.getPostSEQ());
-//
-//                List<MatchingCategoryInfo> list = new ArrayList<>();
-//
-//                log.info("matching category list : " + dto.toString());
-//
-//                for(int i=0; i<dto.getCategories().size(); i++) {
-//                    MatchingCategoryInfo matchingCategoryInfo = MatchingCategoryInfo.builder()
-//                            .post(postService.show(dto.getPostSEQ()))
-//                            .category(categoryService.show(dto.getCategoriesSeq().get(i)))
-//                            .build();
-//                    log.info("여기 안오지?", matchingCategoryInfo);
-//                    list.add(matchingCategoryInfo);
-//                    log.info(list.toString());
-//
-//
-//                }
-//                service.createAll(list);
-//                return ResponseEntity.status(HttpStatus.OK).body(null);
-//
-//            } catch (Exception e) {
-//                log.info("여기까지 오냐?", dto);
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//            }
-//        }
-
-
-
-//            List<MatchingCategoryInfo> list = new ArrayList<>();
-//
-//            log.info("matching category list: " + dto.toString());
-//
-//            // 기존 데이터 삭제
-//            service.deleteByPostSeq(dto.getPostSEQ());
-//
-//            for (int i = 0; i < dto.getCategories().size(); i++) {
-//                MatchingCategoryInfo info = new MatchingCategoryInfo();
-//
-////               postService.show(dto.getPostSEQ());
-//                Post post = new Post();
-//                post.setPostSEQ(dto.getPostSEQ());
-//                info.setPost(post);
-//
-//                Category category = new Category();
-//                category.setCategorySEQ(dto.getCategories().get(i).getCategorySEQ());
-//                info.setCategory(category);
-//
-//                list.add(info);
-//            }
-//            log.info("카테고리정보"+dto.toString());
-//            try {
-//                // 새로운 데이터 추가
-//                return ResponseEntity.status(HttpStatus.CREATED).body(service.createAll(list));
-//            } catch (Exception e) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//            }
-//
-//        }
-
-            log.info("카테고리정보"+dto.toString());
             try {
-                // 지금 트랜잭션 어노테이션으로 묶어놔서 삭제나 생성 둘중 하나라도 안되면 안됨
-//                service.deleteByPostSeq(dto.getPostSEQ());
-//                log.info("게시물 삭제 완료");
-//
-//                // 삭제 후 조회
-//                Post deletedPost = postService.show(dto.getPostSEQ());
-//                log.info("삭제 후 조회 결과: " + deletedPost);
-
-//                log.info("matching category list : " + dto.toString());
-
                 for(int i=0; i<dto.getCategories().size(); i++) {
                     MatchingCategoryInfo matchingCategoryInfo = MatchingCategoryInfo.builder()
                             .post(postService.show(dto.getPostSEQ()))
                             .category(categoryService.show(dto.getCategoriesSeq().get(i)))
                             .build();
-                    log.info("여기 안오지?", matchingCategoryInfo);
                 service.create(matchingCategoryInfo);
-
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(null);
-
             } catch (Exception e) {
-                log.info("여기까지 오냐?", dto);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         }
@@ -206,7 +131,7 @@ public class MatchingCategoryInfoController {
         try {
             int deletedCount = service.deleteByPostSeq(id);
             if (deletedCount > 0) {
-                log.info("매칭 카테고리 정보 삭제 성공 - 삭제된 개수: {}", deletedCount);
+                log.info("매칭 카테고리 정보 삭제 성공 - 삭제된 수: {}", deletedCount);
                 return ResponseEntity.status(HttpStatus.OK).body(null);
             } else {
                 log.info("매칭 카테고리 정보가 없습니다.");

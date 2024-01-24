@@ -56,9 +56,3 @@ public class MatchingCategoryInfoService {
 //    @Transactional
     public int deleteByPostSeq(int id){return  dao.deleteByPostSeq(id);}
 }
-//    public void deleteAll(List<Integer> id){
-//        for (Integer matching_id : id ) {
-//            deleteAll(matching_id);
-//        }
-//    }
-//}

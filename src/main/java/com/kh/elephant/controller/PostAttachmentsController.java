@@ -49,7 +49,16 @@ public class PostAttachmentsController {
     // 게시글seq로 참부파일정보 가져오기
     @GetMapping("/postAttachments/{id}")
     public ResponseEntity<List<PostAttachments>> findByPostSeq(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSeq(id));
+        log.info("첨부 파일 :: " + id);
+        try{
+            if(service.findByPostSEQ(id)==null){
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+            }else{
+                return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSEQ(id));
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     // 게시글 첨부 파일  추가 http://localhost:8080/qiri/post
@@ -145,12 +154,38 @@ public class PostAttachmentsController {
         }
     }
     // 게시글 삭제 http://localhost:8080/qiri/post/1 <--id
-    @DeleteMapping("/postAttachments/{id}")
-    public ResponseEntity<PostAttachments> delete(@PathVariable int id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(service.delete(id));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+//    @DeleteMapping("/postAttachments/{id}")
+//    public ResponseEntity<PostAttachments> deleteFiles(@PathVariable int id){
+//        try{
+//            int delete = service.deleteByPostSeq(id);
+//            if(delete>0){
+//                log.info("첨부 파일 삭제 성공 - 삭제된 수: ",delete);
+//                return ResponseEntity.status(HttpStatus.OK).body(null);
+//            }else {
+//                log.info("첨부 파일 정보가 없습니다.");
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//            }
+//        }catch (Exception e){
+//            log.error("첨부 파일 정보 삭제 중 오류 발생",e);
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
+//}
+@DeleteMapping("/postAttachments/deleteAll/{id}")
+public ResponseEntity<PostAttachments> deleteFiles(@PathVariable int id){
+    try{
+        int delete = service.deleteByPostSeq(id);
+        if(delete>0){
+            log.info("첨부 파일 삭제 성공 - 삭제된 수: {} ",delete);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }else {
+            log.info("첨부 파일 정보가 없습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }catch (Exception e){
+        log.error("첨부 파일 정보 삭제 중 오류 발생",e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+}
 }

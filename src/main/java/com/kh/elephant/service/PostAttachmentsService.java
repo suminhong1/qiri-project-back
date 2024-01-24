@@ -22,7 +22,7 @@ public class PostAttachmentsService {
         return dao.save(postAttachments);
     }
 
-    public List<PostAttachments> findByPostSeq(int id) {return dao.findByPostSeq(id);}
+    public List<PostAttachments> findByPostSEQ(int id) {return dao.findByPostSeq(id);}
 
     public PostAttachments update(PostAttachments postAttachments) { return dao.save(postAttachments); }
 
