@@ -91,23 +91,11 @@ public class MatchingUserInfoController {
     }
 
     // 매칭유저 리스트보기
-    @GetMapping("/getApplyList/{postSEQ}")
-    public ResponseEntity<List<MatchingUserInfoDTO>> getApplyList(@PathVariable int postSEQ) {
+    @PostMapping("/getApplyList")
+    public ResponseEntity<List<MatchingUserInfo>> getApplyList(@RequestBody MatchingUserInfoDTO dto) {
         try {
-            List<MatchingUserInfo> list = muiService.findByPostSEQ(postSEQ);
-            // DTO 변환 로직
-            List<MatchingUserInfoDTO> result = new ArrayList<>();
-            for (MatchingUserInfo item : list) {
-                if (!item.getMatchingAccept().equals("H")) { // 'H'가 아닌 항목만 추가
-                    MatchingUserInfoDTO dto = new MatchingUserInfoDTO();
-                    dto.setId(item.getUserInfo().getUserId());
-                    dto.setPostSEQ(postSEQ);
-                    // 필요한 다른 필드들도 dto에 세팅
-                    result.add(dto);
-                }
-            }
-            log.info("저장된것 보기"+result);
-            return ResponseEntity.ok(result);
+            log.info("매칭테스트" + dto);
+            return ResponseEntity.ok(muiService.findMatchingByPostSEQ(dto.getId(), dto.getPostSEQ()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

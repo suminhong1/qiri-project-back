@@ -37,8 +37,8 @@ public class MatchingUserInfoService {
     }
 
     // 매칭 정보 postSEQ확인
-    public List<MatchingUserInfo> findByPostSEQ(int postSEQ) {
-        return dao.findByPost_PostSEQ(postSEQ);
+    public List<MatchingUserInfo> findMatchingByPostSEQ(String id, int postSEQ) {
+        return dao.findMatchingByPostSEQ(id, postSEQ);
     }
 
     public int matchingAccept(int code, String id) {

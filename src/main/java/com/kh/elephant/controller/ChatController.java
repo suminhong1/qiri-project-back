@@ -52,7 +52,10 @@ public class ChatController {
     @GetMapping("/public/chatRooms/{id}")
     public ResponseEntity<List<UserChatRoomInfo>> findByUserId(@PathVariable String id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByUserId(id));
+            List<UserChatRoomInfo> list = ucriService.findByUserId(id);
+            // joinDate를 기준으로 정렬
+            Collections.sort(list, Comparator.comparing(UserChatRoomInfo::getJoinDate).reversed());
+            return ResponseEntity.status(HttpStatus.OK).body(list);
         } catch (Exception e) {
             return null;
         }

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Entity
 @Builder
@@ -36,5 +38,8 @@ public class MatchingUserInfo {
 
     @Column(name = "POST_REVIEW")
     private String postReview;
+
+    @Column(name = "APPLICATION_DATE")
+    private Date applicationDate;
 
 }

@@ -19,8 +19,9 @@ public interface MatchingUserInfoDAO extends JpaRepository<MatchingUserInfo, Int
 
 
 
-    // 같은 포스트seq로 확인하기
-    public List<MatchingUserInfo> findByPost_PostSEQ(int postSEQ);
+
+    @Query(value = "SELECT * FROM MATCHING_USER_INFO WHERE USER_ID !=:id AND POST_SEQ =:postSEQ AND MATCHING_ACCEPT !='H'", nativeQuery = true)
+    List<MatchingUserInfo> findMatchingByPostSEQ(@Param("id") String id, @Param("postSEQ") int postSEQ);
 
 
     @Transactional
