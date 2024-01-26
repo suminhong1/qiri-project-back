@@ -90,11 +90,10 @@ public class MatchingUserInfoController {
         }
     }
 
-    // 매칭유저 리스트보기
+    // 특정 게시물의 매칭 신청 유저 리스트보기
     @PostMapping("/getApplyList")
     public ResponseEntity<List<MatchingUserInfo>> getApplyList(@RequestBody MatchingUserInfoDTO dto) {
         try {
-            log.info("매칭테스트" + dto);
             return ResponseEntity.ok(muiService.findMatchingByPostSEQ(dto.getId(), dto.getPostSEQ()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -118,12 +117,22 @@ public class MatchingUserInfoController {
     }
 
 
-    // 매칭 유저 가리기
+    // 매칭 숨기기 처리
     @PutMapping("/hideMachingUser")
     public ResponseEntity<?> hideMachingUser(@RequestBody ChatDTO dto) {
         try {
             int result = muiService.hideMachingUser(dto.getPostSEQ(), dto.getApplicantId());
             return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+    
+    // 매칭 신청한 유저의 신청정보 확인
+    @GetMapping("/check_user/{postSEQ}/{userId}")
+    public ResponseEntity<MatchingUserInfo> findMuiByPostSEQAndUserId(@PathVariable int postSEQ, @PathVariable String userId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(muiService.findMuiByPostSEQAndUserId(postSEQ, userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

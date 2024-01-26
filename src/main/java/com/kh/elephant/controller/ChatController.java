@@ -62,12 +62,10 @@ public class ChatController {
     }
 
     // 참여중인 채팅방의 내 참여정보 가져오기(참여메세지 발송여부 확인)
-    @Transactional
     @GetMapping("/public/chatRoomInfo/{userId}/{code}")
     public ResponseEntity<UserChatRoomInfo> findByUserId(@PathVariable String userId, @PathVariable int code) {
         try {
-            UserChatRoomInfo userChatRoomInfo = ucriService.findByIdAndChatRoomSEQ(code, userId);
-            return ResponseEntity.status(HttpStatus.OK).body(userChatRoomInfo);
+            return ResponseEntity.status(HttpStatus.OK).body(ucriService.findByIdAndChatRoomSEQ(code, userId));
         } catch (Exception e) {
             return null;
         }
@@ -89,7 +87,7 @@ public class ChatController {
         try {
             List<ChatMessage> messages = cmService.messageFindByChatroomSEQ(id);
             messages.sort(Comparator.comparing(ChatMessage::getChatMessageSEQ)); // SEQ 기준으로 정렬
-            return ResponseEntity.status(HttpStatus.OK).body(cmService.messageFindByChatroomSEQ(id));
+            return ResponseEntity.status(HttpStatus.OK).body(messages);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

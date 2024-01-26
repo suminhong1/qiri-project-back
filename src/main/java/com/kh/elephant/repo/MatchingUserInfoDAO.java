@@ -43,4 +43,7 @@ public interface MatchingUserInfoDAO extends JpaRepository<MatchingUserInfo, Int
     @Modifying
     @Query(value = "UPDATE MATCHING_USER_INFO SET POST_REVIEW = 'Y' WHERE POST_SEQ = :postSEQ", nativeQuery = true)
     int postReview(@Param("postSEQ") int postSEQ);
+
+    @Query(value = "SELECT * FROM MATCHING_USER_INFO WHERE POST_SEQ = :code AND USER_ID = :id", nativeQuery = true)
+    MatchingUserInfo findMuiByPostSEQAndUserId(@Param("code") int code, @Param("id") String id);
 }

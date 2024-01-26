@@ -61,4 +61,8 @@ public class MatchingUserInfoService {
     public int postReview(int postSEQ) {
         return dao.postReview(postSEQ);
     }
+
+    public MatchingUserInfo findMuiByPostSEQAndUserId(int postSEQ, String userId) {
+        return dao.findMuiByPostSEQAndUserId(postSEQ, userId);
+    }
 }
