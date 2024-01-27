@@ -90,9 +90,6 @@ public class PostController {
             List<Post> searchResults = searchService.searchByKeyword(keyword);
             return ResponseEntity.status(HttpStatus.OK).body(searchResults);
         }
-
-        log.info("............LIST@@@@@@@@@@ :   " + result.toString());
-
         // Page 객체에서 목록을 추출하여 반환
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
@@ -102,13 +99,10 @@ public class PostController {
     @GetMapping("/public/post/{id}") //GetMapping을 위한 mapping 메소드 경로 설정
     public ResponseEntity<Post> show (@PathVariable int id){ // id를 경로 변수로 받고, 해당 id를 사용하여 게시물 정보를 조회
         try {
-            log.info("post 호출 컨트롤러 진입;");
-            Post result = postService.show(id); // 상세 보기와 조회수 증가 postService를 호출해서 result에 담음
-            // 게시물 상세보기를 위한 게시글 SEQ값을 검색해 정보 조회를 위한 컨트롤러
-            log.info(".POST@@@@@@@@@ :   " + result.toString());
+            Post result = postService.show(id);
             return ResponseEntity.status(HttpStatus.OK).body(result); // 게시물 정보를 body에 담아서 클라이언트에 전송해서 클라이언트에서 볼 수 있게함
         } catch (Exception e) {
-            return null; // 예외가 발생했을때 Bad Request를 클라이언트에 응답
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -117,50 +111,50 @@ public class PostController {
     public ResponseEntity<Post> createPost(@RequestBody PostDTO dto) {
         // dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
         try {
-            // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
-            Place place = plService.show(dto.getPlaceSEQ()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
+            // 게시글 작성에 필요한 Service들
+            Place place = plService.show(dto.getPlaceSEQ());
 
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ()); //place 안에 placeType가 join 돼있어도 선언해야함
+            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ());
 
-            place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌 그냥 place와 placeType을 합친것
+            place.setPlaceType(placeType);
 
-            Board board = boardService.show(dto.getBoardSEQ()); // board에 저장된 정보를 조회하기 위해 boardService에 있는 show 메소드로 정보 조회
+            Board board = boardService.show(dto.getBoardSEQ());
 
-            String userId = tokenProvider.validateAndGetUserId(dto.getToken()); // 토큰을 추출해 토큰에서 추출한 ID를 userId에 저장
+            String userId = tokenProvider.validateAndGetUserId(dto.getToken());
             log.info(userId);
-            UserInfo userInfo = userInfoService.show(userId); // userInfo의 userId 데이터를 조회하기 위해 userInfoService의 show 메소드로 정보 조회
+            UserInfo userInfo = userInfoService.show(userId);
 
             // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서 생성 
             Post post = Post.builder()
                     .postTitle(dto.getPostTitle())
                     .postContent(dto.getPostContent())
                     .postView(dto.getPostView())
-                    .place(place) // 위에서 선언한 place를 여기다 담아줌 여기가 place를 저장 받고 다시 보내는 곳
+                    .place(place)
                     .userInfo(userInfo)
                     .board(board)
                     .build();
-            log.info("create dto : " + dto.toString());
-            return ResponseEntity.ok().body(postService.create(post));// service에 있는 create 메소드를 사용해 post 생성
+            return ResponseEntity.ok().body(postService.create(post));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 예외가 발생했을때 Bad Request를 클라이언트에 전송
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     //   매칭 게시글 수정 http://localhost:8080/qiri/post
-    @PutMapping("/post") //PutMapping을 위한 메소드 경로 설정
+    @PutMapping("/post") ㅉ
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
         try {
-            Place place = plService.show(dto.getPlaceSEQ()); // Place의 대한 정보를 조회하기 위해 Place Service의 show 메소드로 정보 조회
+            // 게시글 수정에 필요한 service들
+            Place place = plService.show(dto.getPlaceSEQ()); 
 
-            String userId = tokenProvider.validateAndGetUserId(dto.getToken()); // 토큰을 추출해 토큰에서 추출한 ID를 userId에 저장
+            String userId = tokenProvider.validateAndGetUserId(dto.getToken()); 
 
-            UserInfo userinfo = userInfoService.show(userId); // userInfoService의 show 메소드를 사용하여 userId 정보 조회
+            UserInfo userinfo = userInfoService.show(userId); 
 
-            Board board = boardService.show(dto.getBoardSEQ()); // board에 저장된 정보를 조회하기 위해 boardService에 있는 show 메소드로 정보 조회
+            Board board = boardService.show(dto.getBoardSEQ()); 
 
             // post 안에 있는 수정할 정보들
             Post post = Post.builder()
-                    .postSEQ(dto.getPostSEQ())
+                    .postSEQ(dto.getPostSEQ()) 
                     .postTitle(dto.getPostTitle())
                     .postContent(dto.getPostContent())
                     .postDate(new Date())
@@ -183,7 +177,7 @@ public class PostController {
     @PutMapping("/post/{postSeq}")   // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
     public ResponseEntity<String> hidePost(@PathVariable int postSeq) {
         try {
-            Post post = postService.show(postSeq); // postSEQ로 게시물 정보를 조회함
+            Post post = postService.show(postSeq); 
             if(post==null){ // post가 null일 경우
                 return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다."); // 문자열 반환
             }
@@ -192,12 +186,12 @@ public class PostController {
             log.info("삭제 ::: " + post);
             return ResponseEntity.ok().body("삭제된 게시물 입니다."); // 삭제 후 문자열 전송
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다."); // 예외가 발생 했을때 String문자열을 클라이언트에 전송
+            return ResponseEntity.badRequest().body("게시물 삭제에 실패했습니다.");
         }
     }
 
     @DeleteMapping("/post/{postSeq}") // DELETEMapping을 위한 메소드 경로 설정
-    public ResponseEntity<Post>delete(@PathVariable int id){ // postSeq를 @PathVariable로 id라는 변수 명칭으로 사용
+    public ResponseEntity<Post>delete(@PathVariable int id){
         log.info("삭제 ::: "+ postService.delete(id));
         return ResponseEntity.status(HttpStatus.OK).body(postService.delete(id));
         // postService에 Spring Data JPA에서 제공하는 delete로 일치하는 id를 찾아서 삭제
