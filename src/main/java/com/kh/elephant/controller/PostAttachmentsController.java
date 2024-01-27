@@ -50,7 +50,7 @@ public class PostAttachmentsController {
     @GetMapping("/postAttachments/{id}")
     public ResponseEntity<List<PostAttachments>> findByPostSeq(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSeq(id));
+            return ResponseEntity.status(HttpStatus.OK).body(service.findByPostSEQ(id));
         } catch (Exception e) {
             return null;
         }

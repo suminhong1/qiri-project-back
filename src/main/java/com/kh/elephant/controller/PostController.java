@@ -140,7 +140,7 @@ public class PostController {
     }
 
     //   매칭 게시글 수정 http://localhost:8080/qiri/post
-    @PutMapping("/post") ㅉ
+    @PutMapping("/post")
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
         try {
             // 게시글 수정에 필요한 service들
