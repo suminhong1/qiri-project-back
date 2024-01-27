@@ -45,7 +45,7 @@ public class PostService {
 
     public Page<Post> showAll(Pageable pageable, BooleanBuilder builder) {
         
-        return dao.findAll(builder, pageable); // Spring Data JPA에서 제공하는 findAll을 사용하여 게시물 전체의 정보를 조회할수 있게함
+        return dao.findAll(builder, pageable); // findAll을 사용하여 게시물 전체의 정보를 조회할 수 있게함
     }
 
     // 하나의 서비스 안에 여러 가지 기능의 로직을 짤수 있음
@@ -66,14 +66,14 @@ public class PostService {
 
 
     public Post create(Post post){
-       // Spring Data JPA에서 제공하는 save 메소드를 사용하여 게시글 저장
+       // save 메소드를 사용하여 게시글 저장
         return dao.save(post);
     }
 
 
 
     public Post update(Post post) {
-// Spring Data JPA에서 제공하는 findById로 수정할 게시물을 찾고 
+// findById로 수정할 게시물을 찾고
         Post target = dao.findById(post.getPostSEQ()).orElse(null);
         if (target != null) {// 게시물이 null이 아닐경우
             target.setPostTitle(post.getPostTitle());
@@ -85,7 +85,7 @@ public class PostService {
     }
 
     public Post delete(int id) {
-        Post post = dao.findById(id).orElse(null); // Spring Data JPA에서 제공하는 findById로 삭제할 게시물을 찾고 게시물이 null이 아닐경우
+        Post post = dao.findById(id).orElse(null); // findById로 삭제할 게시물을 찾고 게시물이 null이 아닐경우
         dao.delete(post); // Spring Data JPA에서 제공하는 delete로 삭제
         return post;
     }

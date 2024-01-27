@@ -66,7 +66,6 @@ public class PostAttachmentsController {
     public ResponseEntity<List<String>> uploadFiles(@RequestParam(required = false)List<MultipartFile> files, @RequestParam int postId) throws IOException {
         try{
             List<String> ImageList = new ArrayList<>();
-            log.info("files : " + files); // 얘는 얘로 반복문!
             if (files.isEmpty()) {
                 //  클라이언트가 사진을 첨부하지 않았다면 아무 동작을 하지 않음
                 return ResponseEntity.status(HttpStatus.OK).body(ImageList);
@@ -75,20 +74,19 @@ public class PostAttachmentsController {
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); // 파일 랜덤 이름 부여랑 원래 이름
                 String uploadPath = "C:\\ClassQ_team4_frontend\\qoqiri\\public\\upload"; // 저장 경로
 
-                InputStream inputStream = file.getInputStream(); // 파일 데이터를 읽기 위해 필요함
+                InputStream inputStream = file.getInputStream(); // 파일 데이터를 읽기
                 Path filePath = Paths.get(uploadPath,fileName); //Paths.get를 사용하여 파일 경로를 생성
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING); // 파일 중복으로 올라올 시 덮어쓰기
 
                 log.info(fileName);
                 String imageUrl =  fileName;
                 ImageList.add(imageUrl); // list에 추가
-                // PostAttachments를 빌더를 이용해 for문 안에 있는 imageUrl을 attachmentURL 컬럼에 저장 하고
+
                 PostAttachments postAttachments = PostAttachments.builder()
-                        .post(postService.show(postId)) // @Autowired 불러온 postService를 이용해 show로 postID(시퀀스 임)을 찾아서
+                        .post(postService.show(postId))
                         .attachmentURL(imageUrl)
                         .build();
-                log.info("첨부 파일 정보" + postAttachments);
-                service.create(postAttachments); // 서비스 create(save)를 사용 해서 db에 저장
+                service.create(postAttachments);
             }
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }catch (Exception e){
