@@ -22,11 +22,15 @@ public class QMatchingUserInfo extends EntityPathBase<MatchingUserInfo> {
 
     public static final QMatchingUserInfo matchingUserInfo = new QMatchingUserInfo("matchingUserInfo");
 
+    public final DateTimePath<java.util.Date> applicationDate = createDateTime("applicationDate", java.util.Date.class);
+
     public final StringPath matchingAccept = createString("matchingAccept");
 
     public final NumberPath<Integer> matchingUserInfoSeq = createNumber("matchingUserInfoSeq", Integer.class);
 
     public final QPost post;
+
+    public final StringPath postReview = createString("postReview");
 
     public final NumberPath<Integer> score = createNumber("score", Integer.class);
 

@@ -81,8 +81,6 @@ public class MatchingUserInfoController {
         MatchingUserInfo matchingUserInfo = MatchingUserInfo.builder()
                 .userInfo(userInfo)
                 .post(post)
-                .matchingAccept("N")
-                .postReview("N")
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(muiService.create(matchingUserInfo));
         } catch (Exception e){
