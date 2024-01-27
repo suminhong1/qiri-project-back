@@ -60,19 +60,14 @@ public class MatchingCategoryInfoController {
     // 게시글 추가 http://localhost:8080/qiri/post
     @PostMapping("/matchingCategoryInfo")  // PostMapping 위한 메소드 경로 설정
     public ResponseEntity<List<MatchingCategoryInfo>> insert(@RequestBody MatchingCategoryInfoDTO dto) {
-
-
         // MatchingCategoryInfo 객체들을 담을 빈 리스트를 생성
         List<MatchingCategoryInfo> list = new ArrayList<>();
 
-        log.info("matching category list : " + dto.toString());
-
-        // 카테고리를 여러개 선택할수 있으니 for문을 돌려서
+        // 카테고리를 여러개 선택할 수 있으니 반복문을 돌려서
         for(int i=0; i<dto.getCategories().size(); i++) {
             // dto에서 카테고리 정보들을 조회하며 MatchingCategoryInfo  객체를 생성 후 추가
 
             MatchingCategoryInfo info = new MatchingCategoryInfo();
-
             // MatchingCategoryInfo의 새 인스턴스를 생성
 
             Post post = new Post();
@@ -88,10 +83,8 @@ public class MatchingCategoryInfoController {
 
             // 새로 생성한 category에 CategorySEQ를 담음
             info.setCategory(category); // set을 사용해서 변수명을 info로 설정한 MatchingCategoryInfo에 categorySEQ값을 설정
-
             list.add(info);// info를 리스트인 list에 추가 for문 돌린 info 객체가 post와 category와 연결 후 리스트에 추가
         }
-    // 결과 반환
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(service.createAll(list));
         } catch (Exception e) {

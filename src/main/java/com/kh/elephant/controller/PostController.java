@@ -118,11 +118,11 @@ public class PostController {
         // dto를 이용한 post 방식이기 때문에 post에 데이터를 넣어주고 db에 저장을 해야함
         try {
             // Place 객체를 Service.show로 가져옴 show가 get방식이랑 유사한 역할임
-            Place place = plService.show(dto.getPlaceSEQ()); // dto에 담긴 int placeSeq 값을 사용해서 plService를 통해서 Place 객체의 정보를 가져와서 내가 선택해서 사용함
+            Place place = plService.show(dto.getPlaceSEQ()); // dto에 담긴 int placeSeq 값을 사용해서 Service를 통해서 Place 객체의 정보를 가져와 선택해서 사용함
 
-            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ()); //place 안에 placeType가 join 돼있어도 선언해야함
+            PlaceType placeType = placeTypeService.show(dto.getPlaceTypeSEQ());
 
-            place.setPlaceType(placeType); //place 안에 placeType 데이터를 넣어줌 그냥 place와 placeType을 합친것
+            place.setPlaceType(placeType); //place 안에 placeType 데이터를 set 함
 
             Board board = boardService.show(dto.getBoardSEQ()); // board에 저장된 정보를 조회하기 위해 boardService에 있는 show 메소드로 정보 조회
 

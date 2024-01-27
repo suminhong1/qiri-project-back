@@ -24,7 +24,6 @@ public class PostDTO {
     private String token;
 
     // DTO 방식으로 처리하기 위한 게시글 작성 관련 필요 데이터
-
     private String postTitle;
 
     private String postContent;
@@ -41,19 +40,24 @@ public class PostDTO {
 
     private Date postDate;
 
+    private String postDelete;
+
     private List<Integer> categoryList;
 
     private List<Integer> categoryTypeList;
 
     private List<String> attachmentList;
 
+    private Post post;
+
+
     private String matched;
 
-    private String postDelete;
+
 
     private String titleDropbox;
 
-    private Post post;
+
     private List<String> attList; // 첨부파일 관련
     List<Category> matchList; // 카테고리 관련
 
