@@ -88,6 +88,7 @@ public class PostController {
             result = postService.showAll(pageable, builder);
         } else {
             List<Post> searchResults = searchService.searchByKeyword(keyword);
+            Collections.sort(searchResults, Comparator.comparing(Post::getPostSEQ).reversed());
             return ResponseEntity.status(HttpStatus.OK).body(searchResults);
         }
         // Page 객체에서 목록을 추출하여 반환
@@ -124,7 +125,7 @@ public class PostController {
             log.info(userId);
             UserInfo userInfo = userInfoService.show(userId);
 
-            // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서 생성 
+            // Post 객체를 post로 변수명 지정해 주고 get으로 dto안에 있는 필요한 것만 뽑아서 생성
             Post post = Post.builder()
                     .postTitle(dto.getPostTitle())
                     .postContent(dto.getPostContent())
@@ -144,17 +145,17 @@ public class PostController {
     public ResponseEntity<Post> update(@RequestBody PostDTO dto) {
         try {
             // 게시글 수정에 필요한 service들
-            Place place = plService.show(dto.getPlaceSEQ()); 
+            Place place = plService.show(dto.getPlaceSEQ());
 
-            String userId = tokenProvider.validateAndGetUserId(dto.getToken()); 
+            String userId = tokenProvider.validateAndGetUserId(dto.getToken());
 
-            UserInfo userinfo = userInfoService.show(userId); 
+            UserInfo userinfo = userInfoService.show(userId);
 
-            Board board = boardService.show(dto.getBoardSEQ()); 
+            Board board = boardService.show(dto.getBoardSEQ());
 
             // post 안에 있는 수정할 정보들
             Post post = Post.builder()
-                    .postSEQ(dto.getPostSEQ()) 
+                    .postSEQ(dto.getPostSEQ())
                     .postTitle(dto.getPostTitle())
                     .postContent(dto.getPostContent())
                     .postDate(new Date())
@@ -177,7 +178,7 @@ public class PostController {
     @PutMapping("/post/{postSeq}")   // update 형식으로 db에 데이터는 남기고 클라이언트 쪽에선 안보이게 처리
     public ResponseEntity<String> hidePost(@PathVariable int postSeq) {
         try {
-            Post post = postService.show(postSeq); 
+            Post post = postService.show(postSeq);
             if(post==null){ // post가 null일 경우
                 return ResponseEntity.badRequest().body("게시물을 찾을 수 없습니다."); // 문자열 반환
             }
@@ -214,6 +215,8 @@ public class PostController {
             }
             // Set을 다시 List로 변환
             List<Post> postList = new ArrayList<>(uniquePosts);
+            // 최신순 정렬
+            postList.sort(Comparator.comparingInt(Post::getPostSEQ).reversed());
             return ResponseEntity.status(HttpStatus.OK).body(postList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
